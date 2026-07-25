@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+
+    <application
+        android:name=".MohgWatchApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+
+        <!-- Wear Main Activity -->
+        <activity
+            android:name=".ui.WearActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.DeviceDefault">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+        </activity>
+
+        <!-- Data Layer Listener — receives glucose from phone -->
+        <service
+            android:name=".service.DataLayerListenerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/mohgwatch" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+        </service>
+
+        <!-- Glucose Value Complication Provider -->
+        <service
+            android:name=".service.GlucoseComplicationService"
+            android:exported="true"
+            android:label="@string/glucose_complication_label"
+            android:icon="@drawable/ic_glucose"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SHORT_TEXT,RANGED_VALUE" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="60" />
+        </service>
+
+        <!-- Trend Arrow Complication Provider -->
+        <service
+            android:name=".service.TrendComplicationService"
+            android:exported="true"
+            android:label="@string/trend_complication_label"
+            android:icon="@drawable/ic_trend_stable"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SHORT_TEXT,SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="60" />
+        </service>
+
+        <!-- 12h History Tile -->
+        <service
+            android:name=".service.GlucoseHistoryTileService"
+            android:exported="true"
+            android:label="@string/history_tile_label"
+            android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER">
+            <intent-filter>
+                <action android:name="androidx.wear.tiles.action.BIND_TILE_PROVIDER" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+        </service>
+
+        <!-- WFF WATCH FACES (Digital) -->
+        <service
+            android:name=".watchface.D1ClassicWatchFace"
+            android:exported="true"
+            android:label="MoghWatch Classic"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_d1_classic" />
+        </service>
+
+        <service
+            android:name=".watchface.D2NeonPulseWatchFace"
+            android:exported="true"
+            android:label="Neon Pulse"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_d2_neon_pulse" />
+        </service>
+
+        <service
+            android:name=".watchface.D3MinimalWhiteWatchFace"
+            android:exported="true"
+            android:label="Minimal White"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_d3_minimal_white" />
+        </service>
+
+        <service
+            android:name=".watchface.D4DashboardWatchFace"
+            android:exported="true"
+            android:label="Dashboard"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_d4_dashboard" />
+        </service>
+
+        <service
+            android:name=".watchface.D5NightModeWatchFace"
+            android:exported="true"
+            android:label="Night Mode"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_d5_night_mode" />
+        </service>
+
+        <!-- WFF WATCH FACES (Analog) -->
+        <service
+            android:name=".watchface.A1SwissHeritageWatchFace"
+            android:exported="true"
+            android:label="Swiss Heritage"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_a1_swiss_heritage" />
+        </service>
+
+        <service
+            android:name=".watchface.A2DiverProWatchFace"
+            android:exported="true"
+            android:label="Diver Pro"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_a2_diver_pro" />
+        </service>
+
+        <service
+            android:name=".watchface.A3ChronographWatchFace"
+            android:exported="true"
+            android:label="Chronograph"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_a3_chronograph" />
+        </service>
+
+        <service
+            android:name=".watchface.A4FieldWatchWatchFace"
+            android:exported="true"
+            android:label="Field Watch"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_a4_field_watch" />
+        </service>
+
+        <service
+            android:name=".watchface.A5MoonphaseWatchFace"
+            android:exported="true"
+            android:label="Moonphase"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_a5_moonphase" />
+        </service>
+
+        <!-- WFF WATCH FACES (Hybrid) -->
+        <service
+            android:name=".watchface.H1TechFusionWatchFace"
+            android:exported="true"
+            android:label="Tech Fusion"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_h1_tech_fusion" />
+        </service>
+
+        <service
+            android:name=".watchface.H2VitalsMonitorWatchFace"
+            android:exported="true"
+            android:label="Vitals Monitor"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_h2_vitals_monitor" />
+        </service>
+
+        <service
+            android:name=".watchface.H3RetroDigitalWatchFace"
+            android:exported="true"
+            android:label="Retro Digital"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_h3_retro_digital" />
+        </service>
+
+        <service
+            android:name=".watchface.H4SportTrackerWatchFace"
+            android:exported="true"
+            android:label="Sport Tracker"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_h4_sport_tracker" />
+        </service>
+
+        <service
+            android:name=".watchface.H5AuroraWatchFace"
+            android:exported="true"
+            android:label="Aurora"
+            android:icon="@mipmap/ic_launcher"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
+            <meta-data android:name="android.service.wallpaper" android:resource="@xml/watch_face_info" />
+            <meta-data android:name="com.google.android.wearable.watchface.declarative" android:resource="@raw/wff_h5_aurora" />
+        </service>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+</manifest>

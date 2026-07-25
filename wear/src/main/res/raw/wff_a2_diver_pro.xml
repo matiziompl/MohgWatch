@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Diver Pro (A2) — Watch Face Format (WFF) XML
+  Diver watch style with thick dive bezel ring and luminous hands.
+-->
+<WatchFace width="450" height="450">
+    <Metadata key="CLOCK_TYPE" value="ANALOG" />
+    <Metadata key="PREVIEW_TIME" value="10:08:32" />
+
+    <Scene backgroundColor="#FF021427">
+        <!-- Diver Bezel -->
+        <PartDraw x="0" y="0" width="450" height="450">
+            <Arc centerX="225" centerY="225" startAngle="0" endAngle="360" innerRadius="200" outerRadius="222" direction="CLOCKWISE">
+                <Stroke color="#FF0D9488" cap="BUTT" />
+            </Arc>
+        </PartDraw>
+
+        <!-- Weather -->
+        <ComplicationSlot x="145" y="70" width="160" height="40" slotId="100" supportedTypes="SHORT_TEXT" name="Pogoda">
+            <DefaultProviderPolicy defaultSystemProvider="WEATHER" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="160" height="40" />
+        </ComplicationSlot>
+
+        <!-- Analog Clock Hands -->
+        <AnalogClock x="0" y="0" width="450" height="450">
+            <HourHand x="214" y="70" width="22" height="155" pivotX="11" pivotY="155">
+                <PartDraw x="0" y="0" width="22" height="155">
+                    <Line startX="11" startY="15" endX="11" endY="155">
+                        <Stroke color="#FF2DD4BF" cap="ROUND" width="10" />
+                    </Line>
+                </PartDraw>
+            </HourHand>
+
+            <MinuteHand x="216" y="40" width="18" height="185" pivotX="9" pivotY="185">
+                <PartDraw x="0" y="0" width="18" height="185">
+                    <Line startX="9" startY="10" endX="9" endY="185">
+                        <Stroke color="#FF2DD4BF" cap="ROUND" width="6" />
+                    </Line>
+                </PartDraw>
+            </MinuteHand>
+
+            <SecondHand x="223" y="30" width="4" height="195" pivotX="2" pivotY="195">
+                <PartDraw x="0" y="0" width="4" height="195">
+                    <Line startX="2" startY="0" endX="2" endY="195">
+                        <Stroke color="#FFF59E0B" cap="ROUND" width="3" />
+                    </Line>
+                </PartDraw>
+            </SecondHand>
+        </AnalogClock>
+
+        <!-- Glucose & Trend -->
+        <ComplicationSlot x="80" y="280" width="100" height="60" slotId="200" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Glukoza">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="100" height="60" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="185" y="280" width="50" height="60" slotId="201" supportedTypes="SHORT_TEXT,SMALL_IMAGE,MONOCHROMATIC_IMAGE" name="Trend glukozy">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="50" height="60" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="255" y="280" width="60" height="60" slotId="202" supportedTypes="SMALL_IMAGE,SHORT_TEXT" name="Multimedia">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SMALL_IMAGE" />
+            <BoundingOval x="0" y="0" width="60" height="60" />
+        </ComplicationSlot>
+
+        <!-- Corners -->
+        <ComplicationSlot x="40" y="45" width="80" height="45" slotId="10" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Lewy górny">
+            <DefaultProviderPolicy defaultSystemProvider="STEP_COUNT" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="330" y="45" width="80" height="45" slotId="11" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Prawy górny">
+            <DefaultProviderPolicy defaultSystemProvider="WATCH_BATTERY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="40" y="360" width="80" height="45" slotId="12" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Lewy dolny">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="330" y="360" width="80" height="45" slotId="13" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Prawy dolny">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+    </Scene>
+</WatchFace>

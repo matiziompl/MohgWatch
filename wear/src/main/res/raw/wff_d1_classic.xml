@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MoghWatch Classic (D1) — Watch Face Format (WFF) XML
+  Ciemne tło AMOLED, duży cyfrowy zegar, pogoda, glukoza z trendem.
+  Komplikacje konfigurowalne w narożnikach.
+-->
+<WatchFace
+    width="450"
+    height="450">
+
+    <Metadata
+        key="CLOCK_TYPE"
+        value="DIGITAL" />
+    <Metadata
+        key="PREVIEW_TIME"
+        value="10:08:32" />
+
+    <!-- === TŁO === -->
+    <Scene backgroundColor="#FF0F172A">
+
+        <!-- Subtelny ring na krawędzi tarczy -->
+        <PartDraw
+            x="0" y="0"
+            width="450" height="450">
+            <Arc
+                centerX="225" centerY="225"
+                startAngle="0" endAngle="360"
+                innerRadius="218" outerRadius="224"
+                direction="CLOCKWISE">
+                <Stroke color="#FF1E293B" cap="ROUND" />
+            </Arc>
+        </PartDraw>
+
+        <!-- Zewnętrzny pierścień minut -->
+        <PartDraw
+            x="0" y="0"
+            width="450" height="450">
+            <Arc
+                centerX="225" centerY="225"
+                startAngle="0" endAngle="360"
+                innerRadius="210" outerRadius="215"
+                direction="CLOCKWISE">
+                <Stroke color="#FF334155" cap="BUTT" />
+            </Arc>
+        </PartDraw>
+
+        <!-- === POGODA (nad godziną) — slot konfigurowalny === -->
+        <ComplicationSlot
+            x="145" y="70"
+            width="160" height="40"
+            slotId="100"
+            supportedTypes="SHORT_TEXT"
+            name="Pogoda">
+            <DefaultProviderPolicy
+                defaultSystemProvider="WEATHER"
+                defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval
+                x="0" y="0"
+                width="160" height="40" />
+        </ComplicationSlot>
+
+        <!-- === GODZINA — główna === -->
+        <DigitalClock
+            x="85" y="135"
+            width="280" height="100">
+            <TimeText
+                format="HH:mm"
+                align="CENTER"
+                size="72"
+                color="#FFF8FAFC"
+                font="SYNC_TO_DEVICE"
+                weight="BOLD" />
+        </DigitalClock>
+
+        <!-- Sekundy pod godziną -->
+        <DigitalClock
+            x="185" y="225"
+            width="80" height="30">
+            <TimeText
+                format="ss"
+                align="CENTER"
+                size="18"
+                color="#FF64748B"
+                font="SYNC_TO_DEVICE" />
+        </DigitalClock>
+
+        <!-- === DATA === -->
+        <DigitalClock
+            x="140" y="248"
+            width="170" height="28">
+            <TimeText
+                format="EEE, dd MMM"
+                align="CENTER"
+                size="14"
+                color="#FF94A3B8"
+                font="SYNC_TO_DEVICE" />
+        </DigitalClock>
+
+        <!-- === GLUKOZA — po lewej stronie pod godziną === -->
+        <!-- Wartość glukozy (complication SHORT_TEXT) -->
+        <ComplicationSlot
+            x="80" y="280"
+            width="100" height="60"
+            slotId="200"
+            supportedTypes="SHORT_TEXT,RANGED_VALUE"
+            name="Glukoza">
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval
+                x="0" y="0"
+                width="100" height="60" />
+        </ComplicationSlot>
+
+        <!-- Strzałka trendu (complication obok glukozy) -->
+        <ComplicationSlot
+            x="185" y="280"
+            width="50" height="60"
+            slotId="201"
+            supportedTypes="SHORT_TEXT,SMALL_IMAGE,MONOCHROMATIC_IMAGE"
+            name="Trend glukozy">
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval
+                x="0" y="0"
+                width="50" height="60" />
+        </ComplicationSlot>
+
+        <!-- Multimedia — kółko po prawej -->
+        <ComplicationSlot
+            x="255" y="280"
+            width="60" height="60"
+            slotId="202"
+            supportedTypes="SMALL_IMAGE,SHORT_TEXT"
+            name="Multimedia">
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SMALL_IMAGE" />
+            <BoundingOval
+                x="0" y="0"
+                width="60" height="60" />
+        </ComplicationSlot>
+
+        <!-- === NAROŻNIKI (konfigurowalne komplikacje) === -->
+
+        <!-- Lewy górny — Kroki -->
+        <ComplicationSlot
+            x="45" y="45"
+            width="80" height="45"
+            slotId="10"
+            supportedTypes="SHORT_TEXT,RANGED_VALUE"
+            name="Lewy górny">
+            <DefaultProviderPolicy
+                defaultSystemProvider="STEP_COUNT"
+                defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval
+                x="0" y="0"
+                width="80" height="45" />
+        </ComplicationSlot>
+
+        <!-- Prawy górny — Bateria -->
+        <ComplicationSlot
+            x="325" y="45"
+            width="80" height="45"
+            slotId="11"
+            supportedTypes="SHORT_TEXT,RANGED_VALUE"
+            name="Prawy górny">
+            <DefaultProviderPolicy
+                defaultSystemProvider="WATCH_BATTERY"
+                defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval
+                x="0" y="0"
+                width="80" height="45" />
+        </ComplicationSlot>
+
+        <!-- Lewy dolny — Kalorie -->
+        <ComplicationSlot
+            x="45" y="360"
+            width="80" height="45"
+            slotId="12"
+            supportedTypes="SHORT_TEXT,RANGED_VALUE"
+            name="Lewy dolny">
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval
+                x="0" y="0"
+                width="80" height="45" />
+        </ComplicationSlot>
+
+        <!-- Prawy dolny — Wilgotność / Stres (konfigurowalny) -->
+        <ComplicationSlot
+            x="325" y="360"
+            width="80" height="45"
+            slotId="13"
+            supportedTypes="SHORT_TEXT,RANGED_VALUE"
+            name="Prawy dolny">
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval
+                x="0" y="0"
+                width="80" height="45" />
+        </ComplicationSlot>
+
+    </Scene>
+</WatchFace>

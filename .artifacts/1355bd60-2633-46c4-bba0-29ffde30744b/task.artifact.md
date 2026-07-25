@@ -1,0 +1,2 @@
+- [x] Fix `settings.gradle.kts` compilation errors
+- [x] Verify fix with Gradle sync

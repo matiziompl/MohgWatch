@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Neon Pulse (D2) — Watch Face Format (WFF) XML
+  Cyberpunk theme with neon cyan & magenta accents, dark AMOLED background.
+-->
+<WatchFace width="450" height="450">
+    <Metadata key="CLOCK_TYPE" value="DIGITAL" />
+    <Metadata key="PREVIEW_TIME" value="10:08:32" />
+
+    <Scene backgroundColor="#FF050814">
+        <!-- Neon outer ring glow -->
+        <PartDraw x="0" y="0" width="450" height="450">
+            <Arc centerX="225" centerY="225" startAngle="0" endAngle="360" innerRadius="215" outerRadius="222" direction="CLOCKWISE">
+                <Stroke color="#FF00F0FF" cap="ROUND" />
+            </Arc>
+        </PartDraw>
+        
+        <PartDraw x="0" y="0" width="450" height="450">
+            <Arc centerX="225" centerY="225" startAngle="0" endAngle="360" innerRadius="206" outerRadius="210" direction="CLOCKWISE">
+                <Stroke color="#FFFF007F" cap="ROUND" />
+            </Arc>
+        </PartDraw>
+
+        <!-- Weather (top) -->
+        <ComplicationSlot x="145" y="60" width="160" height="40" slotId="100" supportedTypes="SHORT_TEXT" name="Pogoda">
+            <DefaultProviderPolicy defaultSystemProvider="WEATHER" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="160" height="40" />
+        </ComplicationSlot>
+
+        <!-- Digital Clock (large neon text) -->
+        <DigitalClock x="75" y="120" width="300" height="110">
+            <TimeText format="HH:mm" align="CENTER" size="84" color="#FF00F0FF" font="SYNC_TO_DEVICE" weight="BOLD" />
+        </DigitalClock>
+
+        <DigitalClock x="140" y="230" width="170" height="28">
+            <TimeText format="EEE, dd MMM" align="CENTER" size="16" color="#FFFF007F" font="SYNC_TO_DEVICE" />
+        </DigitalClock>
+
+        <!-- Glucose & Trend -->
+        <ComplicationSlot x="80" y="275" width="100" height="60" slotId="200" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Glukoza">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="100" height="60" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="185" y="275" width="50" height="60" slotId="201" supportedTypes="SHORT_TEXT,SMALL_IMAGE,MONOCHROMATIC_IMAGE" name="Trend glukozy">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="50" height="60" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="255" y="275" width="60" height="60" slotId="202" supportedTypes="SMALL_IMAGE,SHORT_TEXT" name="Multimedia">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SMALL_IMAGE" />
+            <BoundingOval x="0" y="0" width="60" height="60" />
+        </ComplicationSlot>
+
+        <!-- Corners -->
+        <ComplicationSlot x="40" y="40" width="80" height="45" slotId="10" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Lewy górny">
+            <DefaultProviderPolicy defaultSystemProvider="STEP_COUNT" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="330" y="40" width="80" height="45" slotId="11" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Prawy górny">
+            <DefaultProviderPolicy defaultSystemProvider="WATCH_BATTERY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="40" y="365" width="80" height="45" slotId="12" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Lewy dolny">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="330" y="365" width="80" height="45" slotId="13" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Prawy dolny">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+    </Scene>
+</WatchFace>
