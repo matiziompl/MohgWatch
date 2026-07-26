@@ -83,6 +83,10 @@ dependencies {
     // Background
     implementation(libs.work.runtime.ktx)
 
+    // Widgets (Glance)
+    implementation(libs.glance.appwidget)
+    implementation(libs.glance.material3)
+
     // Networking (for API calls from phone)
     implementation(libs.okhttp)
     implementation(libs.retrofit)

@@ -19,7 +19,6 @@ import com.mohgwatch.core.model.UserSettings
 import com.mohgwatch.phone.data.SettingsStore
 import com.mohgwatch.phone.ui.navigation.Screen
 import com.mohgwatch.phone.ui.screens.*
-import com.mohgwatch.phone.ui.screens.studio.*
 import com.mohgwatch.phone.ui.theme.MohgWatchTheme
 import com.mohgwatch.phone.util.LocalAppLanguage
 import com.mohgwatch.phone.util.tr
@@ -58,8 +57,7 @@ fun MohgWatchNavigation() {
 
     val bottomNavItems = listOf(
         Triple(Screen.Status, Icons.Filled.MonitorHeart, tr("Status", "Status")),
-        Triple(Screen.Chart, Icons.Filled.BarChart, tr("Wykres", "Chart")),
-        Triple(Screen.Studio, Icons.Filled.Brush, tr("Studio", "Studio")),
+        Triple(Screen.SettingsNotifications, Icons.Filled.Notifications, tr("Powiadomienia", "Notifications")),
         Triple(Screen.Settings, Icons.Filled.Settings, tr("Ustawienia", "Settings"))
     )
 
@@ -74,12 +72,15 @@ fun MohgWatchNavigation() {
                     bottomNavItems.forEach { (screen, icon, label) ->
                         NavigationBarItem(
                             selected = currentRoute == screen.route ||
-                                    (screen == Screen.Studio && currentRoute?.startsWith("studio") == true) ||
-                                    (screen == Screen.Settings && currentRoute?.startsWith("settings") == true),
+                                    (screen == Screen.Settings && currentRoute?.startsWith("settings") == true && currentRoute != Screen.SettingsNotifications.route),
                             onClick = {
                                 if (currentRoute != screen.route) {
-                                    if (screen == Screen.Settings && currentRoute?.startsWith("settings") == true) {
+                                    if (screen == Screen.Settings && currentRoute?.startsWith("settings") == true && currentRoute != Screen.SettingsNotifications.route) {
                                         navController.popBackStack(Screen.Settings.route, inclusive = false)
+                                    } else if (screen == Screen.SettingsNotifications && currentRoute == Screen.SettingsNotifications.route) {
+                                        // Do nothing
+                                    } else if (screen == Screen.Status && currentRoute?.startsWith("status") == true) {
+                                        navController.popBackStack(Screen.Status.route, inclusive = false)
                                     } else {
                                         navController.navigate(screen.route) {
                                             popUpTo(Screen.Status.route) { saveState = true }
@@ -115,15 +116,11 @@ fun MohgWatchNavigation() {
             composable(Screen.Status.route) {
                 StatusScreen()
             }
-            composable(Screen.Chart.route) {
-                ChartScreen()
-            }
             composable(Screen.Settings.route) {
                 SettingsScreen(
                     onNavigateToDiabetes = { navController.navigate(Screen.SettingsDiabetes.route) },
                     onNavigateToAccount = { navController.navigate(Screen.SettingsAccount.route) },
                     onNavigateToTheme = { navController.navigate(Screen.SettingsTheme.route) },
-                    onNavigateToNotifications = { navController.navigate(Screen.SettingsNotifications.route) },
                     onNavigateToGeneral = { navController.navigate(Screen.SettingsGeneral.route) }
                 )
             }
@@ -145,21 +142,11 @@ fun MohgWatchNavigation() {
             composable(Screen.SettingsGeneral.route) {
                 SettingsGeneralScreen(onBack = { navController.popBackStack() })
             }
-            composable(Screen.Studio.route) {
-                StudioHomeScreen(
-                    onNavigateToPresets = { navController.navigate(Screen.PresetGallery.route) },
-                    onNavigateToEditor = { navController.navigate(Screen.WatchFaceEditor.route) },
-                    onNavigateToImport = { navController.navigate(Screen.ImportExport.route) }
-                )
+            composable(Screen.SettingsChart.route) {
+                SettingsChartScreen(onBack = { navController.popBackStack() })
             }
-            composable(Screen.PresetGallery.route) {
-                PresetGalleryScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Screen.WatchFaceEditor.route) {
-                WatchFaceEditorScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Screen.ImportExport.route) {
-                ImportExportScreen(onBack = { navController.popBackStack() })
+            composable(Screen.SettingsWatch.route) {
+                SettingsWatchScreen(onBack = { navController.popBackStack() })
             }
         }
     }

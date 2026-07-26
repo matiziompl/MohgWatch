@@ -24,6 +24,7 @@ import com.mohgwatch.phone.service.DataLayerSender
 import com.mohgwatch.phone.ui.theme.GlucoseHigh
 import com.mohgwatch.phone.ui.theme.GlucoseLow
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,7 +104,7 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
                         Icon(Icons.Filled.ArrowDownward, null, tint = GlucoseLow)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Próg niski", modifier = Modifier.weight(1f))
-                        Text("${lowThreshold.toInt()} mg/dL", color = GlucoseLow, fontWeight = FontWeight.Bold)
+                        Text("${lowThreshold.roundToInt()} mg/dL", color = GlucoseLow, fontWeight = FontWeight.Bold)
                     }
                     Slider(
                         value = lowThreshold,
@@ -125,7 +126,7 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
                         Icon(Icons.Filled.ArrowUpward, null, tint = GlucoseHigh)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Próg wysoki", modifier = Modifier.weight(1f))
-                        Text("${highThreshold.toInt()} mg/dL", color = GlucoseHigh, fontWeight = FontWeight.Bold)
+                        Text("${highThreshold.roundToInt()} mg/dL", color = GlucoseHigh, fontWeight = FontWeight.Bold)
                     }
                     Slider(
                         value = highThreshold,

@@ -36,6 +36,22 @@ class SettingsStore(private val context: Context) {
         val LANGUAGE = stringPreferencesKey("language")
         val NOTIFY_DISCONNECT = booleanPreferencesKey("notify_disconnect")
         val NOTIFY_OUT_OF_RANGE = booleanPreferencesKey("notify_out_of_range")
+        val ALERT_LOW_THRESHOLD = floatPreferencesKey("alert_low_threshold")
+        val ALERT_HIGH_THRESHOLD = floatPreferencesKey("alert_high_threshold")
+        val ALERT_VERY_HIGH_THRESHOLD = floatPreferencesKey("alert_very_high_threshold")
+        val DISCONNECT_SOUND_URI = stringPreferencesKey("disconnect_sound_uri")
+        val LOW_GLUCOSE_SOUND_URI = stringPreferencesKey("low_glucose_sound_uri")
+        val HIGH_GLUCOSE_SOUND_URI = stringPreferencesKey("high_glucose_sound_uri")
+        val WATCH_LOW_THRESHOLD = floatPreferencesKey("watch_low_threshold")
+        val WATCH_HIGH_THRESHOLD = floatPreferencesKey("watch_high_threshold")
+        val WATCH_VERY_HIGH_THRESHOLD = floatPreferencesKey("watch_very_high_threshold")
+        val WATCH_TREND_ARROW_STYLE = stringPreferencesKey("watch_trend_arrow_style")
+        val WATCH_GLUCOSE_FONT = stringPreferencesKey("watch_glucose_font")
+        val NOTIFICATION_VOLUME = floatPreferencesKey("notification_volume")
+        val NIGHT_MODE_ENABLED = booleanPreferencesKey("night_mode_enabled")
+        val NIGHT_START_TIME = stringPreferencesKey("night_start_time")
+        val NIGHT_END_TIME = stringPreferencesKey("night_end_time")
+        val NIGHT_NOTIFICATION_VOLUME = floatPreferencesKey("night_notification_volume")
     }
 
     val settingsFlow: Flow<UserSettings> = context.settingsDataStore.data.map { prefs ->
@@ -62,7 +78,23 @@ class SettingsStore(private val context: Context) {
             } ?: AppTheme.DEFAULT,
             language = prefs[Keys.LANGUAGE] ?: "system",
             notifyDisconnect = prefs[Keys.NOTIFY_DISCONNECT] ?: true,
-            notifyOutOfRange = prefs[Keys.NOTIFY_OUT_OF_RANGE] ?: true
+            notifyOutOfRange = prefs[Keys.NOTIFY_OUT_OF_RANGE] ?: true,
+            alertLowThreshold = prefs[Keys.ALERT_LOW_THRESHOLD] ?: 70f,
+            alertHighThreshold = prefs[Keys.ALERT_HIGH_THRESHOLD] ?: 180f,
+            alertVeryHighThreshold = prefs[Keys.ALERT_VERY_HIGH_THRESHOLD] ?: 250f,
+            disconnectSoundUri = prefs[Keys.DISCONNECT_SOUND_URI],
+            lowGlucoseSoundUri = prefs[Keys.LOW_GLUCOSE_SOUND_URI],
+            highGlucoseSoundUri = prefs[Keys.HIGH_GLUCOSE_SOUND_URI],
+            watchLowThreshold = prefs[Keys.WATCH_LOW_THRESHOLD] ?: 70f,
+            watchHighThreshold = prefs[Keys.WATCH_HIGH_THRESHOLD] ?: 180f,
+            watchVeryHighThreshold = prefs[Keys.WATCH_VERY_HIGH_THRESHOLD] ?: 250f,
+            watchTrendArrowStyle = prefs[Keys.WATCH_TREND_ARROW_STYLE] ?: "next_to_value",
+            watchGlucoseFont = prefs[Keys.WATCH_GLUCOSE_FONT] ?: "default",
+            notificationVolume = prefs[Keys.NOTIFICATION_VOLUME] ?: 1.0f,
+            nightModeEnabled = prefs[Keys.NIGHT_MODE_ENABLED] ?: true,
+            nightStartTime = prefs[Keys.NIGHT_START_TIME] ?: "22:00",
+            nightEndTime = prefs[Keys.NIGHT_END_TIME] ?: "07:00",
+            nightNotificationVolume = prefs[Keys.NIGHT_NOTIFICATION_VOLUME] ?: 1.0f
         )
     }
 
@@ -83,6 +115,22 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.LANGUAGE] = settings.language
             prefs[Keys.NOTIFY_DISCONNECT] = settings.notifyDisconnect
             prefs[Keys.NOTIFY_OUT_OF_RANGE] = settings.notifyOutOfRange
+            prefs[Keys.ALERT_LOW_THRESHOLD] = settings.alertLowThreshold
+            prefs[Keys.ALERT_HIGH_THRESHOLD] = settings.alertHighThreshold
+            prefs[Keys.ALERT_VERY_HIGH_THRESHOLD] = settings.alertVeryHighThreshold
+            settings.disconnectSoundUri?.let { prefs[Keys.DISCONNECT_SOUND_URI] = it } ?: prefs.remove(Keys.DISCONNECT_SOUND_URI)
+            settings.lowGlucoseSoundUri?.let { prefs[Keys.LOW_GLUCOSE_SOUND_URI] = it } ?: prefs.remove(Keys.LOW_GLUCOSE_SOUND_URI)
+            settings.highGlucoseSoundUri?.let { prefs[Keys.HIGH_GLUCOSE_SOUND_URI] = it } ?: prefs.remove(Keys.HIGH_GLUCOSE_SOUND_URI)
+            prefs[Keys.WATCH_LOW_THRESHOLD] = settings.watchLowThreshold
+            prefs[Keys.WATCH_HIGH_THRESHOLD] = settings.watchHighThreshold
+            prefs[Keys.WATCH_VERY_HIGH_THRESHOLD] = settings.watchVeryHighThreshold
+            prefs[Keys.WATCH_TREND_ARROW_STYLE] = settings.watchTrendArrowStyle
+            prefs[Keys.WATCH_GLUCOSE_FONT] = settings.watchGlucoseFont
+            prefs[Keys.NOTIFICATION_VOLUME] = settings.notificationVolume
+            prefs[Keys.NIGHT_MODE_ENABLED] = settings.nightModeEnabled
+            prefs[Keys.NIGHT_START_TIME] = settings.nightStartTime
+            prefs[Keys.NIGHT_END_TIME] = settings.nightEndTime
+            prefs[Keys.NIGHT_NOTIFICATION_VOLUME] = settings.nightNotificationVolume
         }
     }
 }

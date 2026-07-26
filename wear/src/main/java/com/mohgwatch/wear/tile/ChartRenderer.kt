@@ -41,10 +41,20 @@ object ChartRenderer {
             return bitmap
         }
 
-        val maxTime = System.currentTimeMillis()
-        val minTime = maxTime - 3 * 60 * 60 * 1000L // 3h window
+        val now = System.currentTimeMillis()
+        val cal = Calendar.getInstance().apply { timeInMillis = now }
+        val currentHour = cal.get(Calendar.HOUR_OF_DAY)
+        val boundaryHour = ((currentHour / 3) + 1) * 3
+        
+        cal.set(Calendar.HOUR_OF_DAY, boundaryHour)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        
+        val maxTime = cal.timeInMillis
+        val minTime = maxTime - 6 * 60 * 60 * 1000L
         val timeRange = (maxTime - minTime).coerceAtLeast(1L)
-        val filteredReadings = readings.filter { it.timestamp >= minTime }
+        val filteredReadings = readings.filter { it.timestamp >= minTime && it.timestamp <= maxTime }
 
         // Sztywny zakres (0-300)
         val minVal = 0f
@@ -141,19 +151,31 @@ object ChartRenderer {
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.MILLISECOND, 0)
 
-        // Rysuj pionowe linie oddzielające co godzinę (grid)
+        // Rysuj pionowe linie oddzielające co 3 godziny (grid)
         var currentTick = cal.timeInMillis
+        val hourFmt = SimpleDateFormat("H", Locale.getDefault())
+        val y50 = CHART_BOTTOM - ((50f - 0f) / 300f) * (CHART_BOTTOM - CHART_TOP)
+        
         while (currentTick >= minTime) {
             val x = timeToX(currentTick, minTime, timeRange)
             canvas.drawLine(x, CHART_BOTTOM, x, CHART_TOP, gridLinePaint)
-            currentTick -= 60 * 60 * 1000L
+            
+            val hourStr = hourFmt.format(Date(currentTick))
+            val displayStr = if (hourStr == "0") "24" else hourStr
+            
+            val currentPaint = Paint(textPaint)
+            if (currentTick == minTime) {
+                currentPaint.textAlign = Paint.Align.LEFT
+                canvas.drawText(displayStr, x + 5f, y50 + 38f, currentPaint)
+            } else if (currentTick == maxTime) {
+                currentPaint.textAlign = Paint.Align.RIGHT
+                canvas.drawText(displayStr, x - 5f, y50 + 38f, currentPaint)
+            } else {
+                canvas.drawText(displayStr, x, y50 + 38f, currentPaint)
+            }
+            
+            currentTick -= 3 * 60 * 60 * 1000L
         }
-
-        // Rysuj środkową godzinę z tych 3 ostatnich dokładnie na środku (zaraz pod 50)
-        val middleTime = minTime + timeRange / 2
-        val hourFmt = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val y50 = CHART_BOTTOM - ((50f - 0f) / 300f) * (CHART_BOTTOM - CHART_TOP)
-        canvas.drawText(hourFmt.format(Date(middleTime)), CHART_SIZE / 2f, y50 + 38f, textPaint)
     }
 
     private fun drawGlucoseGraph(

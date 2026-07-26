@@ -7,6 +7,7 @@ enum class MeasurementColor(val apiValue: Int, val label: String) {
     IN_RANGE(1, "W normie"),
     HIGH(2, "Wysoki"),
     LOW(3, "Niski"),
+    VERY_HIGH(4, "Bardzo wysoki"),
     UNKNOWN(0, "Nieznany");
 
     companion object {

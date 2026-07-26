@@ -137,17 +137,20 @@ class DataLayerListenerService : WearableListenerService() {
 
     private fun requestComplicationUpdate() {
         try {
-            val requester = ComplicationDataSourceUpdateRequester.create(
-                this,
-                ComponentName(this, GlucoseComplicationService::class.java)
+            val services = listOf(
+                GlucoseTrendWhiteComplicationService::class.java,
+                GlucoseAndTrendComplicationService::class.java,
+                GlucoseWhiteComplicationService::class.java,
+                TrendWhiteComplicationService::class.java
             )
-            requester.requestUpdateAll()
-
-            val trendRequester = ComplicationDataSourceUpdateRequester.create(
-                this,
-                ComponentName(this, TrendComplicationService::class.java)
-            )
-            trendRequester.requestUpdateAll()
+            
+            services.forEach { serviceClass ->
+                val requester = ComplicationDataSourceUpdateRequester.create(
+                    this,
+                    ComponentName(this, serviceClass)
+                )
+                requester.requestUpdateAll()
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Błąd aktualizacji komplikacji", e)
         }

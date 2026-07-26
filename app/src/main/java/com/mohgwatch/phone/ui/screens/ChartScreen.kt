@@ -29,6 +29,7 @@ import com.mohgwatch.phone.service.GlucoseSyncState
 import com.mohgwatch.phone.ui.theme.GlucoseHigh
 import com.mohgwatch.phone.ui.theme.GlucoseLow
 import com.mohgwatch.phone.ui.theme.GlucoseInRange
+import com.mohgwatch.phone.ui.theme.GlucoseVeryHigh
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,25 +42,44 @@ fun ChartScreen() {
     val settings by settingsStore.settingsFlow.collectAsState(initial = UserSettings())
 
     var selectedTab by remember { mutableIntStateOf(0) } // 0 = Dzisiaj, 1 = 24h
+    var currentTimeMs by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    
+    LaunchedEffect(Unit) {
+        while (true) {
+            kotlinx.coroutines.delay(60_000L) // Co minutę
+            currentTimeMs = System.currentTimeMillis()
+        }
+    }
 
-    // Filter history based on tab
-    val filteredHistory = remember(history, selectedTab) {
-        val now = System.currentTimeMillis()
+    val minTime = remember(currentTimeMs, selectedTab) {
         if (selectedTab == 0) {
-            // Dzisiaj (od północy)
-            val cal = Calendar.getInstance()
-            cal.timeInMillis = now
-            cal.set(Calendar.HOUR_OF_DAY, 0)
+            Calendar.getInstance().apply { timeInMillis = currentTimeMs; set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0) }.timeInMillis
+        } else {
+            val cal = Calendar.getInstance().apply { timeInMillis = currentTimeMs }
+            val minutes = cal.get(Calendar.MINUTE)
+            val seconds = cal.get(Calendar.SECOND)
+            if (minutes > 0 || seconds > 0) {
+                cal.add(Calendar.HOUR_OF_DAY, 1)
+            }
             cal.set(Calendar.MINUTE, 0)
             cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
-            val midnight = cal.timeInMillis
-            history.filter { it.timestamp >= midnight }
-        } else {
-            // Ostatnie 24h
-            val yesterday = now - 24 * 60 * 60 * 1000L
-            history.filter { it.timestamp >= yesterday }
+            cal.add(Calendar.HOUR_OF_DAY, 1) // + 1 hour (sufit + 1)
+            cal.add(Calendar.HOUR_OF_DAY, -24) // - 24h
+            cal.timeInMillis
         }
+    }
+    val maxTime = remember(currentTimeMs, selectedTab, minTime) {
+        if (selectedTab == 0) {
+            minTime + 24 * 60 * 60 * 1000L
+        } else {
+            minTime + 24 * 60 * 60 * 1000L
+        }
+    }
+
+    // Filter history based on tab - only filter by minTime to avoid hiding recent readings if server time is slightly ahead
+    val filteredHistory = remember(history, selectedTab, minTime) {
+        history.filter { it.timestamp >= minTime }
     }.sortedBy { it.timestamp }
 
     Column(
@@ -92,26 +112,23 @@ fun ChartScreen() {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            if (filteredHistory.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Brak danych do wyświetlenia na wykresie.", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-            } else {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    shape = RoundedCornerShape(16.dp),
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                GlucoseChart(
+                    readings = filteredHistory,
+                    settings = settings,
+                    minTime = minTime,
+                    maxTime = maxTime,
+                    selectedTab = selectedTab,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    GlucoseChart(
-                        readings = filteredHistory,
-                        settings = settings,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp)
-                    )
-                }
+                        .fillMaxSize()
+                        .padding(16.dp)
+                )
             }
         }
     }
@@ -121,6 +138,9 @@ fun ChartScreen() {
 fun GlucoseChart(
     readings: List<GlucoseReading>,
     settings: UserSettings,
+    minTime: Long,
+    maxTime: Long,
+    selectedTab: Int,
     modifier: Modifier = Modifier
 ) {
     var touchX by remember { mutableStateOf<Float?>(null) }
@@ -153,8 +173,6 @@ fun GlucoseChart(
                 )
             }
     ) {
-        if (readings.isEmpty()) return@Canvas
-
         val width = size.width
         val height = size.height
 
@@ -165,8 +183,6 @@ fun GlucoseChart(
         val chartWidth = width - paddingLeft
         val chartHeight = height - paddingBottom - paddingTop
 
-        val minTime = readings.first().timestamp
-        val maxTime = readings.last().timestamp
         val timeRange = maxOf(maxTime - minTime, 1L)
 
         val minY = 0f
@@ -183,6 +199,25 @@ fun GlucoseChart(
 
         val gridLineColor = Color.Gray.copy(alpha = 0.2f)
         val ySteps = listOf(50f, 100f, 150f, 200f, 250f, 300f)
+        
+        val startCal = Calendar.getInstance().apply {
+            timeInMillis = minTime
+            if (selectedTab == 0) {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+            } else {
+                if (get(Calendar.MINUTE) > 0 || get(Calendar.SECOND) > 0) {
+                    add(Calendar.HOUR_OF_DAY, 1)
+                }
+                set(Calendar.MINUTE, 0)
+            }
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        
+        val inRangeCount = readings.count { it.value >= settings.lowThreshold && it.value <= settings.highThreshold }
+        val tirPercent = if (readings.isNotEmpty()) (inRangeCount.toFloat() / readings.size * 100).toInt() else 0
+        val tirText = "TIR: $tirPercent%"
 
         drawIntoCanvas { canvas ->
             ySteps.forEach { step ->
@@ -201,6 +236,55 @@ fun GlucoseChart(
                 )
             }
 
+            val hourFmt = SimpleDateFormat("HH", Locale.getDefault())
+            var currTime = startCal.timeInMillis
+            while (currTime <= maxTime) {
+                val x = paddingLeft + ((currTime - minTime).toFloat() / timeRange * chartWidth)
+                
+                // Usuwamy rysowanie przerywanej linii pionowej na wykresie
+                
+                // Rysuj krótką kreskę (tick) na dole dla każdej godziny
+                drawLine(
+                    color = onSurface,
+                    start = Offset(x, paddingTop + chartHeight),
+                    end = Offset(x, paddingTop + chartHeight + 15f),
+                    strokeWidth = 2f
+                )
+                
+                // Rysuj etykietę godziny (tylko wielokrotności 3)
+                val hourStr = hourFmt.format(Date(currTime))
+                val hourInt = hourStr.toIntOrNull() ?: 1
+                
+                if (hourInt % 3 == 0) {
+                    val displayStr = if (hourStr == "00") {
+                        if (selectedTab == 0 && currTime == minTime) {
+                            "00"
+                        } else if (selectedTab == 0 && currTime > minTime) {
+                            "24"
+                        } else {
+                            "00"
+                        }
+                    } else {
+                        hourStr
+                    }
+                    
+                    val currentTextPaint = Paint(textPaint).apply { 
+                        textAlign = Paint.Align.CENTER
+                        textSize = 24f
+                        alpha = 255
+                    }
+                    
+                    canvas.nativeCanvas.drawText(
+                        displayStr,
+                        x,
+                        paddingTop + chartHeight + 45f,
+                        currentTextPaint
+                    )
+                }
+                
+                currTime += 60 * 60 * 1000L
+            }
+
             val highY = paddingTop + chartHeight - ((settings.highThreshold - minY) / yRange * chartHeight)
             val lowY = paddingTop + chartHeight - ((settings.lowThreshold - minY) / yRange * chartHeight)
             
@@ -216,44 +300,46 @@ fun GlucoseChart(
                 Offset(x, y)
             }
 
-            val path = Path().apply {
-                moveTo(points.first().x, points.first().y)
-                points.drop(1).forEach { point ->
-                    lineTo(point.x, point.y)
+            if (points.isNotEmpty()) {
+                val path = Path().apply {
+                    moveTo(points.first().x, points.first().y)
+                    points.drop(1).forEach { point ->
+                        lineTo(point.x, point.y)
+                    }
                 }
-            }
 
-            drawPath(
-                path = path,
-                color = primaryColor,
-                style = Stroke(width = 6f)
-            )
-
-            points.forEachIndexed { index, point ->
-                val reading = readings[index]
-                val color = when {
-                    reading.value > settings.highThreshold -> GlucoseHigh
-                    reading.value < settings.lowThreshold -> GlucoseLow
-                    else -> GlucoseInRange
-                }
-                drawCircle(
-                    color = color,
-                    radius = 8f,
-                    center = point
+                drawPath(
+                    path = path,
+                    color = primaryColor,
+                    style = Stroke(width = 6f)
                 )
+
+                points.forEachIndexed { index, point ->
+                    val reading = readings[index]
+                    val color = when {
+                        reading.value > settings.veryHighThreshold -> GlucoseVeryHigh
+                        reading.value > settings.highThreshold -> GlucoseHigh
+                        reading.value < settings.lowThreshold -> GlucoseLow
+                        else -> GlucoseInRange
+                    }
+                    drawCircle(
+                        color = color,
+                        radius = 7f,
+                        center = point
+                    )
+                }
             }
 
+
+            
             canvas.nativeCanvas.drawText(
-                timeFormatter.format(Date(minTime)),
-                paddingLeft,
-                height - 10f,
-                textPaint.apply { textAlign = Paint.Align.LEFT }
-            )
-            canvas.nativeCanvas.drawText(
-                timeFormatter.format(Date(maxTime)),
-                width,
-                height - 10f,
-                textPaint.apply { textAlign = Paint.Align.RIGHT }
+                tirText,
+                width / 2f + paddingLeft / 2f,
+                paddingTop - 20f,
+                textPaint.apply { 
+                    textAlign = Paint.Align.CENTER
+                    isFakeBoldText = true 
+                }
             )
 
             touchX?.let { tx ->

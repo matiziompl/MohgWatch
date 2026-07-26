@@ -21,7 +21,6 @@ fun SettingsScreen(
     onNavigateToDiabetes: () -> Unit,
     onNavigateToAccount: () -> Unit,
     onNavigateToTheme: () -> Unit,
-    onNavigateToNotifications: () -> Unit,
     onNavigateToGeneral: () -> Unit
 ) {
     Column(
@@ -50,31 +49,25 @@ fun SettingsScreen(
             )
 
             SettingsMenuItem(
-                title = "Konto LibreLinkUp",
-                description = "Zarządzanie kontem, autoryzacja",
-                icon = Icons.Filled.Person,
-                onClick = onNavigateToAccount
-            )
-
-            SettingsMenuItem(
                 title = "Motyw",
                 description = "Tryb jasny/ciemny, kolory aplikacji",
                 icon = Icons.Filled.Palette,
                 onClick = onNavigateToTheme
             )
 
-            SettingsMenuItem(
-                title = "Powiadomienia",
-                description = "Alerty, dźwięki i wibracje",
-                icon = Icons.Filled.Notifications,
-                onClick = onNavigateToNotifications
-            )
 
             SettingsMenuItem(
                 title = "Ogólne",
                 description = "Odpytywanie API, testy",
                 icon = Icons.Filled.Settings,
                 onClick = onNavigateToGeneral
+            )
+
+            SettingsMenuItem(
+                title = "Konto LibreLinkUp",
+                description = "Zarządzanie kontem, autoryzacja",
+                icon = Icons.Filled.Person,
+                onClick = onNavigateToAccount
             )
 
             Spacer(modifier = Modifier.height(24.dp))

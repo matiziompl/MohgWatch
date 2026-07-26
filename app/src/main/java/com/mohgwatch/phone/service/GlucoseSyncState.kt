@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 object GlucoseSyncState {
     val latestReading = MutableStateFlow<GlucoseReading?>(null)
     val history = MutableStateFlow<List<GlucoseReading>>(emptyList())
-    val syncStatusText = MutableStateFlow("Zatrzynany — brak logowania")
+    val syncStatusText = MutableStateFlow("Zatrzymany — brak logowania")
     val isSyncing = MutableStateFlow(false)
     val lastError = MutableStateFlow<String?>(null)
     val lastSyncTimestamp = MutableStateFlow(0L)

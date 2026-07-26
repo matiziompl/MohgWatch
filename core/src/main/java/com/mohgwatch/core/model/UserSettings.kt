@@ -30,6 +30,7 @@ data class UserSettings(
     val unit: GlucoseUnit = GlucoseUnit.MG_DL,
     val lowThreshold: Float = 70f,
     val highThreshold: Float = 180f,
+    val veryHighThreshold: Float = 250f,
     val preset: WatchFacePreset = WatchFacePreset.D1_CLASSIC,
     val pollIntervalMinutes: Int = 5,
     val showDemoButton: Boolean = true,
@@ -39,9 +40,29 @@ data class UserSettings(
     val watchAppTheme: AppTheme = AppTheme.DEFAULT,
     val language: String = "system",
     val notifyDisconnect: Boolean = true,
-    val notifyOutOfRange: Boolean = true
+    val notifyOutOfRange: Boolean = true,
+    val alertLowThreshold: Float = 70f,
+    val alertHighThreshold: Float = 180f,
+    val alertVeryHighThreshold: Float = 250f,
+    val disconnectSoundUri: String? = null,
+    val lowGlucoseSoundUri: String? = null,
+    val highGlucoseSoundUri: String? = null,
+    val watchLowThreshold: Float = 70f,
+    val watchHighThreshold: Float = 180f,
+    val watchVeryHighThreshold: Float = 250f,
+    val watchTrendArrowStyle: String = "next_to_value", // "next_to_value", "under_value"
+    val watchGlucoseFont: String = "default",
+    val notificationVolume: Float = 1.0f,
+    val nightModeEnabled: Boolean = true,
+    val nightStartTime: String = "22:00",
+    val nightEndTime: String = "07:00",
+    val nightNotificationVolume: Float = 1.0f
 ) {
     fun isInRange(value: Float): Boolean = value in lowThreshold..highThreshold
     fun isLow(value: Float): Boolean = value < lowThreshold
     fun isHigh(value: Float): Boolean = value > highThreshold
+    fun isVeryHigh(value: Float): Boolean = value > veryHighThreshold
+    
+    fun isAlertLow(value: Float): Boolean = value < alertLowThreshold
+    fun isAlertHigh(value: Float): Boolean = value > alertHighThreshold
 }

@@ -99,7 +99,8 @@ val LightCard = Color(0xFFFFFFFF)
 
 // Glucose range colors
 val GlucoseInRange = Color(0xFF10B981)
-val GlucoseHigh = Color(0xFFF59E0B)
+val GlucoseHigh = Color(0xFFF97316)
+val GlucoseVeryHigh = Color(0xFFEF4444)
 val GlucoseLow = Color(0xFFEF4444)
 
 // Text

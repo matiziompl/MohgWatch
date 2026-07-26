@@ -39,44 +39,60 @@
             <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
         </service>
 
-        <!-- Glucose Value Complication Provider -->
+        <!-- 1. Strzałka + Glukoza -->
         <service
-            android:name=".service.GlucoseComplicationService"
+            android:name=".service.GlucoseTrendWhiteComplicationService"
             android:exported="true"
-            android:label="@string/glucose_complication_label"
+            android:label="Strzałka + Glukoza"
             android:icon="@drawable/ic_glucose"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
             </intent-filter>
-            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
-            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
-            <meta-data
-                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
-                android:value="SHORT_TEXT,RANGED_VALUE" />
-            <meta-data
-                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
-                android:value="60" />
+            <meta-data android:name="android.support.wearable.complications.SUPPORTED_TYPES" android:value="SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+            <meta-data android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS" android:value="60" />
         </service>
 
-        <!-- Trend Arrow Complication Provider -->
+        <!-- 2. Glukoza + Strzałka (Reversed) -->
         <service
-            android:name=".service.TrendComplicationService"
+            android:name=".service.GlucoseAndTrendComplicationService"
             android:exported="true"
-            android:label="@string/trend_complication_label"
+            android:label="Glukoza + Strzałka"
+            android:icon="@drawable/ic_glucose"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.complications.SUPPORTED_TYPES" android:value="SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+            <meta-data android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS" android:value="60" />
+        </service>
+
+        <!-- 3. Sama Glukoza -->
+        <service
+            android:name=".service.GlucoseWhiteComplicationService"
+            android:exported="true"
+            android:label="Sama Glukoza"
+            android:icon="@drawable/ic_glucose"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+            <meta-data android:name="android.support.wearable.complications.SUPPORTED_TYPES" android:value="SHORT_TEXT" />
+            <meta-data android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS" android:value="60" />
+        </service>
+
+        <!-- 4. Sama Strzałka -->
+        <service
+            android:name=".service.TrendWhiteComplicationService"
+            android:exported="true"
+            android:label="Sama Strzałka"
             android:icon="@drawable/ic_trend_stable"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
             </intent-filter>
-            <meta-data android:name="android.support.wearable.watchface.preview" android:resource="@mipmap/ic_launcher" />
-            <meta-data android:name="android.support.wearable.watchface.preview_circular" android:resource="@mipmap/ic_launcher" />
-            <meta-data
-                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
-                android:value="SHORT_TEXT,SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
-            <meta-data
-                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
-                android:value="60" />
+            <meta-data android:name="android.support.wearable.complications.SUPPORTED_TYPES" android:value="SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+            <meta-data android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS" android:value="60" />
         </service>
 
         <!-- 12h History Tile -->

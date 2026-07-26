@@ -31,6 +31,8 @@ import com.mohgwatch.phone.ui.theme.*
 import com.mohgwatch.phone.util.tr
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+import androidx.glance.appwidget.updateAll
+import com.mohgwatch.phone.widget.MohgWatchWidget
 
 @Composable
 fun StatusScreen() {
@@ -114,6 +116,7 @@ fun StatusScreen() {
                     val valueStr = GlucoseFormatter.format(reading.value, settings.unit)
                     val rangeColor = when {
                         reading.value < settings.lowThreshold -> GlucoseLow
+                        reading.value > settings.veryHighThreshold -> GlucoseVeryHigh
                         reading.value > settings.highThreshold -> GlucoseHigh
                         else -> MaterialTheme.colorScheme.primary
                     }
@@ -249,6 +252,7 @@ fun StatusScreen() {
                         trendArrow = TrendArrow.entries.filter { it != TrendArrow.UNKNOWN }.random(),
                         measurementColor = when {
                             mockVal < settings.lowThreshold -> MeasurementColor.LOW
+                            mockVal > settings.veryHighThreshold -> MeasurementColor.VERY_HIGH
                             mockVal > settings.highThreshold -> MeasurementColor.HIGH
                             else -> MeasurementColor.IN_RANGE
                         },
@@ -272,6 +276,11 @@ fun StatusScreen() {
                     GlucoseSyncState.history.value = mockHistory
 
                     scope.launch {
+                        try {
+                            MohgWatchWidget().updateAll(context)
+                        } catch (e: Exception) {
+                            // Ignore
+                        }
                         dataLayerSender.sendGlucoseReading(mockReading)
                         dataLayerSender.sendGlucoseHistory(mockHistory)
                     }

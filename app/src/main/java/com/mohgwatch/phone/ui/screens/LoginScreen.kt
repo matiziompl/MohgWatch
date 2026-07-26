@@ -82,11 +82,11 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                 .size(80.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(
-                    Brush.linearGradient(listOf(GradientStart, GradientEnd))
+                    Brush.linearGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary))
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Text("M", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
+            Text("M", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -94,12 +94,12 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         Text(
             "MoghWatch",
             style = MaterialTheme.typography.headlineLarge,
-            color = TextPrimary
+            color = MaterialTheme.colorScheme.onBackground
         )
         Text(
             "Monitor glukozy na Twoim zegarku",
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
 
@@ -108,14 +108,14 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         // Login Card
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = DarkSurface),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             shape = RoundedCornerShape(20.dp)
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
                     "Zaloguj się do LibreLinkUp",
                     style = MaterialTheme.typography.titleLarge,
-                    color = TextPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(20.dp))
 
@@ -127,11 +127,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     leadingIcon = { Icon(Icons.Filled.Email, "Email") },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Teal500,
-                        cursorColor = Teal500
-                    )
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -155,11 +151,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                             )
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Teal500,
-                        cursorColor = Teal500
-                    )
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -178,10 +170,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                         leadingIcon = { Icon(Icons.Filled.Public, "Region") },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Teal500
-                        )
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable)
                     )
                     ExposedDropdownMenu(
                         expanded = regionExpanded,
@@ -204,16 +193,16 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                 // Error
                 if (errorMessage != null) {
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = ErrorRed.copy(alpha = 0.15f)),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Row(
                             modifier = Modifier.padding(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Filled.Warning, "Błąd", tint = ErrorRed)
+                            Icon(Icons.Filled.Warning, "Błąd", tint = MaterialTheme.colorScheme.onErrorContainer)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(errorMessage!!, color = ErrorRed, style = MaterialTheme.typography.bodyMedium)
+                            Text(errorMessage!!, color = MaterialTheme.colorScheme.onErrorContainer, style = MaterialTheme.typography.bodyMedium)
                         }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
@@ -267,13 +256,12 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                         .fillMaxWidth()
                         .height(52.dp),
                     enabled = !isLoading,
-                    colors = ButtonDefaults.buttonColors(containerColor = Teal500),
                     shape = RoundedCornerShape(14.dp)
                 ) {
                     if (isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
-                            color = TextPrimary,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             strokeWidth = 2.dp
                         )
                     } else {
@@ -287,14 +275,14 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
         // Follower Info
         Card(
-            colors = CardDefaults.cardColors(containerColor = Indigo500.copy(alpha = 0.1f)),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
             shape = RoundedCornerShape(16.dp)
         ) {
             Row(modifier = Modifier.padding(16.dp)) {
                 Icon(
                     Icons.Filled.Info,
                     "Info",
-                    tint = Indigo400,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -302,7 +290,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                     "Upewnij się, że w aplikacji LibreLink dodałeś swoje konto jako " +
                             "\"opiekuna\" (follower) w ustawieniach LibreLinkUp.",
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         }
