@@ -7,10 +7,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -42,8 +47,14 @@ fun MohgWatchAppContent() {
     val settings by settingsStore.settingsFlow.collectAsState(initial = UserSettings())
 
     CompositionLocalProvider(LocalAppLanguage provides settings.language) {
-        MohgWatchTheme(appTheme = settings.appTheme, themeMode = settings.themeMode) {
-            MohgWatchNavigation()
+        MohgWatchTheme(appTheme = settings.appTheme, themeMode = settings.themeMode, logBackgroundColor = settings.logBackgroundColor) {
+            val backgroundModifier = com.mohgwatch.phone.ui.theme.LocalAppBackgroundBrush.current?.let { brush ->
+                Modifier.background(brush)
+            } ?: Modifier.background(MaterialTheme.colorScheme.background)
+
+            Box(modifier = Modifier.fillMaxSize().then(backgroundModifier)) {
+                MohgWatchNavigation()
+            }
         }
     }
 }
@@ -58,18 +69,21 @@ fun MohgWatchNavigation() {
     val bottomNavItems = listOf(
         Triple(Screen.Status, Icons.Filled.MonitorHeart, tr("Status", "Status")),
         Triple(Screen.SettingsNotifications, Icons.Filled.Notifications, tr("Powiadomienia", "Notifications")),
+        Triple(Screen.Logs, Icons.AutoMirrored.Filled.List, tr("Logi", "Logs")),
         Triple(Screen.Settings, Icons.Filled.Settings, tr("Ustawienia", "Settings"))
     )
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = Color.Transparent,
         bottomBar = {
             if (currentRoute != Screen.Login.route) {
-                NavigationBar(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                ) {
-                    bottomNavItems.forEach { (screen, icon, label) ->
+                Column {
+                    HorizontalDivider(color = Color.DarkGray, thickness = 1.dp)
+                    NavigationBar(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ) {
+                        bottomNavItems.forEach { (screen, icon, label) ->
                         NavigationBarItem(
                             selected = currentRoute == screen.route ||
                                     (screen == Screen.Settings && currentRoute?.startsWith("settings") == true && currentRoute != Screen.SettingsNotifications.route),
@@ -78,6 +92,8 @@ fun MohgWatchNavigation() {
                                     if (screen == Screen.Settings && currentRoute?.startsWith("settings") == true && currentRoute != Screen.SettingsNotifications.route) {
                                         navController.popBackStack(Screen.Settings.route, inclusive = false)
                                     } else if (screen == Screen.SettingsNotifications && currentRoute == Screen.SettingsNotifications.route) {
+                                        // Do nothing
+                                    } else if (screen == Screen.Logs && currentRoute == Screen.Logs.route) {
                                         // Do nothing
                                     } else if (screen == Screen.Status && currentRoute?.startsWith("status") == true) {
                                         navController.popBackStack(Screen.Status.route, inclusive = false)
@@ -99,6 +115,7 @@ fun MohgWatchNavigation() {
                             )
                         )
                     }
+                    }
                 }
             }
         }
@@ -115,6 +132,9 @@ fun MohgWatchNavigation() {
             }
             composable(Screen.Status.route) {
                 StatusScreen()
+            }
+            composable(Screen.Logs.route) {
+                LogsScreen()
             }
             composable(Screen.Settings.route) {
                 SettingsScreen(

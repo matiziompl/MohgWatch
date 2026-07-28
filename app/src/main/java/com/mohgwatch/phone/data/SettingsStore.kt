@@ -52,6 +52,8 @@ class SettingsStore(private val context: Context) {
         val NIGHT_START_TIME = stringPreferencesKey("night_start_time")
         val NIGHT_END_TIME = stringPreferencesKey("night_end_time")
         val NIGHT_NOTIFICATION_VOLUME = floatPreferencesKey("night_notification_volume")
+        val LOG_BACKGROUND_COLOR = stringPreferencesKey("log_background_color")
+        val NOTIFICATION_SOUND_DELAY_SECONDS = intPreferencesKey("notification_sound_delay_seconds")
     }
 
     val settingsFlow: Flow<UserSettings> = context.settingsDataStore.data.map { prefs ->
@@ -94,7 +96,11 @@ class SettingsStore(private val context: Context) {
             nightModeEnabled = prefs[Keys.NIGHT_MODE_ENABLED] ?: true,
             nightStartTime = prefs[Keys.NIGHT_START_TIME] ?: "22:00",
             nightEndTime = prefs[Keys.NIGHT_END_TIME] ?: "07:00",
-            nightNotificationVolume = prefs[Keys.NIGHT_NOTIFICATION_VOLUME] ?: 1.0f
+            nightNotificationVolume = prefs[Keys.NIGHT_NOTIFICATION_VOLUME] ?: 1.0f,
+            logBackgroundColor = prefs[Keys.LOG_BACKGROUND_COLOR]?.let {
+                try { com.mohgwatch.core.model.LogBgColor.valueOf(it) } catch (e: Exception) { com.mohgwatch.core.model.LogBgColor.WHITE }
+            } ?: com.mohgwatch.core.model.LogBgColor.WHITE,
+            notificationSoundDelaySeconds = prefs[Keys.NOTIFICATION_SOUND_DELAY_SECONDS] ?: 5
         )
     }
 
@@ -131,6 +137,8 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.NIGHT_START_TIME] = settings.nightStartTime
             prefs[Keys.NIGHT_END_TIME] = settings.nightEndTime
             prefs[Keys.NIGHT_NOTIFICATION_VOLUME] = settings.nightNotificationVolume
+            prefs[Keys.LOG_BACKGROUND_COLOR] = settings.logBackgroundColor.name
+            prefs[Keys.NOTIFICATION_SOUND_DELAY_SECONDS] = settings.notificationSoundDelaySeconds
         }
     }
 }

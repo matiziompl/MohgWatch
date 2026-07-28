@@ -32,7 +32,6 @@ fun SettingsThemeScreen(onBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
     ) {
         TopAppBar(
             title = { Text("Motyw") },
@@ -41,7 +40,7 @@ fun SettingsThemeScreen(onBack: () -> Unit) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, "Wstecz")
                 }
             },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = androidx.compose.ui.graphics.Color.Transparent)
         )
 
         Column(
@@ -112,9 +111,46 @@ fun SettingsThemeScreen(onBack: () -> Unit) {
                             }
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("Kolor tła aplikacji", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    var logBgExpanded by remember { mutableStateOf(false) }
+                    ExposedDropdownMenuBox(
+                        expanded = logBgExpanded,
+                        onExpandedChange = { logBgExpanded = it }
+                    ) {
+                        OutlinedTextField(
+                            value = settings.logBackgroundColor.label,
+                            onValueChange = {},
+                            readOnly = true,
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = logBgExpanded) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                        )
+                        ExposedDropdownMenu(
+                            expanded = logBgExpanded,
+                            onDismissRequest = { logBgExpanded = false }
+                        ) {
+                            com.mohgwatch.core.model.LogBgColor.entries.forEach { logBg ->
+                                DropdownMenuItem(
+                                    text = { Text(logBg.label) },
+                                    onClick = {
+                                        scope.launch {
+                                            val newSettings = settings.copy(logBackgroundColor = logBg)
+                                            settingsStore.saveSettings(newSettings)
+                                            dataLayerSender.sendSettings(newSettings)
+                                        }
+                                        logBgExpanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
                 }
             }
-
             Spacer(modifier = Modifier.height(16.dp))
 
             Card(

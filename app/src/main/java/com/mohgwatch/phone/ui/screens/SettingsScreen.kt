@@ -26,11 +26,13 @@ fun SettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
     ) {
-        TopAppBar(
-            title = { Text("Ustawienia") },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
+        Text(
+            "Ustawienia",
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 16.dp),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
 
         Column(

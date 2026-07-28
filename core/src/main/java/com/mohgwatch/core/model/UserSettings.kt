@@ -14,13 +14,29 @@ enum class AppTheme(val label: String) {
     MONOCHROME("Monochromatyczny"),
     GRAY("Szary"),
     LIGHT_GRAY("Jasno Szary"),
-    BLACK("Czarny")
+    BLACK("Czarny"),
+    MATCH_BACKGROUND("Uzależnij od koloru tła")
 }
 
 enum class ThemeMode(val label: String) {
     SYSTEM("Systemowy"),
     LIGHT("Jasny"),
     DARK("Ciemny")
+}
+enum class LogBgColor(val label: String) {
+    DEFAULT("Domyślny"),
+    WHITE("Biały"),
+    GRAY("Szary"),
+    ORANGE("Pomarańczowy"),
+    LIGHT_BLUE("Jasno-niebieski"),
+    MONOCHROME("Monochromatyczny"),
+    PURPLE("Fioletowy"),
+    DARK_GREEN("Ciemno-zielony"),
+    CRIMSON("Crimson"),
+    VAPOR("Vapor"),
+    TIDE("Tide"),
+    PULSE("Pulse"),
+    ACID("Acid")
 }
 
 /**
@@ -56,7 +72,9 @@ data class UserSettings(
     val nightModeEnabled: Boolean = true,
     val nightStartTime: String = "22:00",
     val nightEndTime: String = "07:00",
-    val nightNotificationVolume: Float = 1.0f
+    val nightNotificationVolume: Float = 1.0f,
+    val logBackgroundColor: LogBgColor = LogBgColor.WHITE,
+    val notificationSoundDelaySeconds: Int = 5
 ) {
     fun isInRange(value: Float): Boolean = value in lowThreshold..highThreshold
     fun isLow(value: Float): Boolean = value < lowThreshold

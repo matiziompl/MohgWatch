@@ -42,16 +42,13 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
     ) {
-        TopAppBar(
-            title = { Text("Powiadomienia") },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Wstecz")
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
+        Text(
+            "Powiadomienia",
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 16.dp),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
 
         settings?.let { currentSettings ->
@@ -324,52 +321,72 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
+                        Text("Testowanie alertów (Dzień / Noc)", style = MaterialTheme.typography.titleSmall)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text("Dzień", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                            Text("Noc", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                        }
+                        Divider(modifier = Modifier.padding(vertical = 8.dp))
+                        
+                        // Niski
+                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text("Niski cukier", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
+                            Button(onClick = { GlucoseSyncService.testAlertLow(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
+                            Button(onClick = { GlucoseSyncService.testAlertLow(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
+                        }
+                        // Wysoki
+                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text("Wysoki cukier", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
+                            Button(onClick = { GlucoseSyncService.testAlertHigh(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
+                            Button(onClick = { GlucoseSyncService.testAlertHigh(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
+                        }
+                        // Rozłączenie
+                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text("Rozłączenie", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
+                            Button(onClick = { GlucoseSyncService.testAlertDisconnect(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
+                            Button(onClick = { GlucoseSyncService.testAlertDisconnect(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
+                        }
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text("Opóźnienie głośnego alarmu", style = MaterialTheme.typography.titleMedium)
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            "Włącz ignorowanie trybu 'Nie Przeszkadzać' (DND) w systemowych ustawieniach kanałów powiadomień.",
+                            "Czas po którym aplikacja zagra głośny alarm, jeśli nie pominiesz cichego powiadomienia.",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = {
-                                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                                    putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-                                }
-                                context.startActivity(intent)
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Skonfiguruj Alerty (DND)")
+                        
+                        var delaySeconds by remember(currentSettings) { mutableIntStateOf(currentSettings.notificationSoundDelaySeconds) }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("Opóźnienie:", modifier = Modifier.weight(1f))
+                            Text("${delaySeconds} s", fontWeight = FontWeight.Bold)
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        OutlinedButton(
-                            onClick = {
-                                GlucoseSyncService.testAlertLow(context)
+                        Slider(
+                            value = delaySeconds.toFloat(),
+                            onValueChange = { delaySeconds = it.roundToInt() },
+                            onValueChangeFinished = {
+                                scope.launch { settingsStore.saveSettings(currentSettings.copy(notificationSoundDelaySeconds = delaySeconds)) }
                             },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Testuj Alert Niskiego Cukru")
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        OutlinedButton(
-                            onClick = {
-                                GlucoseSyncService.testAlertHigh(context)
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Testuj Alert Wysokiego Cukru")
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        OutlinedButton(
-                            onClick = {
-                                GlucoseSyncService.testAlertDisconnect(context)
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Testuj Alert Rozłączenia")
-                        }
+                            valueRange = 0f..30f,
+                            steps = 29
+                        )
                     }
                 }
+
+                Spacer(modifier = Modifier.height(32.dp))
 
                 Spacer(modifier = Modifier.height(32.dp))
             }

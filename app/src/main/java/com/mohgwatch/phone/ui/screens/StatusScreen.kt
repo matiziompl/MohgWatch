@@ -58,7 +58,6 @@ fun StatusScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -71,37 +70,14 @@ fun StatusScreen() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Warning card if not logged in
-        if (!credentialsPresent) {
-            Card(
-                colors = CardDefaults.cardColors(containerColor = ErrorRed.copy(alpha = 0.15f)),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Filled.Warning, null, tint = ErrorRed)
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(
-                        tr("Brak danych logowania. Przejdź do zakładki Logowanie i zaloguj się na swoje konto LibreLinkUp!", "No login data. Go to the Login tab and log in to your LibreLinkUp account!"),
-                        color = ErrorRed,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        // Glucose display card
+        // Glucose display card (Card 1)
         Card(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier.padding(28.dp),
+                modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -176,13 +152,29 @@ fun StatusScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Connection & service status card
+        // Warning, Connection, and Demo card (Card 2)
         Card(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
+                if (!credentialsPresent) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().background(ErrorRed.copy(alpha = 0.15f), RoundedCornerShape(8.dp)).padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Filled.Warning, null, tint = ErrorRed)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            tr("Brak danych logowania. Przejdź do zakładki Logowanie!", "No login data. Go to the Login tab!"),
+                            color = ErrorRed,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -237,61 +229,59 @@ fun StatusScreen() {
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
-            }
-        }
-
-        if (settings.showDemoButton) {
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Test/Demo Data Button
-            OutlinedButton(
-                onClick = {
-                    val mockVal = Random.nextInt(75, 195).toFloat()
-                    val mockReading = GlucoseReading(
-                        value = mockVal,
-                        trendArrow = TrendArrow.entries.filter { it != TrendArrow.UNKNOWN }.random(),
-                        measurementColor = when {
-                            mockVal < settings.lowThreshold -> MeasurementColor.LOW
-                            mockVal > settings.veryHighThreshold -> MeasurementColor.VERY_HIGH
-                            mockVal > settings.highThreshold -> MeasurementColor.HIGH
-                            else -> MeasurementColor.IN_RANGE
+                
+                if (settings.showDemoButton) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    OutlinedButton(
+                        onClick = {
+                            val mockVal = Random.nextInt(75, 195).toFloat()
+                            val mockReading = GlucoseReading(
+                                value = mockVal,
+                                trendArrow = TrendArrow.entries.filter { it != TrendArrow.UNKNOWN }.random(),
+                                measurementColor = when {
+                                    mockVal < settings.lowThreshold -> MeasurementColor.LOW
+                                    mockVal > settings.veryHighThreshold -> MeasurementColor.VERY_HIGH
+                                    mockVal > settings.highThreshold -> MeasurementColor.HIGH
+                                    else -> MeasurementColor.IN_RANGE
+                                },
+                                timestamp = System.currentTimeMillis(),
+                                isHigh = mockVal > settings.highThreshold,
+                                isLow = mockVal < settings.lowThreshold
+                            )
+                            GlucoseSyncState.latestReading.value = mockReading
+                            GlucoseSyncState.syncStatusText.value = "Wysłano testowy odczyt (Demo)"
+        
+                            val mockHistory = (1..12).map { i ->
+                                GlucoseReading(
+                                    value = Random.nextInt(80, 170).toFloat(),
+                                    trendArrow = TrendArrow.STABLE,
+                                    measurementColor = MeasurementColor.IN_RANGE,
+                                    timestamp = System.currentTimeMillis() - (i * 15 * 60_000L),
+                                    isHigh = false,
+                                    isLow = false
+                                )
+                            }
+                            GlucoseSyncState.history.value = mockHistory
+        
+                            scope.launch {
+                                try {
+                                    MohgWatchWidget().updateAll(context)
+                                } catch (e: Exception) {
+                                    // Ignore
+                                }
+                                dataLayerSender.sendGlucoseReading(mockReading)
+                                dataLayerSender.sendGlucoseHistory(mockHistory)
+                            }
                         },
-                        timestamp = System.currentTimeMillis(),
-                        isHigh = mockVal > settings.highThreshold,
-                        isLow = mockVal < settings.lowThreshold
-                    )
-                    GlucoseSyncState.latestReading.value = mockReading
-                    GlucoseSyncState.syncStatusText.value = "Wysłano testowy odczyt (Demo)"
-
-                    val mockHistory = (1..12).map { i ->
-                        GlucoseReading(
-                            value = Random.nextInt(80, 170).toFloat(),
-                            trendArrow = TrendArrow.STABLE,
-                            measurementColor = MeasurementColor.IN_RANGE,
-                            timestamp = System.currentTimeMillis() - (i * 15 * 60_000L),
-                            isHigh = false,
-                            isLow = false
-                        )
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Teal400)
+                    ) {
+                        Icon(Icons.Filled.Bolt, null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Wyślij testowy odczyt (Demo)")
                     }
-                    GlucoseSyncState.history.value = mockHistory
-
-                    scope.launch {
-                        try {
-                            MohgWatchWidget().updateAll(context)
-                        } catch (e: Exception) {
-                            // Ignore
-                        }
-                        dataLayerSender.sendGlucoseReading(mockReading)
-                        dataLayerSender.sendGlucoseHistory(mockHistory)
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = Teal400)
-            ) {
-                Icon(Icons.Filled.Bolt, null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Wyślij testowy odczyt (Demo)")
+                }
             }
         }
 
@@ -326,6 +316,18 @@ fun StatusScreen() {
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(tr("Uruchom", "Start"))
             }
+        }
+        
+        Spacer(modifier = Modifier.height(12.dp))
+        Button(
+            onClick = { GlucoseSyncService.clearNotifications(context) },
+            modifier = Modifier.fillMaxWidth().height(40.dp),
+            contentPadding = PaddingValues(0.dp),
+            shape = RoundedCornerShape(8.dp),
+            border = androidx.compose.foundation.BorderStroke(1.dp, androidx.compose.ui.graphics.Color.DarkGray),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+        ) {
+            Text("Przerwij wszystkie alerty", fontSize = 16.sp)
         }
     }
 }
