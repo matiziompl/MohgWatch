@@ -120,4 +120,21 @@ class DataLayerSender(private val context: Context) {
             Log.e(TAG, "Błąd wysyłania statusu", e)
         }
     }
+
+    /**
+     * Wysyła alert o starych danych na zegarek (brak odczytów).
+     */
+    suspend fun sendStaleDataAlert(minutes: Long) {
+        try {
+            val request = PutDataMapRequest.create(DataLayerPaths.STALE_DATA_ALERT).apply {
+                dataMap.putLong(DataLayerPaths.Keys.STALE_MINUTES, minutes)
+                dataMap.putString(DataLayerPaths.Keys.UPDATE_ID, UUID.randomUUID().toString())
+            }.asPutDataRequest().setUrgent()
+
+            dataClient.putDataItem(request).await()
+            Log.d(TAG, "Wysłano alert o starych danych: $minutes min")
+        } catch (e: Exception) {
+            Log.e(TAG, "Błąd wysyłania alertu o starych danych", e)
+        }
+    }
 }

@@ -33,6 +33,7 @@ fun WearMohgWatchTheme(
         AppTheme.GRAY -> if (darkTheme) Gray400 else Gray500
         AppTheme.LIGHT_GRAY -> if (darkTheme) LightGray400 else LightGray500
         AppTheme.BLACK -> if (darkTheme) Black400 else Black500
+        AppTheme.MATCH_BACKGROUND -> if (darkTheme) Teal400 else Teal500
     }
 
     val scheme = if (darkTheme) {

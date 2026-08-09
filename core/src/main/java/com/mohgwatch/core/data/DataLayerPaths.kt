@@ -10,9 +10,11 @@ object DataLayerPaths {
     const val SETTINGS = "/mohgwatch/settings"
     const val WATCH_FACE = "/mohgwatch/watchface"
     const val CONNECTION_STATUS = "/mohgwatch/connection_status"
+    const val STALE_DATA_ALERT = "/mohgwatch/stale_data_alert"
 
     /** Klucze używane w DataMap */
     object Keys {
+        const val STALE_MINUTES = "stale_minutes"
         // Glucose
         const val GLUCOSE_VALUE = "glucose_value"
         const val TREND_ARROW = "trend_arrow"

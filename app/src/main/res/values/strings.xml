@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MoghWatch</string>
+    <string name="app_name">MohgWatch</string>
     <string name="login_title">Zaloguj się do LibreLinkUp</string>
     <string name="email_label">Email</string>
     <string name="password_label">Hasło</string>
@@ -27,7 +27,7 @@
     <string name="push_to_watch">Wyślij na zegarek</string>
     <string name="notification_channel_name">Synchronizacja glukozy</string>
     <string name="notification_channel_desc">Cykliczne pobieranie odczytów glukozy z LibreLinkUp</string>
-    <string name="sync_notification_title">MoghWatch</string>
+    <string name="sync_notification_title">MohgWatch</string>
     <string name="follower_info">Upewnij się, że w aplikacji LibreLink dodałeś swoje konto jako \"opiekuna\" (follower) w ustawieniach LibreLinkUp.</string>
     <string name="minutes_ago">%d min temu</string>
     <string name="import_face">Importuj tarczę</string>

@@ -74,7 +74,8 @@ data class UserSettings(
     val nightEndTime: String = "07:00",
     val nightNotificationVolume: Float = 1.0f,
     val logBackgroundColor: LogBgColor = LogBgColor.WHITE,
-    val notificationSoundDelaySeconds: Int = 5
+    val notificationSoundDelaySeconds: Int = 5,
+    val notifyStaleDataWatch: Boolean = true
 ) {
     fun isInRange(value: Float): Boolean = value in lowThreshold..highThreshold
     fun isLow(value: Float): Boolean = value < lowThreshold

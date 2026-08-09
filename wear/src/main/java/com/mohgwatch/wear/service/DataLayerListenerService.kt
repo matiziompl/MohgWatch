@@ -41,6 +41,7 @@ class DataLayerListenerService : WearableListenerService() {
                     DataLayerPaths.GLUCOSE_HISTORY -> handleGlucoseHistory(event)
                     DataLayerPaths.SETTINGS -> handleSettings(event)
                     DataLayerPaths.CONNECTION_STATUS -> handleConnectionStatus(event)
+                    DataLayerPaths.STALE_DATA_ALERT -> handleStaleDataAlert(event)
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Błąd przetwarzania zdarzenia Data Layer: $path", e)
@@ -162,5 +163,36 @@ class DataLayerListenerService : WearableListenerService() {
         } catch (e: Exception) {
             Log.e(TAG, "Błąd aktualizacji kafelka (Tile)", e)
         }
+    }
+
+    private fun handleStaleDataAlert(event: DataEvent) {
+        val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
+        val minutes = dataMap.getLong(DataLayerPaths.Keys.STALE_MINUTES)
+        
+        Log.d(TAG, "Odebrano alert o starych danych: $minutes minut")
+        
+        val manager = getSystemService(android.app.NotificationManager::class.java)
+        
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            val channel = android.app.NotificationChannel(
+                "mohgwatch_stale_data",
+                "Stare Dane Glukozy",
+                android.app.NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Alarmy o braku nowych odczytów"
+                enableVibration(true)
+            }
+            manager.createNotificationChannel(channel)
+        }
+        
+        val notification = androidx.core.app.NotificationCompat.Builder(this, "mohgwatch_stale_data")
+            .setContentTitle("Brak nowych danych!")
+            .setContentText("Ostatni odczyt glukozy był $minutes minut temu.")
+            .setSmallIcon(android.R.drawable.ic_dialog_alert)
+            .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .build()
+            
+        manager.notify(2001, notification)
     }
 }

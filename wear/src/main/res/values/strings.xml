@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MoghWatch</string>
+    <string name="app_name">MohgWatch</string>
     <string name="glucose_complication_label">Glukoza</string>
     <string name="trend_complication_label">Trend glukozy</string>
     <string name="history_tile_label">Historia glukozy 12h</string>
     <string name="no_data">Brak danych</string>
     <string name="disconnected">Rozłączono</string>
-    <string name="configure_on_phone">Skonfiguruj w MoghWatch na telefonie</string>
+    <string name="configure_on_phone">Skonfiguruj w MohgWatch na telefonie</string>
     <string name="glucose_preview">120</string>
     <string name="last_reading">Ostatni odczyt</string>
 </resources>

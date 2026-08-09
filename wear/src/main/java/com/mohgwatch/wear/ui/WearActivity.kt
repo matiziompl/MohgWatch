@@ -25,6 +25,13 @@ class WearActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                androidx.core.app.ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
+        }
+        
         setContent {
             WearAppScreen(repository)
         }
@@ -53,7 +60,7 @@ fun WearAppScreen(repository: GlucoseRepository) {
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "MoghWatch",
+                text = "MohgWatch",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary

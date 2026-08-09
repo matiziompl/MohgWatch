@@ -133,7 +133,6 @@ fun SettingsGeneralScreen(onBack: () -> Unit) {
                                         settingsStore.saveSettings(newSettings)
                                         dataLayerSender.sendSettings(newSettings)
                                         
-                                        // Zastosowanie języka od razu w aplikacji (Android 13+ lub AppCompat)
                                         val appLocale = if (code == "system") {
                                             androidx.core.os.LocaleListCompat.getEmptyLocaleList()
                                         } else {
@@ -145,6 +144,71 @@ fun SettingsGeneralScreen(onBack: () -> Unit) {
                                 label = { Text(label) },
                                 modifier = Modifier.weight(1f)
                             )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            val pm = context.getSystemService(android.content.Context.POWER_SERVICE) as? android.os.PowerManager
+            val isIgnoring = pm?.isIgnoringBatteryOptimizations(context.packageName) ?: false
+            
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text(tr("Niezawodność w nocy", "Night reliability"), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        tr("Zalecane wyłączenie optymalizacji baterii, by zapobiegać rozłączeniom API w nocy (Doze Mode).", 
+                           "Disable battery optimization to prevent API disconnects at night (Doze Mode)."),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    if (isIgnoring) {
+                        Text(
+                            tr("✓ Optymalizacja wyłączona", "✓ Optimization disabled"), 
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    } else {
+                        Button(
+                            onClick = {
+                                try {
+                                    val intent = android.content.Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                                    intent.data = android.net.Uri.parse("package:${context.packageName}")
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    try {
+                                        val intent = android.content.Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+                                        context.startActivity(intent)
+                                    } catch (e2: Exception) {
+                                        val intent = android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                        intent.data = android.net.Uri.parse("package:${context.packageName}")
+                                        context.startActivity(intent)
+                                    }
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(tr("Wyłącz Optymalizację Baterii", "Disable Battery Optimization"))
+                        }
+                        
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        OutlinedButton(
+                            onClick = {
+                                val intent = android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                intent.data = android.net.Uri.parse("package:${context.packageName}")
+                                context.startActivity(intent)
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(tr("Otwórz ustawienia optymalizacji baterii dla aplikacji", "Open app battery optimization settings"))
                         }
                     }
                 }

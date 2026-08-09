@@ -220,6 +220,31 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                                 Text("Wybierz dźwięk rozłączenia")
                             }
                         }
+                        
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                        
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Powiadomienie na zegarku (> 5 min)", style = MaterialTheme.typography.bodyLarge)
+                                Text(
+                                    "Wibruj na zegarku przy braku nowych danych przez ponad 5 minut.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Switch(
+                                checked = currentSettings.notifyStaleDataWatch,
+                                onCheckedChange = { checked ->
+                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(notifyStaleDataWatch = checked)) }
+                                }
+                            )
+                        }
+                        if (currentSettings.notifyStaleDataWatch) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            OutlinedButton(onClick = { GlucoseSyncService.testAlertStaleDataWatch(context) }) {
+                                Text("Testuj powiadomienie na zegarku")
+                            }
+                        }
                     }
                 }
                 
@@ -329,7 +354,7 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                             Text("Dzień", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                             Text("Noc", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                         }
-                        Divider(modifier = Modifier.padding(vertical = 8.dp))
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                         
                         // Niski
                         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -386,7 +411,42 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                     }
                 }
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text("Zarządzaj powiadomieniami systemu", style = MaterialTheme.typography.titleMedium)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            "Przejdź do ustawień systemu Android, aby zarządzać uprawnieniami lub ukryć niechciane kanały (np. ciche powiadomienie o synchronizacji).",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(
+                            onClick = {
+                                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                                    putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                                }
+                                try {
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    val fallbackIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                        data = Uri.parse("package:${context.packageName}")
+                                    }
+                                    context.startActivity(fallbackIntent)
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Otwórz ustawienia powiadomień")
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(32.dp))
             }
