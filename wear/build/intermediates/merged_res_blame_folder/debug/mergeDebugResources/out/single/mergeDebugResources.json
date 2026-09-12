@@ -1,0 +1,166 @@
+[
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_a2_diver_pro.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_a2_diver_pro.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\drawable_ic_disconnected.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\drawable\\ic_disconnected.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_h2_vitals_monitor.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_h2_vitals_monitor.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_d4_dashboard.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_d4_dashboard.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-hdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\xml_watch_face_info.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\xml\\watch_face_info.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_d2_neon_pulse.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_d2_neon_pulse.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\drawable_ic_trend_falling.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\drawable\\ic_trend_falling.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_d5_night_mode.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_d5_night_mode.xml"
+    },
+    {
+        "merged": "com.mohgwatch.wear-debug-5:/drawable_ic_trend_rising.xml.flat",
+        "source": "com.mohgwatch.wear-main-7:/drawable/ic_trend_rising.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_h1_tech_fusion.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_h1_tech_fusion.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\drawable_ic_trend_stable.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\drawable\\ic_trend_stable.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_h5_aurora.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_h5_aurora.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\drawable_ic_trend_rising_fast.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\drawable\\ic_trend_rising_fast.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-mdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_h3_retro_digital.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_h3_retro_digital.xml"
+    },
+    {
+        "merged": "com.mohgwatch.wear-debug-5:/drawable_ic_trend_stable.xml.flat",
+        "source": "com.mohgwatch.wear-main-7:/drawable/ic_trend_stable.xml"
+    },
+    {
+        "merged": "com.mohgwatch.wear-debug-5:/drawable_ic_trend_falling.xml.flat",
+        "source": "com.mohgwatch.wear-main-7:/drawable/ic_trend_falling.xml"
+    },
+    {
+        "merged": "com.mohgwatch.wear-debug-5:/drawable_ic_trend_rising_fast.xml.flat",
+        "source": "com.mohgwatch.wear-main-7:/drawable/ic_trend_rising_fast.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_d1_classic.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_d1_classic.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\drawable_ic_glucose.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\drawable\\ic_glucose.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\drawable_ic_trend_falling_fast.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\drawable\\ic_trend_falling_fast.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_a3_chronograph.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_a3_chronograph.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-xhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\drawable_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\drawable\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "com.mohgwatch.wear-debug-5:/drawable_ic_trend_falling_fast.xml.flat",
+        "source": "com.mohgwatch.wear-main-7:/drawable/ic_trend_falling_fast.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_a5_moonphase.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_a5_moonphase.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_a1_swiss_heritage.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_a1_swiss_heritage.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_h4_sport_tracker.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_h4_sport_tracker.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_d3_minimal_white.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_d3_minimal_white.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\raw_wff_a4_field_watch.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\raw\\wff_a4_field_watch.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\drawable_ic_trend_rising.xml.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\drawable\\ic_trend_rising.xml"
+    },
+    {
+        "merged": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-debug-5:\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\polas\\.gradle\\daemon\\8.14.5\\com.mohgwatch.wear-main-7:\\mipmap-hdpi\\ic_launcher.png"
+    }
+]

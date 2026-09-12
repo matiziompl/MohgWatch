@@ -215,7 +215,6 @@ fun SettingsThemeScreen(onBack: () -> Unit) {
                                 }
                             }
                         }
-                    }
                 }
             }
         }

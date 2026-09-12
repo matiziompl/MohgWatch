@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.mohgwatch.phone.app-mergeDebugResources-2:/values-h720dp-v13/values-h720dp-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\polas\\.gradle\\caches\\8.14.5\\transforms\\379f7fd7b6742c09a00c6a8b44b16b4a\\transformed\\appcompat-1.7.0\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "66",
+                        "endOffsets": "117"
+                    }
+                }
+            ]
+        }
+    ]
+}

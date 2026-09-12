@@ -58,7 +58,11 @@ fun MohgWatchAppContent() {
     val settings by settingsStore.settingsFlow.collectAsState(initial = UserSettings())
 
     CompositionLocalProvider(LocalAppLanguage provides settings.language) {
-        MohgWatchTheme(appTheme = settings.appTheme, themeMode = settings.themeMode, logBackgroundColor = settings.logBackgroundColor) {
+        MohgWatchTheme(
+            appTheme = settings.appTheme, 
+            themeMode = settings.themeMode, 
+            logBackgroundColor = settings.logBackgroundColor
+        ) {
             val backgroundModifier = com.mohgwatch.phone.ui.theme.LocalAppBackgroundBrush.current?.let { brush ->
                 Modifier.background(brush)
             } ?: Modifier.background(MaterialTheme.colorScheme.background)

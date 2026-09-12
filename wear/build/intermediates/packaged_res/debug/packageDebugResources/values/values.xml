@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#000000</color>
+    <string name="app_name">MohgWatch</string>
+    <string name="configure_on_phone">Skonfiguruj w MohgWatch na telefonie</string>
+    <string name="disconnected">Rozłączono</string>
+    <string name="glucose_complication_label">Glukoza</string>
+    <string name="glucose_preview">120</string>
+    <string name="history_tile_label">Historia glukozy 12h</string>
+    <string name="last_reading">Ostatni odczyt</string>
+    <string name="no_data">Brak danych</string>
+    <string name="trend_complication_label">Trend glukozy</string>
+</resources>

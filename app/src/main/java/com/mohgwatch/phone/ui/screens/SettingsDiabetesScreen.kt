@@ -38,6 +38,11 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
     var unit by remember(settings) { mutableStateOf(settings.unit) }
     var lowThreshold by remember(settings) { mutableFloatStateOf(settings.lowThreshold) }
     var highThreshold by remember(settings) { mutableFloatStateOf(settings.highThreshold) }
+    
+    var tFastFalling by remember(settings) { mutableFloatStateOf(settings.trendThresholdFastFalling) }
+    var tFalling by remember(settings) { mutableFloatStateOf(settings.trendThresholdFalling) }
+    var tRising by remember(settings) { mutableFloatStateOf(settings.trendThresholdRising) }
+    var tFastRising by remember(settings) { mutableFloatStateOf(settings.trendThresholdFastRising) }
 
     Column(
         modifier = Modifier
@@ -144,6 +149,176 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
                     )
                 }
             }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text("Progi matematyczne strzałki trendu", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    val saveTrends = {
+                        scope.launch {
+                            val newSettings = settings.copy(
+                                trendThresholdFastFalling = tFastFalling,
+                                trendThresholdFalling = tFalling,
+                                trendThresholdRising = tRising,
+                                trendThresholdFastRising = tFastRising
+                            )
+                            settingsStore.saveSettings(newSettings)
+                            dataLayerSender.sendSettings(newSettings)
+                        }
+                    }
+                    
+                    MultiThumbSlider(
+                        valueRange = -10f..10f,
+                        values = listOf(tFastFalling, tFalling, tRising, tFastRising),
+                        labels = listOf("Szybki spadek", "Spadek", "Wzrost", "Szybki wzrost"),
+                        onValuesChange = { newValues ->
+                            tFastFalling = newValues[0]
+                            tFalling = newValues[1]
+                            tRising = newValues[2]
+                            tFastRising = newValues[3]
+                        },
+                        onValuesChangeFinished = { saveTrends() }
+                    )
+                }
+            }
         }
     }
 }
+
+@Composable
+fun MultiThumbSlider(
+    valueRange: ClosedFloatingPointRange<Float>,
+    values: List<Float>,
+    labels: List<String>,
+    onValuesChange: (List<Float>) -> Unit,
+    onValuesChangeFinished: () -> Unit
+) {
+    var width by remember { mutableStateOf(0f) }
+    var draggingThumb by remember { mutableStateOf<Int?>(null) }
+    
+    val thumbRadius = 16.dp
+    val thumbRadiusPx = with(androidx.compose.ui.platform.LocalDensity.current) { thumbRadius.toPx() }
+    val trackHeight = 4.dp
+    val trackColor = MaterialTheme.colorScheme.surfaceVariant
+    val activeTrackColor = MaterialTheme.colorScheme.primary
+    val thumbColor = MaterialTheme.colorScheme.primary
+    
+    val rangeSize = valueRange.endInclusive - valueRange.start
+    
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .padding(horizontal = thumbRadius)
+                .androidx.compose.ui.layout.onGloballyPositioned { width = it.size.width.toFloat() }
+                .androidx.compose.ui.input.pointer.pointerInput(width) {
+                    androidx.compose.foundation.gestures.detectHorizontalDragGestures(
+                        onDragStart = { offset ->
+                            // Find closest thumb
+                            var closestIdx = -1
+                            var minDistance = Float.MAX_VALUE
+                            for (i in values.indices) {
+                                val valOffset = ((values[i] - valueRange.start) / rangeSize) * width
+                                val distance = Math.abs(valOffset - offset.x)
+                                if (distance < thumbRadiusPx * 2 && distance < minDistance) {
+                                    minDistance = distance
+                                    closestIdx = i
+                                }
+                            }
+                            if (closestIdx != -1) {
+                                draggingThumb = closestIdx
+                            }
+                        },
+                        onDragEnd = {
+                            draggingThumb = null
+                            onValuesChangeFinished()
+                        },
+                        onDragCancel = {
+                            draggingThumb = null
+                        },
+                        onHorizontalDrag = { change, dragAmount ->
+                            change.consume()
+                            draggingThumb?.let { idx ->
+                                val currentVal = values[idx]
+                                val currentOffset = ((currentVal - valueRange.start) / rangeSize) * width
+                                val newOffset = (currentOffset + dragAmount).coerceIn(0f, width)
+                                var newVal = Math.round((newOffset / width) * rangeSize + valueRange.start).toFloat()
+                                
+                                // Enforce minimum distance of 1.0 between thumbs
+                                if (idx > 0) {
+                                    newVal = newVal.coerceAtLeast(values[idx - 1] + 1f)
+                                }
+                                if (idx < values.size - 1) {
+                                    newVal = newVal.coerceAtMost(values[idx + 1] - 1f)
+                                }
+                                
+                                val newValues = values.toMutableList()
+                                newValues[idx] = newVal
+                                onValuesChange(newValues)
+                            }
+                        }
+                    )
+                }
+        ) {
+            androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize()) {
+                val centerY = size.height / 2f
+                
+                // Draw background track
+                drawLine(
+                    color = trackColor,
+                    start = androidx.compose.ui.geometry.Offset(0f, centerY),
+                    end = androidx.compose.ui.geometry.Offset(size.width, centerY),
+                    strokeWidth = trackHeight.toPx(),
+                    cap = androidx.compose.ui.graphics.StrokeCap.Round
+                )
+                
+                // Draw zero line
+                val zeroOffset = ((0f - valueRange.start) / rangeSize) * size.width
+                drawLine(
+                    color = androidx.compose.ui.graphics.Color.Gray,
+                    start = androidx.compose.ui.geometry.Offset(zeroOffset, centerY - 10.dp.toPx()),
+                    end = androidx.compose.ui.geometry.Offset(zeroOffset, centerY + 10.dp.toPx()),
+                    strokeWidth = 2.dp.toPx()
+                )
+                
+                // Draw thumbs
+                for (v in values) {
+                    val px = ((v - valueRange.start) / rangeSize) * size.width
+                    drawCircle(
+                        color = thumbColor,
+                        radius = thumbRadiusPx,
+                        center = androidx.compose.ui.geometry.Offset(px, centerY)
+                    )
+                }
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            for (i in values.indices) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = labels[i],
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "${values[i].toInt()}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }

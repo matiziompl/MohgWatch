@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#000000</color>
+    <string name="app_name">MohgWatch</string>
+    <string name="create_new">Stwórz Nową</string>
+    <string name="email_label">Email</string>
+    <string name="export_face">Eksportuj tarczę</string>
+    <string name="follower_info">Upewnij się, że w aplikacji LibreLink dodałeś swoje konto jako \"opiekuna\" (follower) w ustawieniach LibreLinkUp.</string>
+    <string name="high_threshold_label">Próg wysoki (mg/dL)</string>
+    <string name="import_face">Importuj tarczę</string>
+    <string name="interval_minutes">%d min</string>
+    <string name="last_reading">Ostatni odczyt</string>
+    <string name="logging_in">Logowanie…</string>
+    <string name="login_button">Zaloguj</string>
+    <string name="login_error">Błąd logowania</string>
+    <string name="login_success">Zalogowano pomyślnie</string>
+    <string name="login_title">Zaloguj się do LibreLinkUp</string>
+    <string name="logout">Wyloguj</string>
+    <string name="low_threshold_label">Próg niski (mg/dL)</string>
+    <string name="minutes_ago">%d min temu</string>
+    <string name="my_faces">Moje Tarcze</string>
+    <string name="nav_login">Logowanie</string>
+    <string name="nav_settings">Ustawienia</string>
+    <string name="nav_status">Status</string>
+    <string name="nav_studio">Studio</string>
+    <string name="no_data">Brak danych</string>
+    <string name="notification_channel_desc">Cykliczne pobieranie odczytów glukozy z LibreLinkUp</string>
+    <string name="notification_channel_name">Synchronizacja glukozy</string>
+    <string name="password_label">Hasło</string>
+    <string name="poll_interval_label">Interwał odpytywania</string>
+    <string name="preset_gallery">Galeria Presetów</string>
+    <string name="push_to_watch">Wyślij na zegarek</string>
+    <string name="region_auto">Automatyczny</string>
+    <string name="region_label">Region</string>
+    <string name="save_settings">Zapisz i wyślij na zegarek</string>
+    <string name="settings_title">Ustawienia</string>
+    <string name="status_title">Status</string>
+    <string name="studio_title">Studio Tarcz</string>
+    <string name="sync_notification_title">MohgWatch</string>
+    <string name="sync_running">Synchronizacja aktywna</string>
+    <string name="sync_stopped">Synchronizacja zatrzymana</string>
+    <string name="unit_label">Jednostka glukozy</string>
+    <string name="watch_connected">Zegarek połączony</string>
+    <string name="watch_disconnected">Zegarek niepołączony</string>
+    <style name="Theme.MohgWatch" parent="android:Theme.Material.NoActionBar"/>
+</resources>

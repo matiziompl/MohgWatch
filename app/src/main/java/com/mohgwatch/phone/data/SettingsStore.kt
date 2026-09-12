@@ -54,6 +54,10 @@ class SettingsStore(private val context: Context) {
         val NIGHT_NOTIFICATION_VOLUME = floatPreferencesKey("night_notification_volume")
         val LOG_BACKGROUND_COLOR = stringPreferencesKey("log_background_color")
         val NOTIFICATION_SOUND_DELAY_SECONDS = intPreferencesKey("notification_sound_delay_seconds")
+        val TREND_FAST_FALLING = floatPreferencesKey("trend_fast_falling")
+        val TREND_FALLING = floatPreferencesKey("trend_falling")
+        val TREND_RISING = floatPreferencesKey("trend_rising")
+        val TREND_FAST_RISING = floatPreferencesKey("trend_fast_rising")
     }
 
     val settingsFlow: Flow<UserSettings> = context.settingsDataStore.data.map { prefs ->
@@ -100,7 +104,11 @@ class SettingsStore(private val context: Context) {
             logBackgroundColor = prefs[Keys.LOG_BACKGROUND_COLOR]?.let {
                 try { com.mohgwatch.core.model.LogBgColor.valueOf(it) } catch (e: Exception) { com.mohgwatch.core.model.LogBgColor.WHITE }
             } ?: com.mohgwatch.core.model.LogBgColor.WHITE,
-            notificationSoundDelaySeconds = prefs[Keys.NOTIFICATION_SOUND_DELAY_SECONDS] ?: 5
+            notificationSoundDelaySeconds = prefs[Keys.NOTIFICATION_SOUND_DELAY_SECONDS] ?: 5,
+            trendThresholdFastFalling = prefs[Keys.TREND_FAST_FALLING] ?: -5f,
+            trendThresholdFalling = prefs[Keys.TREND_FALLING] ?: -2f,
+            trendThresholdRising = prefs[Keys.TREND_RISING] ?: 2f,
+            trendThresholdFastRising = prefs[Keys.TREND_FAST_RISING] ?: 5f
         )
     }
 
@@ -139,6 +147,10 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.NIGHT_NOTIFICATION_VOLUME] = settings.nightNotificationVolume
             prefs[Keys.LOG_BACKGROUND_COLOR] = settings.logBackgroundColor.name
             prefs[Keys.NOTIFICATION_SOUND_DELAY_SECONDS] = settings.notificationSoundDelaySeconds
+            prefs[Keys.TREND_FAST_FALLING] = settings.trendThresholdFastFalling
+            prefs[Keys.TREND_FALLING] = settings.trendThresholdFalling
+            prefs[Keys.TREND_RISING] = settings.trendThresholdRising
+            prefs[Keys.TREND_FAST_RISING] = settings.trendThresholdFastRising
         }
     }
 }

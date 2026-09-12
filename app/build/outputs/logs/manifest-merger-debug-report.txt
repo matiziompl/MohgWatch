@@ -1,0 +1,853 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:2:1-63:12
+INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:2:1-63:12
+INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:2:1-63:12
+INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:2:1-63:12
+MERGED from [:core] C:\Antigravity Projects\MohgWatch\core\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f22686bfb0a9085699f002bbc41e3c7e\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\80deac533cfdcc8031b3ecb38754eb64\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-common:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\e32dbf849fe50e772f57f97df51353d7\transformed\navigation-common-2.8.5\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-runtime:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\7e10c277fa022321a593e59c58d825a2\transformed\navigation-runtime-2.8.5\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-common-ktx:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\e3dc0a78119fda21f1fb381f085ff02f\transformed\navigation-common-ktx-2.8.5\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\7573f2c52f6e4f4fc1fb4d40fe681008\transformed\navigation-runtime-ktx-2.8.5\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-compose:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\4cc3af5fe860615490d3e869d9c6a6c3\transformed\navigation-compose-2.8.5\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.dagger:hilt-android:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\1078343e5fdcbc6e67ae881d2078a20e\transformed\hilt-android-2.53.1\AndroidManifest.xml:16:1-19:12
+MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\c75c977acd148514b04f95847af63b80\transformed\appcompat-resources-1.7.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\379f7fd7b6742c09a00c6a8b44b16b4a\transformed\appcompat-1.7.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:17:1-31:12
+MERGED from [androidx.glance:glance-material3:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\c8350d4c52b080d312dea7fd7f09c124\transformed\glance-material3-1.1.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:17:1-61:12
+MERGED from [androidx.glance:glance:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\446405a3bd5a0c6398f82c29a5f26c2f\transformed\glance-1.1.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.work:work-runtime-ktx:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2bca5bc97b602965152475cef0c534d1\transformed\work-runtime-ktx-2.10.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:17:1-145:12
+MERGED from [androidx.room:room-ktx:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\d499be12ac3bcd00c0227bef7239401e\transformed\room-ktx-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.material3:material3-android:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3188b88e1b8886be0bc76e08bf974fa7\transformed\material3-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.material:material-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\87024da7858a675a185b215aa076a6b6\transformed\material-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-core-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\64dcf52611f6cf896156515bcd5fb887\transformed\animation-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9dfa77418f39924445d9d9cec8fc8d37\transformed\material-ripple-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\2e659e22123de010e2a92e16868ee60d\transformed\foundation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\34de9a308744832711ebdb213e0efc83\transformed\animation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e32885312558b76a0a3f39da001ed05\transformed\foundation-layout-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\514335692fcdb01efca73fed1681f4cf\transformed\ui-tooling-data-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\4e16179702903411d02f58483199f614\transformed\ui-geometry-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-util-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\242cc866097b95d3b010a67734986490\transformed\ui-util-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\2da9466f216dc6d37a3288393e5b89ac\transformed\ui-text-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\0eb09b39d619bdc9e77332388c0dd2bd\transformed\ui-unit-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e1655c1931a04a9b6890a7caa992880\transformed\ui-tooling-preview-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\61239fcf33d80ddae4cb9a5883de9cdd\transformed\ui-tooling-release\AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\a54dc0ee598c6cd56b627975a62724b3\transformed\ui-graphics-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\c854dc602c83c083cfc67bcc593b0e56\transformed\runtime-saveable-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\1972b865cab97f14141d0c07543a7362\transformed\runtime-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9938aacf3aaa8ed66f7905782f01733e\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0e9ec182b2d0dae1e6edd56218c5b25\transformed\core-ktx-1.15.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4083803515c54a539d9abe74888ab908\transformed\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\8406d4b95e2fd6493f064fcd6b7dceba\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.core:core-remoteviews:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\fb25602f93eebd41d922dfec46852c46\transformed\core-remoteviews-1.1.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.activity:activity:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\52db7c106147e4d014315008d3d673de\transformed\activity-1.9.3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\95620f7de0cd6df21c151579571c081b\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\284bfca0112ebd02539c88584d80bde3\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f697400bd6b21313491ef3e78de6d59b\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\3066b8bb1a1c0d35c717ba451aece48c\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5e4d53e0bb570d0eeb8b7477c551f4f3\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f9abb8aa536aa08188f424659c02692\transformed\autofill-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\c10fdfb531c16e4825b4211f68583c40\transformed\graphics-path-1.0.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3cf502dda3fc7397105963c2dd7fb35c\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5a9b2abb66f10bb4075da22496e41bed\transformed\savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\619a5dc2fb3aad7f2ed406a0297c6807\transformed\lifecycle-livedata-core-ktx-2.8.7\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\810c8895e79293974cb14c2e3e4598c3\transformed\lifecycle-viewmodel-2.8.7\AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\5c8bf7f63b4898e7afcb2d0ad1b0b8e6\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e15df816a42cf720dc60b2e76210bcb\transformed\lifecycle-runtime-ktx-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-service:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\053bfc978bd4c8d5e8999c1228b5cbb0\transformed\lifecycle-service-2.8.7\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f96a3d4ecfe2e35f025f60d174955c3\transformed\lifecycle-livedata-2.8.7\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\fe1a9f54401b624c14d8b0fc5bb9f1d8\transformed\lifecycle-livedata-core-2.8.7\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\3cc2efea2b12d9d5560dcd765de116c5\transformed\lifecycle-runtime-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.datastore:datastore-core-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\04176a948d5b5fcc80a4b348bce9c39b\transformed\datastore-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.datastore:datastore-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\696192e8fc2660dde666f22f728ceb12\transformed\datastore-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\62adaca1abc1c32d0ca4602597924296\transformed\datastore-preferences-release\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:2:1-5:12
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.fragment:fragment:1.5.4] C:\Users\polas\.gradle\caches\8.14.5\transforms\09d401cf333ca93a2d04464da01c4e4c\transformed\fragment-1.5.4\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\e42a91425225246716ff8a3abf859955\transformed\lifecycle-viewmodel-savedstate-2.8.7\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\cfa4778830ece4558343c752ec9b9a93\transformed\lifecycle-viewmodel-ktx-2.8.7\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\eca7bbe5e612600daca3168117c5b2b7\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\f79a21eb2b5cc8347ae85030dad2d114\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\3618872d403a0da1d6342f7d5ae3b868\transformed\material-icons-extended-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9ef56ad262fe89554b201021ab84fbb8\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\bdc8a36757d6d8773a4085801abc5754\transformed\ui-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-ktx:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\e7ddab3f5e1e80719c62f774d870085b\transformed\activity-ktx-1.9.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-compose:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\dc413bf7c060bb6d1be76df1b495d091\transformed\activity-compose-1.9.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4332556c9d2b2788f5ce8c5c0e589b01\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ca34b9857818cb42155ca1b30d854350\transformed\sqlite-2.4.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5966413384fd754656169bfecf0d8415\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\740048f3ed82127aa49fe40e62af9df4\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\405b28177f6ce60da7d67c2b2d7a39c0\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing-ktx:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f07719ad03a2b4dd9e9c39b8d097a0c2\transformed\tracing-ktx-1.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\aa49a9d0a7c295fd6e38db72d37e210f\transformed\tracing-1.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f13d1e4d7707fc82d579775c5c350fa\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.dagger:dagger-lint-aar:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\794ccfd97d29e877f6625089689d35e3\transformed\dagger-lint-aar-2.53.1\AndroidManifest.xml:16:1-19:12
+	package
+		INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:4:5-67
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:4:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:5:5-79
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:24:5-79
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:24:5-79
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:5:22-76
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:6:5-77
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:26:5-77
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:26:5-77
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:6:22-74
+uses-permission#android.permission.FOREGROUND_SERVICE_DATA_SYNC
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:7:5-87
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:7:22-84
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:8:5-77
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:8:22-74
+uses-permission#android.permission.WAKE_LOCK
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:9:5-68
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:23:5-68
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:23:5-68
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:9:22-65
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:10:5-81
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:25:5-81
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:25:5-81
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:10:22-78
+uses-permission#android.permission.ACCESS_NOTIFICATION_POLICY
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:11:5-85
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:11:22-82
+uses-permission#android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:12:5-95
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:12:22-92
+uses-permission#android.permission.SCHEDULE_EXACT_ALARM
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:13:5-79
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:13:22-76
+uses-permission#android.permission.USE_EXACT_ALARM
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:14:5-74
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:14:22-71
+application
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:16:5-62:19
+INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:16:5-62:19
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:23:5-29:19
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:23:5-29:19
+MERGED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:22:5-59:19
+MERGED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:22:5-59:19
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:28:5-143:19
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:28:5-143:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\61239fcf33d80ddae4cb9a5883de9cdd\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\61239fcf33d80ddae4cb9a5883de9cdd\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core-remoteviews:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\fb25602f93eebd41d922dfec46852c46\transformed\core-remoteviews-1.1.0\AndroidManifest.xml:23:5-28:19
+MERGED from [androidx.core:core-remoteviews:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\fb25602f93eebd41d922dfec46852c46\transformed\core-remoteviews-1.1.0\AndroidManifest.xml:23:5-28:19
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:23:5-33:19
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:5:5-7:19
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:5:5-7:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+	android:extractNativeLibs
+		INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:22:9-35
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:21:9-41
+	android:roundIcon
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:20:9-54
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:19:9-43
+	android:allowBackup
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:18:9-35
+	android:theme
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:23:9-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:17:9-37
+activity#com.mohgwatch.phone.MainActivity
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:25:9-33:20
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:27:13-36
+	android:theme
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:28:13-51
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:26:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:29:13-32:29
+action#android.intent.action.MAIN
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:30:17-69
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:30:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:31:17-77
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:31:27-74
+service#com.mohgwatch.phone.service.GlucoseSyncService
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:35:9-38:56
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:37:13-37
+	android:foregroundServiceType
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:38:13-53
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:36:13-55
+receiver#com.mohgwatch.phone.service.BootReceiver
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:40:9-46:20
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:42:13-36
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:41:13-49
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:43:13-45:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:44:17-79
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:44:25-76
+receiver#com.mohgwatch.phone.widget.MohgWatchWidgetReceiver
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:48:9-57:20
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:50:13-36
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:49:13-59
+intent-filter#action:name:android.appwidget.action.APPWIDGET_UPDATE
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:51:13-53:29
+action#android.appwidget.action.APPWIDGET_UPDATE
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:52:17-84
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:52:25-81
+meta-data#android.appwidget.provider
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:54:13-56:65
+	android:resource
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:56:17-62
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:55:17-58
+meta-data#com.google.android.gms.version
+ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:59:9-61:69
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+	android:value
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:61:13-66
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml:60:13-58
+uses-sdk
+INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml
+INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml
+MERGED from [:core] C:\Antigravity Projects\MohgWatch\core\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:core] C:\Antigravity Projects\MohgWatch\core\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f22686bfb0a9085699f002bbc41e3c7e\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f22686bfb0a9085699f002bbc41e3c7e\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\80deac533cfdcc8031b3ecb38754eb64\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\80deac533cfdcc8031b3ecb38754eb64\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-common:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\e32dbf849fe50e772f57f97df51353d7\transformed\navigation-common-2.8.5\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\e32dbf849fe50e772f57f97df51353d7\transformed\navigation-common-2.8.5\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\7e10c277fa022321a593e59c58d825a2\transformed\navigation-runtime-2.8.5\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\7e10c277fa022321a593e59c58d825a2\transformed\navigation-runtime-2.8.5\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common-ktx:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\e3dc0a78119fda21f1fb381f085ff02f\transformed\navigation-common-ktx-2.8.5\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-common-ktx:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\e3dc0a78119fda21f1fb381f085ff02f\transformed\navigation-common-ktx-2.8.5\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\7573f2c52f6e4f4fc1fb4d40fe681008\transformed\navigation-runtime-ktx-2.8.5\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\7573f2c52f6e4f4fc1fb4d40fe681008\transformed\navigation-runtime-ktx-2.8.5\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-compose:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\4cc3af5fe860615490d3e869d9c6a6c3\transformed\navigation-compose-2.8.5\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-compose:2.8.5] C:\Users\polas\.gradle\caches\8.14.5\transforms\4cc3af5fe860615490d3e869d9c6a6c3\transformed\navigation-compose-2.8.5\AndroidManifest.xml:5:5-44
+MERGED from [com.google.dagger:hilt-android:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\1078343e5fdcbc6e67ae881d2078a20e\transformed\hilt-android-2.53.1\AndroidManifest.xml:18:3-42
+MERGED from [com.google.dagger:hilt-android:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\1078343e5fdcbc6e67ae881d2078a20e\transformed\hilt-android-2.53.1\AndroidManifest.xml:18:3-42
+MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\c75c977acd148514b04f95847af63b80\transformed\appcompat-resources-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.7.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\c75c977acd148514b04f95847af63b80\transformed\appcompat-resources-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\379f7fd7b6742c09a00c6a8b44b16b4a\transformed\appcompat-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat:1.7.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\379f7fd7b6742c09a00c6a8b44b16b4a\transformed\appcompat-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:3:5-44
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.glance:glance-material3:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\c8350d4c52b080d312dea7fd7f09c124\transformed\glance-material3-1.1.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.glance:glance-material3:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\c8350d4c52b080d312dea7fd7f09c124\transformed\glance-material3-1.1.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.glance:glance:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\446405a3bd5a0c6398f82c29a5f26c2f\transformed\glance-1.1.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.glance:glance:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\446405a3bd5a0c6398f82c29a5f26c2f\transformed\glance-1.1.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.work:work-runtime-ktx:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2bca5bc97b602965152475cef0c534d1\transformed\work-runtime-ktx-2.10.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.work:work-runtime-ktx:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2bca5bc97b602965152475cef0c534d1\transformed\work-runtime-ktx-2.10.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.room:room-ktx:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\d499be12ac3bcd00c0227bef7239401e\transformed\room-ktx-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.room:room-ktx:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\d499be12ac3bcd00c0227bef7239401e\transformed\room-ktx-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3188b88e1b8886be0bc76e08bf974fa7\transformed\material3-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3188b88e1b8886be0bc76e08bf974fa7\transformed\material3-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material:material-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\87024da7858a675a185b215aa076a6b6\transformed\material-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\87024da7858a675a185b215aa076a6b6\transformed\material-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\64dcf52611f6cf896156515bcd5fb887\transformed\animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\64dcf52611f6cf896156515bcd5fb887\transformed\animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9dfa77418f39924445d9d9cec8fc8d37\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9dfa77418f39924445d9d9cec8fc8d37\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\2e659e22123de010e2a92e16868ee60d\transformed\foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\2e659e22123de010e2a92e16868ee60d\transformed\foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\34de9a308744832711ebdb213e0efc83\transformed\animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\34de9a308744832711ebdb213e0efc83\transformed\animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e32885312558b76a0a3f39da001ed05\transformed\foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e32885312558b76a0a3f39da001ed05\transformed\foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\514335692fcdb01efca73fed1681f4cf\transformed\ui-tooling-data-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\514335692fcdb01efca73fed1681f4cf\transformed\ui-tooling-data-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\4e16179702903411d02f58483199f614\transformed\ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\4e16179702903411d02f58483199f614\transformed\ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\242cc866097b95d3b010a67734986490\transformed\ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\242cc866097b95d3b010a67734986490\transformed\ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\2da9466f216dc6d37a3288393e5b89ac\transformed\ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\2da9466f216dc6d37a3288393e5b89ac\transformed\ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\0eb09b39d619bdc9e77332388c0dd2bd\transformed\ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\0eb09b39d619bdc9e77332388c0dd2bd\transformed\ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e1655c1931a04a9b6890a7caa992880\transformed\ui-tooling-preview-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e1655c1931a04a9b6890a7caa992880\transformed\ui-tooling-preview-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\61239fcf33d80ddae4cb9a5883de9cdd\transformed\ui-tooling-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\61239fcf33d80ddae4cb9a5883de9cdd\transformed\ui-tooling-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\a54dc0ee598c6cd56b627975a62724b3\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\a54dc0ee598c6cd56b627975a62724b3\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\c854dc602c83c083cfc67bcc593b0e56\transformed\runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\c854dc602c83c083cfc67bcc593b0e56\transformed\runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\1972b865cab97f14141d0c07543a7362\transformed\runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\1972b865cab97f14141d0c07543a7362\transformed\runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9938aacf3aaa8ed66f7905782f01733e\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9938aacf3aaa8ed66f7905782f01733e\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0e9ec182b2d0dae1e6edd56218c5b25\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0e9ec182b2d0dae1e6edd56218c5b25\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4083803515c54a539d9abe74888ab908\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4083803515c54a539d9abe74888ab908\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\8406d4b95e2fd6493f064fcd6b7dceba\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\8406d4b95e2fd6493f064fcd6b7dceba\transformed\emoji2-views-helper-1.3.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.core:core-remoteviews:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\fb25602f93eebd41d922dfec46852c46\transformed\core-remoteviews-1.1.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.core:core-remoteviews:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\fb25602f93eebd41d922dfec46852c46\transformed\core-remoteviews-1.1.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.activity:activity:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\52db7c106147e4d014315008d3d673de\transformed\activity-1.9.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\52db7c106147e4d014315008d3d673de\transformed\activity-1.9.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\95620f7de0cd6df21c151579571c081b\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\95620f7de0cd6df21c151579571c081b\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\284bfca0112ebd02539c88584d80bde3\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\284bfca0112ebd02539c88584d80bde3\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f697400bd6b21313491ef3e78de6d59b\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f697400bd6b21313491ef3e78de6d59b\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\3066b8bb1a1c0d35c717ba451aece48c\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\3066b8bb1a1c0d35c717ba451aece48c\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5e4d53e0bb570d0eeb8b7477c551f4f3\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5e4d53e0bb570d0eeb8b7477c551f4f3\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f9abb8aa536aa08188f424659c02692\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f9abb8aa536aa08188f424659c02692\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\c10fdfb531c16e4825b4211f68583c40\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\c10fdfb531c16e4825b4211f68583c40\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3cf502dda3fc7397105963c2dd7fb35c\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3cf502dda3fc7397105963c2dd7fb35c\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5a9b2abb66f10bb4075da22496e41bed\transformed\savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5a9b2abb66f10bb4075da22496e41bed\transformed\savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\619a5dc2fb3aad7f2ed406a0297c6807\transformed\lifecycle-livedata-core-ktx-2.8.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\619a5dc2fb3aad7f2ed406a0297c6807\transformed\lifecycle-livedata-core-ktx-2.8.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\810c8895e79293974cb14c2e3e4598c3\transformed\lifecycle-viewmodel-2.8.7\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\810c8895e79293974cb14c2e3e4598c3\transformed\lifecycle-viewmodel-2.8.7\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\5c8bf7f63b4898e7afcb2d0ad1b0b8e6\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\5c8bf7f63b4898e7afcb2d0ad1b0b8e6\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e15df816a42cf720dc60b2e76210bcb\transformed\lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e15df816a42cf720dc60b2e76210bcb\transformed\lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-service:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\053bfc978bd4c8d5e8999c1228b5cbb0\transformed\lifecycle-service-2.8.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-service:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\053bfc978bd4c8d5e8999c1228b5cbb0\transformed\lifecycle-service-2.8.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f96a3d4ecfe2e35f025f60d174955c3\transformed\lifecycle-livedata-2.8.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f96a3d4ecfe2e35f025f60d174955c3\transformed\lifecycle-livedata-2.8.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\fe1a9f54401b624c14d8b0fc5bb9f1d8\transformed\lifecycle-livedata-core-2.8.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\fe1a9f54401b624c14d8b0fc5bb9f1d8\transformed\lifecycle-livedata-core-2.8.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\3cc2efea2b12d9d5560dcd765de116c5\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\3cc2efea2b12d9d5560dcd765de116c5\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-core-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\04176a948d5b5fcc80a4b348bce9c39b\transformed\datastore-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-core-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\04176a948d5b5fcc80a4b348bce9c39b\transformed\datastore-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\696192e8fc2660dde666f22f728ceb12\transformed\datastore-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\696192e8fc2660dde666f22f728ceb12\transformed\datastore-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\62adaca1abc1c32d0ca4602597924296\transformed\datastore-preferences-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\62adaca1abc1c32d0ca4602597924296\transformed\datastore-preferences-release\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:3:5-44
+MERGED from [androidx.fragment:fragment:1.5.4] C:\Users\polas\.gradle\caches\8.14.5\transforms\09d401cf333ca93a2d04464da01c4e4c\transformed\fragment-1.5.4\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.5.4] C:\Users\polas\.gradle\caches\8.14.5\transforms\09d401cf333ca93a2d04464da01c4e4c\transformed\fragment-1.5.4\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\e42a91425225246716ff8a3abf859955\transformed\lifecycle-viewmodel-savedstate-2.8.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\e42a91425225246716ff8a3abf859955\transformed\lifecycle-viewmodel-savedstate-2.8.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\cfa4778830ece4558343c752ec9b9a93\transformed\lifecycle-viewmodel-ktx-2.8.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\cfa4778830ece4558343c752ec9b9a93\transformed\lifecycle-viewmodel-ktx-2.8.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\eca7bbe5e612600daca3168117c5b2b7\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\eca7bbe5e612600daca3168117c5b2b7\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\f79a21eb2b5cc8347ae85030dad2d114\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\f79a21eb2b5cc8347ae85030dad2d114\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\3618872d403a0da1d6342f7d5ae3b868\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\3618872d403a0da1d6342f7d5ae3b868\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9ef56ad262fe89554b201021ab84fbb8\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9ef56ad262fe89554b201021ab84fbb8\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\bdc8a36757d6d8773a4085801abc5754\transformed\ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\bdc8a36757d6d8773a4085801abc5754\transformed\ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\e7ddab3f5e1e80719c62f774d870085b\transformed\activity-ktx-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\e7ddab3f5e1e80719c62f774d870085b\transformed\activity-ktx-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\dc413bf7c060bb6d1be76df1b495d091\transformed\activity-compose-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\dc413bf7c060bb6d1be76df1b495d091\transformed\activity-compose-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4332556c9d2b2788f5ce8c5c0e589b01\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4332556c9d2b2788f5ce8c5c0e589b01\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ca34b9857818cb42155ca1b30d854350\transformed\sqlite-2.4.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ca34b9857818cb42155ca1b30d854350\transformed\sqlite-2.4.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5966413384fd754656169bfecf0d8415\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5966413384fd754656169bfecf0d8415\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\740048f3ed82127aa49fe40e62af9df4\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\740048f3ed82127aa49fe40e62af9df4\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\405b28177f6ce60da7d67c2b2d7a39c0\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\405b28177f6ce60da7d67c2b2d7a39c0\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing-ktx:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f07719ad03a2b4dd9e9c39b8d097a0c2\transformed\tracing-ktx-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing-ktx:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f07719ad03a2b4dd9e9c39b8d097a0c2\transformed\tracing-ktx-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\aa49a9d0a7c295fd6e38db72d37e210f\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\aa49a9d0a7c295fd6e38db72d37e210f\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f13d1e4d7707fc82d579775c5c350fa\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f13d1e4d7707fc82d579775c5c350fa\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [com.google.dagger:dagger-lint-aar:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\794ccfd97d29e877f6625089689d35e3\transformed\dagger-lint-aar-2.53.1\AndroidManifest.xml:18:3-42
+MERGED from [com.google.dagger:dagger-lint-aar:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\794ccfd97d29e877f6625089689d35e3\transformed\dagger-lint-aar-2.53.1\AndroidManifest.xml:18:3-42
+	android:targetSdkVersion
+		INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Antigravity Projects\MohgWatch\app\src\main\AndroidManifest.xml
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
+service#androidx.room.MultiInstanceInvalidationService
+ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+	android:exported
+		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+	tools:ignore
+		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:28:13-60
+	android:directBootAware
+		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+	android:name
+		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+activity#androidx.glance.appwidget.action.ActionTrampolineActivity
+ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:23:9-28:62
+	android:enabled
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:25:13-35
+	android:excludeFromRecents
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:26:13-46
+	android:exported
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:27:13-37
+	android:theme
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:28:13-59
+	android:name
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:24:13-85
+activity#androidx.glance.appwidget.action.InvisibleActionTrampolineActivity
+ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:29:9-36:81
+	android:enabled
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:31:13-35
+	android:launchMode
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:33:13-48
+	android:noHistory
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:34:13-37
+	android:exported
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:32:13-37
+	android:theme
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:36:13-78
+	android:taskAffinity
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:35:13-91
+	android:name
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:30:13-94
+receiver#androidx.glance.appwidget.action.ActionCallbackBroadcastReceiver
+ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:38:9-41:40
+	android:enabled
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:40:13-35
+	android:exported
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:41:13-37
+	android:name
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:39:13-92
+receiver#androidx.glance.appwidget.UnmanagedSessionReceiver
+ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:42:9-45:40
+	android:enabled
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:44:13-35
+	android:exported
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:45:13-37
+	android:name
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:43:13-78
+receiver#androidx.glance.appwidget.MyPackageReplacedReceiver
+ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:46:9-53:20
+	android:enabled
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:48:13-35
+	android:exported
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:49:13-37
+	android:name
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:47:13-79
+intent-filter#action:name:android.intent.action.MY_PACKAGE_REPLACED
+ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:50:13-52:29
+action#android.intent.action.MY_PACKAGE_REPLACED
+ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:51:17-84
+	android:name
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:51:25-81
+service#androidx.glance.appwidget.GlanceRemoteViewsService
+ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:55:9-58:72
+	android:exported
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:57:13-36
+	android:permission
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:58:13-69
+	android:name
+		ADDED from [androidx.glance:glance-appwidget:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\2c7e7e980cc8781905980311047e277e\transformed\glance-appwidget-1.1.1\AndroidManifest.xml:56:13-78
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:29:9-37:20
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:33:13-31
+	android:authorities
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:31:13-68
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:32:13-37
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:30:13-67
+meta-data#androidx.work.WorkManagerInitializer
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:34:13-36:52
+	android:value
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:36:17-49
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:35:17-68
+service#androidx.work.impl.background.systemalarm.SystemAlarmService
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:39:9-45:35
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:42:13-72
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:43:13-37
+	tools:ignore
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:44:13-60
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:45:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:41:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:40:13-88
+service#androidx.work.impl.background.systemjob.SystemJobService
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:46:9-52:35
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:49:13-70
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:50:13-36
+	android:permission
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:51:13-69
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:52:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:48:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:47:13-84
+service#androidx.work.impl.foreground.SystemForegroundService
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:53:9-59:35
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:56:13-77
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:57:13-37
+	tools:ignore
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:58:13-60
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:59:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:55:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:54:13-81
+receiver#androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:61:9-66:35
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:64:13-35
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:65:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:66:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:63:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:62:13-88
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:67:9-77:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:70:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:71:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:72:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:69:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:68:13-106
+intent-filter#action:name:android.intent.action.ACTION_POWER_CONNECTED+action:name:android.intent.action.ACTION_POWER_DISCONNECTED
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:73:13-76:29
+action#android.intent.action.ACTION_POWER_CONNECTED
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:74:17-87
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:74:25-84
+action#android.intent.action.ACTION_POWER_DISCONNECTED
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:75:17-90
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:75:25-87
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:78:9-88:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:81:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:82:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:83:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:80:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:79:13-104
+intent-filter#action:name:android.intent.action.BATTERY_LOW+action:name:android.intent.action.BATTERY_OKAY
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:84:13-87:29
+action#android.intent.action.BATTERY_OKAY
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:85:17-77
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:85:25-74
+action#android.intent.action.BATTERY_LOW
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:86:17-76
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:86:25-73
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:89:9-99:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:92:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:93:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:94:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:91:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:90:13-104
+intent-filter#action:name:android.intent.action.DEVICE_STORAGE_LOW+action:name:android.intent.action.DEVICE_STORAGE_OK
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:95:13-98:29
+action#android.intent.action.DEVICE_STORAGE_LOW
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:96:17-83
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:96:25-80
+action#android.intent.action.DEVICE_STORAGE_OK
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:97:17-82
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:97:25-79
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:100:9-109:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:103:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:104:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:105:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:102:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:101:13-103
+intent-filter#action:name:android.net.conn.CONNECTIVITY_CHANGE
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:106:13-108:29
+action#android.net.conn.CONNECTIVITY_CHANGE
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:107:17-79
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:107:25-76
+receiver#androidx.work.impl.background.systemalarm.RescheduleReceiver
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:110:9-121:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:113:13-36
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:114:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:115:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:112:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:111:13-88
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.TIMEZONE_CHANGED+action:name:android.intent.action.TIME_SET
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:116:13-120:29
+action#android.intent.action.TIME_SET
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:118:17-73
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:118:25-70
+action#android.intent.action.TIMEZONE_CHANGED
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:119:17-81
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:119:25-78
+receiver#androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:122:9-131:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:125:13-72
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:126:13-37
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:127:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:124:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:123:13-99
+intent-filter#action:name:androidx.work.impl.background.systemalarm.UpdateProxies
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:128:13-130:29
+action#androidx.work.impl.background.systemalarm.UpdateProxies
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:129:17-98
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:129:25-95
+receiver#androidx.work.impl.diagnostics.DiagnosticsReceiver
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:132:9-142:20
+	android:enabled
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:135:13-35
+	android:exported
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:136:13-36
+	android:permission
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:137:13-57
+	tools:targetApi
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:138:13-32
+	android:directBootAware
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:134:13-44
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:133:13-78
+intent-filter#action:name:androidx.work.diagnostics.REQUEST_DIAGNOSTICS
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:139:13-141:29
+action#androidx.work.diagnostics.REQUEST_DIAGNOSTICS
+ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:140:17-88
+	android:name
+		ADDED from [androidx.work:work-runtime:2.10.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\bd87c445dbcdbd60aab949f5276e4dc0\transformed\work-runtime-2.10.0\AndroidManifest.xml:140:25-85
+activity#androidx.compose.ui.tooling.PreviewActivity
+ADDED from [androidx.compose.ui:ui-tooling-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\61239fcf33d80ddae4cb9a5883de9cdd\transformed\ui-tooling-release\AndroidManifest.xml:23:9-25:39
+	android:exported
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\61239fcf33d80ddae4cb9a5883de9cdd\transformed\ui-tooling-release\AndroidManifest.xml:25:13-36
+	android:name
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\61239fcf33d80ddae4cb9a5883de9cdd\transformed\ui-tooling-release\AndroidManifest.xml:24:13-71
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9e80d64b6c746bbfaae5810ea9fc1ab8\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+service#androidx.core.widget.RemoteViewsCompatService
+ADDED from [androidx.core:core-remoteviews:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\fb25602f93eebd41d922dfec46852c46\transformed\core-remoteviews-1.1.0\AndroidManifest.xml:24:9-27:63
+	tools:ignore
+		ADDED from [androidx.core:core-remoteviews:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\fb25602f93eebd41d922dfec46852c46\transformed\core-remoteviews-1.1.0\AndroidManifest.xml:27:13-60
+	android:permission
+		ADDED from [androidx.core:core-remoteviews:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\fb25602f93eebd41d922dfec46852c46\transformed\core-remoteviews-1.1.0\AndroidManifest.xml:26:13-69
+	android:name
+		ADDED from [androidx.core:core-remoteviews:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\fb25602f93eebd41d922dfec46852c46\transformed\core-remoteviews-1.1.0\AndroidManifest.xml:25:13-73
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+permission#com.mohgwatch.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+uses-permission#com.mohgwatch.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\polas\.gradle\caches\8.14.5\transforms\0e51c5675d7bb5cbbd000f4c0388ece9\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:30:17-78
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5fc85cbaa1541673385ef6688d29690d\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92

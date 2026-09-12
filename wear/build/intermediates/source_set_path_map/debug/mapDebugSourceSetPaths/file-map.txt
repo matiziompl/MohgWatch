@@ -1,0 +1,80 @@
+com.mohgwatch.wear-debug-0 C:\Antigravity Projects\MohgWatch\core\build\intermediates\packaged_res\debug\packageDebugResources
+com.mohgwatch.wear-pngs-1 C:\Antigravity Projects\MohgWatch\wear\build\generated\res\pngs\debug
+com.mohgwatch.wear-resValues-2 C:\Antigravity Projects\MohgWatch\wear\build\generated\res\resValues\debug
+com.mohgwatch.wear-updated_navigation_xml-3 C:\Antigravity Projects\MohgWatch\wear\build\generated\updated_navigation_xml\debug
+com.mohgwatch.wear-packageDebugResources-4 C:\Antigravity Projects\MohgWatch\wear\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.mohgwatch.wear-packageDebugResources-5 C:\Antigravity Projects\MohgWatch\wear\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.mohgwatch.wear-debug-6 C:\Antigravity Projects\MohgWatch\wear\build\intermediates\merged_res\debug\mergeDebugResources
+com.mohgwatch.wear-debug-7 C:\Antigravity Projects\MohgWatch\wear\src\debug\res
+com.mohgwatch.wear-main-8 C:\Antigravity Projects\MohgWatch\wear\src\main\res
+com.mohgwatch.wear-lifecycle-runtime-release-9 C:\Users\polas\.gradle\caches\8.14.5\transforms\0197d10738bd3bffc0282365e7bf1de5\transformed\lifecycle-runtime-release\res
+com.mohgwatch.wear-watchface-complications-data-1.2.1-10 C:\Users\polas\.gradle\caches\8.14.5\transforms\02cc19ef757fd3ad46066e4f3ee9f367\transformed\watchface-complications-data-1.2.1\res
+com.mohgwatch.wear-ui-text-release-11 C:\Users\polas\.gradle\caches\8.14.5\transforms\0353381beed284063fa4727619c60ce7\transformed\ui-text-release\res
+com.mohgwatch.wear-datastore-core-release-12 C:\Users\polas\.gradle\caches\8.14.5\transforms\04176a948d5b5fcc80a4b348bce9c39b\transformed\datastore-core-release\res
+com.mohgwatch.wear-ui-geometry-release-13 C:\Users\polas\.gradle\caches\8.14.5\transforms\05ab52e50bd1fb7ed59e9edd6b8a6202\transformed\ui-geometry-release\res
+com.mohgwatch.wear-runtime-release-14 C:\Users\polas\.gradle\caches\8.14.5\transforms\0724dea721340d4278becb42000e5ed3\transformed\runtime-release\res
+com.mohgwatch.wear-tiles-material-1.4.1-15 C:\Users\polas\.gradle\caches\8.14.5\transforms\137630191fc81b54ae43c3b99f8ef7f9\transformed\tiles-material-1.4.1\res
+com.mohgwatch.wear-savedstate-release-16 C:\Users\polas\.gradle\caches\8.14.5\transforms\1ac37eb4d2455e5fd1ceab50a21783b6\transformed\savedstate-release\res
+com.mohgwatch.wear-watchface-complications-data-source-ktx-1.2.1-17 C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\res
+com.mohgwatch.wear-lifecycle-livedata-2.9.0-alpha05-18 C:\Users\polas\.gradle\caches\8.14.5\transforms\2831977d4282305c7ff7b435e4634df8\transformed\lifecycle-livedata-2.9.0-alpha05\res
+com.mohgwatch.wear-animation-core-release-19 C:\Users\polas\.gradle\caches\8.14.5\transforms\31856f2e2f64cb8b742cc90bee08590e\transformed\animation-core-release\res
+com.mohgwatch.wear-coordinatorlayout-1.0.0-20 C:\Users\polas\.gradle\caches\8.14.5\transforms\379345b0269fdf67feb7ae0bd6780530\transformed\coordinatorlayout-1.0.0\res
+com.mohgwatch.wear-runtime-saveable-release-21 C:\Users\polas\.gradle\caches\8.14.5\transforms\3e46cd2330cea7887104fcaf40a94ea4\transformed\runtime-saveable-release\res
+com.mohgwatch.wear-lifecycle-viewmodel-compose-release-22 C:\Users\polas\.gradle\caches\8.14.5\transforms\3f05230a14df69536ad55c6ea5b0c1fa\transformed\lifecycle-viewmodel-compose-release\res
+com.mohgwatch.wear-room-runtime-2.6.1-23 C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\res
+com.mohgwatch.wear-sqlite-framework-2.4.0-24 C:\Users\polas\.gradle\caches\8.14.5\transforms\4332556c9d2b2788f5ce8c5c0e589b01\transformed\sqlite-framework-2.4.0\res
+com.mohgwatch.wear-annotation-experimental-1.4.1-25 C:\Users\polas\.gradle\caches\8.14.5\transforms\4f13d1e4d7707fc82d579775c5c350fa\transformed\annotation-experimental-1.4.1\res
+com.mohgwatch.wear-tiles-1.4.1-26 C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\res
+com.mohgwatch.wear-activity-1.9.3-27 C:\Users\polas\.gradle\caches\8.14.5\transforms\52db7c106147e4d014315008d3d673de\transformed\activity-1.9.3\res
+com.mohgwatch.wear-foundation-release-28 C:\Users\polas\.gradle\caches\8.14.5\transforms\5476ad401b019852018ee3651be2fd2c\transformed\foundation-release\res
+com.mohgwatch.wear-lifecycle-runtime-compose-release-29 C:\Users\polas\.gradle\caches\8.14.5\transforms\55711fe2288097452224d05b6971547f\transformed\lifecycle-runtime-compose-release\res
+com.mohgwatch.wear-profileinstaller-1.4.0-30 C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\res
+com.mohgwatch.wear-lifecycle-livedata-core-2.9.0-alpha05-31 C:\Users\polas\.gradle\caches\8.14.5\transforms\574855787a53d14b3410ac6f17dcdf5e\transformed\lifecycle-livedata-core-2.9.0-alpha05\res
+com.mohgwatch.wear-animation-release-32 C:\Users\polas\.gradle\caches\8.14.5\transforms\5758eb5780f1db9309fe8931208df49e\transformed\animation-release\res
+com.mohgwatch.wear-emoji2-1.4.0-33 C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\res
+com.mohgwatch.wear-protolayout-expression-pipeline-1.2.1-34 C:\Users\polas\.gradle\caches\8.14.5\transforms\5946f47eb76036c78eff84f604177b79\transformed\protolayout-expression-pipeline-1.2.1\res
+com.mohgwatch.wear-lifecycle-process-2.9.0-alpha05-35 C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\res
+com.mohgwatch.wear-animation-graphics-release-36 C:\Users\polas\.gradle\caches\8.14.5\transforms\609a2d095fe47ea073b9a7b9515c9bed\transformed\animation-graphics-release\res
+com.mohgwatch.wear-preference-1.1.0-37 C:\Users\polas\.gradle\caches\8.14.5\transforms\60c625690461277ccf0703b1c501292f\transformed\preference-1.1.0\res
+com.mohgwatch.wear-datastore-preferences-release-38 C:\Users\polas\.gradle\caches\8.14.5\transforms\62adaca1abc1c32d0ca4602597924296\transformed\datastore-preferences-release\res
+com.mohgwatch.wear-appcompat-1.1.0-39 C:\Users\polas\.gradle\caches\8.14.5\transforms\662b32d0b217923579dddf723fe2f00c\transformed\appcompat-1.1.0\res
+com.mohgwatch.wear-lifecycle-viewmodel-release-40 C:\Users\polas\.gradle\caches\8.14.5\transforms\66c427e2f1aca0c7abf5cee2d26ee258\transformed\lifecycle-viewmodel-release\res
+com.mohgwatch.wear-datastore-release-41 C:\Users\polas\.gradle\caches\8.14.5\transforms\696192e8fc2660dde666f22f728ceb12\transformed\datastore-release\res
+com.mohgwatch.wear-core-runtime-2.2.0-42 C:\Users\polas\.gradle\caches\8.14.5\transforms\740048f3ed82127aa49fe40e62af9df4\transformed\core-runtime-2.2.0\res
+com.mohgwatch.wear-core-1.15.0-43 C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\res
+com.mohgwatch.wear-lifecycle-viewmodel-ktx-2.9.0-alpha05-44 C:\Users\polas\.gradle\caches\8.14.5\transforms\7913729ff36ce1588cef8222f94423b0\transformed\lifecycle-viewmodel-ktx-2.9.0-alpha05\res
+com.mohgwatch.wear-protolayout-1.2.1-45 C:\Users\polas\.gradle\caches\8.14.5\transforms\79d2b7ad36a656c33605891c42923721\transformed\protolayout-1.2.1\res
+com.mohgwatch.wear-recyclerview-1.0.0-46 C:\Users\polas\.gradle\caches\8.14.5\transforms\7c2b0127047df8234cf416a517e4436f\transformed\recyclerview-1.0.0\res
+com.mohgwatch.wear-watchface-complications-1.2.1-47 C:\Users\polas\.gradle\caches\8.14.5\transforms\7d2ebb9be0701c4535e3e91141f6c396\transformed\watchface-complications-1.2.1\res
+com.mohgwatch.wear-foundation-layout-release-48 C:\Users\polas\.gradle\caches\8.14.5\transforms\83a44cbcb83f8438095871af971f89a9\transformed\foundation-layout-release\res
+com.mohgwatch.wear-ui-unit-release-49 C:\Users\polas\.gradle\caches\8.14.5\transforms\85e9bb820de7a3e5cab253cf45b52a6b\transformed\ui-unit-release\res
+com.mohgwatch.wear-protolayout-expression-1.2.1-50 C:\Users\polas\.gradle\caches\8.14.5\transforms\911d1167252dfe9b47f9bcbe96fbffcc\transformed\protolayout-expression-1.2.1\res
+com.mohgwatch.wear-protolayout-material-core-1.2.1-51 C:\Users\polas\.gradle\caches\8.14.5\transforms\928bb7663fa9c8c1f6bbd440d9dfef0f\transformed\protolayout-material-core-1.2.1\res
+com.mohgwatch.wear-graphics-shapes-release-52 C:\Users\polas\.gradle\caches\8.14.5\transforms\94449e50cd6075554bae0c67dcd31cb0\transformed\graphics-shapes-release\res
+com.mohgwatch.wear-ui-util-release-53 C:\Users\polas\.gradle\caches\8.14.5\transforms\951694e36517c0b792f2e9724e2eb2fe\transformed\ui-util-release\res
+com.mohgwatch.wear-customview-poolingcontainer-1.0.0-54 C:\Users\polas\.gradle\caches\8.14.5\transforms\9938aacf3aaa8ed66f7905782f01733e\transformed\customview-poolingcontainer-1.0.0\res
+com.mohgwatch.wear-compose-material3-1.0.0-alpha27-55 C:\Users\polas\.gradle\caches\8.14.5\transforms\99502ce284f98ce91c6aa5924ae1c96d\transformed\compose-material3-1.0.0-alpha27\res
+com.mohgwatch.wear-ui-release-56 C:\Users\polas\.gradle\caches\8.14.5\transforms\9b0a3fe2e17f884db1622b6c3b4e335f\transformed\ui-release\res
+com.mohgwatch.wear-material-ripple-release-57 C:\Users\polas\.gradle\caches\8.14.5\transforms\9dfa77418f39924445d9d9cec8fc8d37\transformed\material-ripple-release\res
+com.mohgwatch.wear-material-icons-core-release-58 C:\Users\polas\.gradle\caches\8.14.5\transforms\9ef56ad262fe89554b201021ab84fbb8\transformed\material-icons-core-release\res
+com.mohgwatch.wear-appcompat-resources-1.1.0-59 C:\Users\polas\.gradle\caches\8.14.5\transforms\a5189b26c6b7c12dc27be48c2e92e020\transformed\appcompat-resources-1.1.0\res
+com.mohgwatch.wear-tracing-1.2.0-60 C:\Users\polas\.gradle\caches\8.14.5\transforms\aa49a9d0a7c295fd6e38db72d37e210f\transformed\tracing-1.2.0\res
+com.mohgwatch.wear-startup-runtime-1.1.1-61 C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\res
+com.mohgwatch.wear-compose-material-core-1.5.0-alpha04-62 C:\Users\polas\.gradle\caches\8.14.5\transforms\b48a8eca05119f117d51c9db10f92ecb\transformed\compose-material-core-1.5.0-alpha04\res
+com.mohgwatch.wear-graphics-path-1.0.1-63 C:\Users\polas\.gradle\caches\8.14.5\transforms\c10fdfb531c16e4825b4211f68583c40\transformed\graphics-path-1.0.1\res
+com.mohgwatch.wear-lifecycle-viewmodel-savedstate-release-64 C:\Users\polas\.gradle\caches\8.14.5\transforms\c3342631be3bac97f0b71d30388346a1\transformed\lifecycle-viewmodel-savedstate-release\res
+com.mohgwatch.wear-ui-graphics-release-65 C:\Users\polas\.gradle\caches\8.14.5\transforms\c625a63181c81fd1da56bab370a99ba1\transformed\ui-graphics-release\res
+com.mohgwatch.wear-sqlite-2.4.0-66 C:\Users\polas\.gradle\caches\8.14.5\transforms\ca34b9857818cb42155ca1b30d854350\transformed\sqlite-2.4.0\res
+com.mohgwatch.wear-room-ktx-2.6.1-67 C:\Users\polas\.gradle\caches\8.14.5\transforms\d499be12ac3bcd00c0227bef7239401e\transformed\room-ktx-2.6.1\res
+com.mohgwatch.wear-compose-foundation-1.5.0-alpha04-68 C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\res
+com.mohgwatch.wear-activity-compose-1.9.3-69 C:\Users\polas\.gradle\caches\8.14.5\transforms\dc413bf7c060bb6d1be76df1b495d091\transformed\activity-compose-1.9.3\res
+com.mohgwatch.wear-lifecycle-livedata-core-ktx-2.9.0-alpha05-70 C:\Users\polas\.gradle\caches\8.14.5\transforms\e0d6133ec021e5c99200ddbc317f4364\transformed\lifecycle-livedata-core-ktx-2.9.0-alpha05\res
+com.mohgwatch.wear-core-ktx-1.15.0-71 C:\Users\polas\.gradle\caches\8.14.5\transforms\e0e9ec182b2d0dae1e6edd56218c5b25\transformed\core-ktx-1.15.0\res
+com.mohgwatch.wear-play-services-base-18.5.0-72 C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\res
+com.mohgwatch.wear-fragment-1.5.1-73 C:\Users\polas\.gradle\caches\8.14.5\transforms\e2fae1dbbd39cbf2be7fb0ac2db0d7b5\transformed\fragment-1.5.1\res
+com.mohgwatch.wear-savedstate-ktx-1.3.0-alpha03-74 C:\Users\polas\.gradle\caches\8.14.5\transforms\e5e3d0aeb8a2ad3a8399c3d675d3aa1c\transformed\savedstate-ktx-1.3.0-alpha03\res
+com.mohgwatch.wear-protolayout-material-1.2.1-75 C:\Users\polas\.gradle\caches\8.14.5\transforms\e60cc6a04e47616df576f296c24d3838\transformed\protolayout-material-1.2.1\res
+com.mohgwatch.wear-activity-ktx-1.9.3-76 C:\Users\polas\.gradle\caches\8.14.5\transforms\e7ddab3f5e1e80719c62f774d870085b\transformed\activity-ktx-1.9.3\res
+com.mohgwatch.wear-play-services-basement-18.4.0-77 C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\res
+com.mohgwatch.wear-watchface-complications-data-source-1.2.1-78 C:\Users\polas\.gradle\caches\8.14.5\transforms\fbe4533a2c7a0495ba4a3091d50f1a4b\transformed\watchface-complications-data-source-1.2.1\res
+com.mohgwatch.wear-lifecycle-runtime-ktx-release-79 C:\Users\polas\.gradle\caches\8.14.5\transforms\fe9399c6872e20f8de832131634d5ce9\transformed\lifecycle-runtime-ktx-release\res

@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mohgwatch"
+    android:versionCode="1"
+    android:versionName="1.0.0" >
+
+    <uses-sdk
+        android:minSdkVersion="30"
+        android:targetSdkVersion="34" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <queries>
+        <intent>
+            <action android:name="androidx.wear.tiles.action.BIND_UPDATE_REQUESTER" />
+        </intent>
+    </queries>
+
+    <permission
+        android:name="com.mohgwatch.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.mohgwatch.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+
+    <application
+        android:name="com.mohgwatch.wear.MohgWatchApplication"
+        android:allowBackup="true"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:debuggable="true"
+        android:extractNativeLibs="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:testOnly="true" >
+
+        <!-- Wear Main Activity -->
+        <activity
+            android:name="com.mohgwatch.wear.ui.WearActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.DeviceDefault" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+        </activity>
+
+        <!-- Data Layer Listener — receives glucose from phone -->
+        <service
+            android:name="com.mohgwatch.wear.service.DataLayerListenerService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+
+                <data
+                    android:host="*"
+                    android:pathPrefix="/mohgwatch"
+                    android:scheme="wear" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+        </service>
+
+        <!-- 1. Strzałka + Glukoza -->
+        <service
+            android:name="com.mohgwatch.wear.service.GlucoseTrendWhiteComplicationService"
+            android:exported="true"
+            android:icon="@drawable/ic_glucose"
+            android:label="Strzałka + Glukoza"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER" >
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="60" />
+        </service>
+
+        <!-- 2. Glukoza + Strzałka (Reversed) -->
+        <service
+            android:name="com.mohgwatch.wear.service.GlucoseAndTrendComplicationService"
+            android:exported="true"
+            android:icon="@drawable/ic_glucose"
+            android:label="Glukoza + Strzałka"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER" >
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="60" />
+        </service>
+
+        <!-- 3. Sama Glukoza -->
+        <service
+            android:name="com.mohgwatch.wear.service.GlucoseWhiteComplicationService"
+            android:exported="true"
+            android:icon="@drawable/ic_glucose"
+            android:label="Sama Glukoza"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER" >
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SHORT_TEXT" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="60" />
+        </service>
+
+        <!-- 4. Sama Strzałka -->
+        <service
+            android:name="com.mohgwatch.wear.service.TrendWhiteComplicationService"
+            android:exported="true"
+            android:icon="@drawable/ic_trend_stable"
+            android:label="Sama Strzałka"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER" >
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="60" />
+        </service>
+
+        <!-- 12h History Tile -->
+        <service
+            android:name="com.mohgwatch.wear.service.GlucoseHistoryTileService"
+            android:exported="true"
+            android:label="@string/history_tile_label"
+            android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER" >
+            <intent-filter>
+                <action android:name="androidx.wear.tiles.action.BIND_TILE_PROVIDER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+        </service>
+
+        <!-- WFF WATCH FACES (Digital) -->
+        <service
+            android:name="com.mohgwatch.wear.watchface.D1ClassicWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="MohgWatch Classic"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_d1_classic" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.D2NeonPulseWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Neon Pulse"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_d2_neon_pulse" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.D3MinimalWhiteWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Minimal White"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_d3_minimal_white" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.D4DashboardWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Dashboard"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_d4_dashboard" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.D5NightModeWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Night Mode"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_d5_night_mode" />
+        </service>
+
+        <!-- WFF WATCH FACES (Analog) -->
+        <service
+            android:name="com.mohgwatch.wear.watchface.A1SwissHeritageWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Swiss Heritage"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_a1_swiss_heritage" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.A2DiverProWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Diver Pro"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_a2_diver_pro" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.A3ChronographWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Chronograph"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_a3_chronograph" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.A4FieldWatchWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Field Watch"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_a4_field_watch" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.A5MoonphaseWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Moonphase"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_a5_moonphase" />
+        </service>
+
+        <!-- WFF WATCH FACES (Hybrid) -->
+        <service
+            android:name="com.mohgwatch.wear.watchface.H1TechFusionWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Tech Fusion"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_h1_tech_fusion" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.H2VitalsMonitorWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Vitals Monitor"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_h2_vitals_monitor" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.H3RetroDigitalWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Retro Digital"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_h3_retro_digital" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.H4SportTrackerWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Sport Tracker"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_h4_sport_tracker" />
+        </service>
+        <service
+            android:name="com.mohgwatch.wear.watchface.H5AuroraWatchFace"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Aurora"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.wearable.watchface.preview"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.support.wearable.watchface.preview_circular"
+                android:resource="@mipmap/ic_launcher" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.declarative"
+                android:resource="@raw/wff_h5_aurora" />
+        </service>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            android:directBootAware="true"
+            android:exported="false" />
+
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="false" />
+        <uses-library
+            android:name="wear-sdk"
+            android:required="false" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="com.mohgwatch.androidx-startup"
+            android:exported="false" >
+            <meta-data
+                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+                android:value="androidx.startup" />
+        </provider>
+
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            android:directBootAware="false"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.DUMP" >
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

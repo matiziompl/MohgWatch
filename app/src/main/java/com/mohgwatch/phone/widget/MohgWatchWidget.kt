@@ -23,20 +23,23 @@ import com.mohgwatch.core.util.GlucoseFormatter
 import com.mohgwatch.core.model.GlucoseUnit
 
 import com.mohgwatch.core.model.GlucoseReading
+import kotlinx.coroutines.flow.first
 
 class MohgWatchWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val reading = GlucoseSyncState.latestReading.value
+        val settingsStore = com.mohgwatch.phone.data.SettingsStore(context)
+        val settings = settingsStore.settingsFlow.first()
+        
         provideContent {
             GlanceTheme {
-                WidgetContent(reading)
+                WidgetContent(reading, settings)
             }
         }
     }
 
     @Composable
-    private fun WidgetContent(reading: GlucoseReading?) {
-        
+    private fun WidgetContent(reading: GlucoseReading?, settings: com.mohgwatch.core.model.UserSettings) {
         Column(
             modifier = GlanceModifier
                 .fillMaxSize()

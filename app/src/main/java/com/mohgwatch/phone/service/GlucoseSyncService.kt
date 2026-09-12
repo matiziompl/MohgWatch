@@ -379,6 +379,8 @@ class GlucoseSyncService : Service() {
     
                 try {
                     syncOnce(settings.alertLowThreshold, settings.alertHighThreshold)
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    throw e
                 } catch (e: Exception) {
                     Log.e(TAG, "Wyjątek w synchronizacji", e)
                     GlucoseSyncState.lastError.value = e.localizedMessage
@@ -453,9 +455,9 @@ class GlucoseSyncService : Service() {
                 dataLayerSender.sendGlucoseHistory(currentHistory)
                 
                 val nowTimestamp = reading.timestamp
-                val fifteenMinsAgo = nowTimestamp - (15 * 60 * 1000)
+                val timeWindowAgo = nowTimestamp - (25 * 60 * 1000)
                 
-                val recentReadings = currentHistory.filter { it.timestamp >= fifteenMinsAgo }
+                val recentReadings = currentHistory.filter { it.timestamp >= timeWindowAgo }
                 
                 if (recentReadings.size >= 3) {
                     val startT = recentReadings.first().timestamp
@@ -478,26 +480,26 @@ class GlucoseSyncService : Service() {
                     if (divisor != 0f) {
                         val rateOfChange = (n * sumXY - sumX * sumY) / divisor
                         val customTrend = when {
-                            rateOfChange > 2f -> com.mohgwatch.core.model.TrendArrow.RISING_FAST
-                            rateOfChange >= 1f -> com.mohgwatch.core.model.TrendArrow.RISING
-                            rateOfChange > -1f -> com.mohgwatch.core.model.TrendArrow.STABLE
-                            rateOfChange >= -2f -> com.mohgwatch.core.model.TrendArrow.FALLING
+                            rateOfChange >= settings.trendThresholdFastRising -> com.mohgwatch.core.model.TrendArrow.RISING_FAST
+                            rateOfChange >= settings.trendThresholdRising -> com.mohgwatch.core.model.TrendArrow.RISING
+                            rateOfChange > settings.trendThresholdFalling -> com.mohgwatch.core.model.TrendArrow.STABLE
+                            rateOfChange > settings.trendThresholdFastFalling -> com.mohgwatch.core.model.TrendArrow.FALLING
                             else -> com.mohgwatch.core.model.TrendArrow.FALLING_FAST
                         }
                         reading = reading.copy(trendArrow = customTrend)
                     }
                 } else {
-                    val pastReading = currentHistory.minByOrNull { Math.abs(it.timestamp - fifteenMinsAgo) }
-                    if (pastReading != null && Math.abs(pastReading.timestamp - fifteenMinsAgo) <= 7 * 60 * 1000) {
+                    val pastReading = currentHistory.minByOrNull { Math.abs(it.timestamp - timeWindowAgo) }
+                    if (pastReading != null && Math.abs(pastReading.timestamp - timeWindowAgo) <= 7 * 60 * 1000) {
                         val delta = reading.value - pastReading.value
                         val minutes = (reading.timestamp - pastReading.timestamp) / 60000f
                         if (minutes > 0) {
                             val rateOfChange = delta / minutes
                             val customTrend = when {
-                                rateOfChange > 2f -> com.mohgwatch.core.model.TrendArrow.RISING_FAST
-                                rateOfChange >= 1f -> com.mohgwatch.core.model.TrendArrow.RISING
-                                rateOfChange > -1f -> com.mohgwatch.core.model.TrendArrow.STABLE
-                                rateOfChange >= -2f -> com.mohgwatch.core.model.TrendArrow.FALLING
+                                rateOfChange >= 5f -> com.mohgwatch.core.model.TrendArrow.RISING_FAST
+                                rateOfChange >= 2f -> com.mohgwatch.core.model.TrendArrow.RISING
+                                rateOfChange > -2f -> com.mohgwatch.core.model.TrendArrow.STABLE
+                                rateOfChange > -5f -> com.mohgwatch.core.model.TrendArrow.FALLING
                                 else -> com.mohgwatch.core.model.TrendArrow.FALLING_FAST
                             }
                             reading = reading.copy(trendArrow = customTrend)

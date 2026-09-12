@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Retro Digital (H3) — Watch Face Format (WFF) XML
+  Casio retro 80s LCD panel style with yellow/green backlighting theme.
+-->
+<WatchFace width="450" height="450">
+    <Metadata key="CLOCK_TYPE" value="DIGITAL" />
+    <Metadata key="PREVIEW_TIME" value="10:08:32" />
+
+    <Scene backgroundColor="#FF1C1917">
+        <!-- Retro LCD Panel Border -->
+        <PartDraw x="0" y="0" width="450" height="450">
+            <Arc centerX="225" centerY="225" startAngle="0" endAngle="360" innerRadius="210" outerRadius="220" direction="CLOCKWISE">
+                <Stroke color="#FFEAB308" cap="BUTT" />
+            </Arc>
+        </PartDraw>
+
+        <!-- Weather -->
+        <ComplicationSlot x="145" y="60" width="160" height="40" slotId="100" supportedTypes="SHORT_TEXT" name="Pogoda">
+            <DefaultProviderPolicy defaultSystemProvider="WEATHER" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="160" height="40" />
+        </ComplicationSlot>
+
+        <!-- Digital Clock -->
+        <DigitalClock x="75" y="120" width="300" height="90">
+            <TimeText format="HH:mm" align="CENTER" size="72" color="#FFEAB308" font="SYNC_TO_DEVICE" weight="BOLD" />
+        </DigitalClock>
+
+        <!-- Analog Hands overlay -->
+        <AnalogClock x="0" y="0" width="450" height="450">
+            <HourHand x="217" y="75" width="16" height="150" pivotX="8" pivotY="150">
+                <PartDraw x="0" y="0" width="16" height="150">
+                    <Line startX="8" startY="20" endX="8" endY="150">
+                        <Stroke color="#66EAB308" cap="ROUND" width="6" />
+                    </Line>
+                </PartDraw>
+            </HourHand>
+
+            <MinuteHand x="219" y="45" width="12" height="180" pivotX="6" pivotY="180">
+                <PartDraw x="0" y="0" width="12" height="180">
+                    <Line startX="6" startY="10" endX="6" endY="180">
+                        <Stroke color="#66FACC15" cap="ROUND" width="4" />
+                    </Line>
+                </PartDraw>
+            </MinuteHand>
+        </AnalogClock>
+
+        <!-- Glucose & Trend -->
+        <ComplicationSlot x="80" y="275" width="100" height="60" slotId="200" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Glukoza">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="100" height="60" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="185" y="275" width="50" height="60" slotId="201" supportedTypes="SHORT_TEXT,SMALL_IMAGE,MONOCHROMATIC_IMAGE" name="Trend glukozy">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="50" height="60" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="255" y="275" width="60" height="60" slotId="202" supportedTypes="SMALL_IMAGE,SHORT_TEXT" name="Multimedia">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SMALL_IMAGE" />
+            <BoundingOval x="0" y="0" width="60" height="60" />
+        </ComplicationSlot>
+
+        <!-- Corners -->
+        <ComplicationSlot x="40" y="45" width="80" height="45" slotId="10" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Lewy górny">
+            <DefaultProviderPolicy defaultSystemProvider="STEP_COUNT" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="330" y="45" width="80" height="45" slotId="11" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Prawy górny">
+            <DefaultProviderPolicy defaultSystemProvider="WATCH_BATTERY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="40" y="360" width="80" height="45" slotId="12" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Lewy dolny">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+
+        <ComplicationSlot x="330" y="360" width="80" height="45" slotId="13" supportedTypes="SHORT_TEXT,RANGED_VALUE" name="Prawy dolny">
+            <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" />
+            <BoundingOval x="0" y="0" width="80" height="45" />
+        </ComplicationSlot>
+    </Scene>
+</WatchFace>

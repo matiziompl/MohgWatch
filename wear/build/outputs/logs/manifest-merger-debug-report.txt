@@ -1,0 +1,850 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:2:1-359:12
+INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:2:1-359:12
+INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:2:1-359:12
+INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:2:1-359:12
+MERGED from [:core] C:\Antigravity Projects\MohgWatch\core\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.compose:compose-material3:1.0.0-alpha27] C:\Users\polas\.gradle\caches\8.14.5\transforms\99502ce284f98ce91c6aa5924ae1c96d\transformed\compose-material3-1.0.0-alpha27\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.dagger:hilt-android:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\1078343e5fdcbc6e67ae881d2078a20e\transformed\hilt-android-2.53.1\AndroidManifest.xml:16:1-19:12
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:17:1-31:12
+MERGED from [androidx.room:room-ktx:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\d499be12ac3bcd00c0227bef7239401e\transformed\room-ktx-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.wear.watchface:watchface-complications:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\7d2ebb9be0701c4535e3e91141f6c396\transformed\watchface-complications-1.2.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:2:1-13:12
+MERGED from [androidx.wear.watchface:watchface-complications-data-source:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\fbe4533a2c7a0495ba4a3091d50f1a4b\transformed\watchface-complications-data-source-1.2.1\AndroidManifest.xml:2:1-13:12
+MERGED from [androidx.wear.watchface:watchface-complications-data:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\02cc19ef757fd3ad46066e4f3ee9f367\transformed\watchface-complications-data-1.2.1\AndroidManifest.xml:2:1-13:12
+MERGED from [androidx.wear.compose:compose-material-core:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\b48a8eca05119f117d51c9db10f92ecb\transformed\compose-material-core-1.5.0-alpha04\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9dfa77418f39924445d9d9cec8fc8d37\transformed\material-ripple-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9ef56ad262fe89554b201021ab84fbb8\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\0353381beed284063fa4727619c60ce7\transformed\ui-text-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\85e9bb820de7a3e5cab253cf45b52a6b\transformed\ui-unit-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\c625a63181c81fd1da56bab370a99ba1\transformed\ui-graphics-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\05ab52e50bd1fb7ed59e9edd6b8a6202\transformed\ui-geometry-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-util-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\951694e36517c0b792f2e9724e2eb2fe\transformed\ui-util-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.preference:preference:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\60c625690461277ccf0703b1c501292f\transformed\preference-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7c2b0127047df8234cf416a517e4436f\transformed\recyclerview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2e0afc0eb69a2a7b4d999e47beb5d585\transformed\legacy-support-core-ui-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0b952e7438693dab5741f399f4e59c9\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5e4d53e0bb570d0eeb8b7477c551f4f3\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.graphics:graphics-shapes-android:1.0.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\94449e50cd6075554bae0c67dcd31cb0\transformed\graphics-shapes-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9938aacf3aaa8ed66f7905782f01733e\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\54de3190b3ef11ca9c73bce8a7f907c3\transformed\lifecycle-viewmodel-2.9.0-alpha05\AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\66c427e2f1aca0c7abf5cee2d26ee258\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.3.0-alpha03] C:\Users\polas\.gradle\caches\8.14.5\transforms\e5e3d0aeb8a2ad3a8399c3d675d3aa1c\transformed\savedstate-ktx-1.3.0-alpha03\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.savedstate:savedstate-android:1.3.0-alpha03] C:\Users\polas\.gradle\caches\8.14.5\transforms\1ac37eb4d2455e5fd1ceab50a21783b6\transformed\savedstate-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\fe9399c6872e20f8de832131634d5ce9\transformed\lifecycle-runtime-ktx-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\c3342631be3bac97f0b71d30388346a1\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0e9ec182b2d0dae1e6edd56218c5b25\transformed\core-ktx-1.15.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f697400bd6b21313491ef3e78de6d59b\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\662b32d0b217923579dddf723fe2f00c\transformed\appcompat-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4083803515c54a539d9abe74888ab908\transformed\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\379345b0269fdf67feb7ae0bd6780530\transformed\coordinatorlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e4f10aa0f60758ec33049af49249a9ca\transformed\slidingpanelayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\3066b8bb1a1c0d35c717ba451aece48c\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.wear.tiles:tiles-material:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\137630191fc81b54ae43c3b99f8ef7f9\transformed\tiles-material-1.4.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:2:1-19:12
+MERGED from [androidx.wear.protolayout:protolayout-expression:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\911d1167252dfe9b47f9bcbe96fbffcc\transformed\protolayout-expression-1.2.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.protolayout:protolayout:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\79d2b7ad36a656c33605891c42923721\transformed\protolayout-1.2.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.protolayout:protolayout-material:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\e60cc6a04e47616df576f296c24d3838\transformed\protolayout-material-1.2.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.protolayout:protolayout-material-core:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\928bb7663fa9c8c1f6bbd440d9dfef0f\transformed\protolayout-material-core-1.2.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.protolayout:protolayout-expression-pipeline:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5946f47eb76036c78eff84f604177b79\transformed\protolayout-expression-pipeline-1.2.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\a5189b26c6b7c12dc27be48c2e92e020\transformed\appcompat-resources-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f9abb8aa536aa08188f424659c02692\transformed\autofill-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\95620f7de0cd6df21c151579571c081b\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\284bfca0112ebd02539c88584d80bde3\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\46044dc769f8e3567d5a6d68d4cfd9e9\transformed\swiperefreshlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\08ba71dd2c37b1948de4bdc8719c8b73\transformed\asynclayoutinflater-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\c10fdfb531c16e4825b4211f68583c40\transformed\graphics-path-1.0.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\0197d10738bd3bffc0282365e7bf1de5\transformed\lifecycle-runtime-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\7913729ff36ce1588cef8222f94423b0\transformed\lifecycle-viewmodel-ktx-2.9.0-alpha05\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0d6133ec021e5c99200ddbc317f4364\transformed\lifecycle-livedata-core-ktx-2.9.0-alpha05\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\574855787a53d14b3410ac6f17dcdf5e\transformed\lifecycle-livedata-core-2.9.0-alpha05\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\2831977d4282305c7ff7b435e4634df8\transformed\lifecycle-livedata-2.9.0-alpha05\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\55711fe2288097452224d05b6971547f\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\3f05230a14df69536ad55c6ea5b0c1fa\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\9b0a3fe2e17f884db1622b6c3b4e335f\transformed\ui-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\5476ad401b019852018ee3651be2fd2c\transformed\foundation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\83a44cbcb83f8438095871af971f89a9\transformed\foundation-layout-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-core-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\31856f2e2f64cb8b742cc90bee08590e\transformed\animation-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\5758eb5780f1db9309fe8931208df49e\transformed\animation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-graphics-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\609a2d095fe47ea073b9a7b9515c9bed\transformed\animation-graphics-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\3e46cd2330cea7887104fcaf40a94ea4\transformed\runtime-saveable-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\0724dea721340d4278becb42000e5ed3\transformed\runtime-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.datastore:datastore-core-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\04176a948d5b5fcc80a4b348bce9c39b\transformed\datastore-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.datastore:datastore-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\696192e8fc2660dde666f22f728ceb12\transformed\datastore-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\62adaca1abc1c32d0ca4602597924296\transformed\datastore-preferences-release\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:2:1-5:12
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\e2fae1dbbd39cbf2be7fb0ac2db0d7b5\transformed\fragment-1.5.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\52db7c106147e4d014315008d3d673de\transformed\activity-1.9.3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-ktx:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\e7ddab3f5e1e80719c62f774d870085b\transformed\activity-ktx-1.9.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-compose:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\dc413bf7c060bb6d1be76df1b495d091\transformed\activity-compose-1.9.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f13d1e4d7707fc82d579775c5c350fa\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4332556c9d2b2788f5ce8c5c0e589b01\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ca34b9857818cb42155ca1b30d854350\transformed\sqlite-2.4.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\740048f3ed82127aa49fe40e62af9df4\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\405b28177f6ce60da7d67c2b2d7a39c0\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\aa49a9d0a7c295fd6e38db72d37e210f\transformed\tracing-1.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5966413384fd754656169bfecf0d8415\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\eccc438d87f6a25d78004a055da29f7d\transformed\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\71214145128cad7289765d634f938f10\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7aba013239b6927f0a86e6caa447d2d9\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.dagger:dagger-lint-aar:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\794ccfd97d29e877f6625089689d35e3\transformed\dagger-lint-aar-2.53.1\AndroidManifest.xml:16:1-19:12
+	package
+		INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:2:11-69
+uses-feature#android.hardware.type.watch
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:4:5-64
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:4:19-61
+uses-permission#android.permission.WAKE_LOCK
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:6:5-68
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:6:22-65
+uses-permission#android.permission.SET_WALLPAPER
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:7:5-72
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:7:22-69
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:8:5-77
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:8:22-74
+application
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:10:5-358:19
+INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:10:5-358:19
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:4:5-6:19
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:23:5-29:19
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:23:5-29:19
+MERGED from [androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:7:5-11:19
+MERGED from [androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:7:5-11:19
+MERGED from [androidx.wear.watchface:watchface-complications-data-source:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\fbe4533a2c7a0495ba4a3091d50f1a4b\transformed\watchface-complications-data-source-1.2.1\AndroidManifest.xml:7:5-11:19
+MERGED from [androidx.wear.watchface:watchface-complications-data-source:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\fbe4533a2c7a0495ba4a3091d50f1a4b\transformed\watchface-complications-data-source-1.2.1\AndroidManifest.xml:7:5-11:19
+MERGED from [androidx.wear.watchface:watchface-complications-data:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\02cc19ef757fd3ad46066e4f3ee9f367\transformed\watchface-complications-data-1.2.1\AndroidManifest.xml:7:5-11:19
+MERGED from [androidx.wear.watchface:watchface-complications-data:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\02cc19ef757fd3ad46066e4f3ee9f367\transformed\watchface-complications-data-1.2.1\AndroidManifest.xml:7:5-11:19
+MERGED from [androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:13:5-17:19
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:13:5-17:19
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:23:5-33:19
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:5:5-7:19
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:5:5-7:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+	android:extractNativeLibs
+		INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:16:9-35
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:15:9-41
+	android:roundIcon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:14:9-54
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:13:9-43
+	android:allowBackup
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:12:9-35
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:11:9-45
+activity#com.mohgwatch.wear.ui.WearActivity
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:19:9-29:20
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:21:13-36
+	android:theme
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:22:13-63
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:20:13-44
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:23:13-26:29
+action#android.intent.action.MAIN
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:24:17-69
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:24:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:25:17-77
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:25:27-74
+meta-data#android.support.wearable.watchface.preview
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+	android:resource
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+meta-data#android.support.wearable.watchface.preview_circular
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+	android:resource
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+service#com.mohgwatch.wear.service.DataLayerListenerService
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:32:9-41:19
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:34:13-36
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:33:13-61
+intent-filter#action:name:com.google.android.gms.wearable.DATA_CHANGED+data:host:*+data:pathPrefix:/mohgwatch+data:scheme:wear
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:35:13-38:29
+action#com.google.android.gms.wearable.DATA_CHANGED
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:36:17-87
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:36:25-84
+data
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:37:17-96
+	android:host
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:37:45-61
+	android:scheme
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:37:23-44
+	android:pathPrefix
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:37:62-93
+service#com.mohgwatch.wear.service.GlucoseTrendWhiteComplicationService
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:44:9-55:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:47:13-47
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:46:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:49:13-99
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:48:13-48
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:45:13-73
+intent-filter#action:name:android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:50:13-52:29
+action#android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:17-116
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:25-113
+meta-data#android.support.wearable.complications.SUPPORTED_TYPES
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:13-144
+	android:value
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:94-141
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:24-93
+meta-data#android.support.wearable.complications.UPDATE_PERIOD_SECONDS
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:13-121
+	android:value
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:100-118
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:24-99
+service#com.mohgwatch.wear.service.GlucoseAndTrendComplicationService
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:58:9-69:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:61:13-47
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:60:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:63:13-99
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:62:13-48
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:59:13-71
+service#com.mohgwatch.wear.service.GlucoseWhiteComplicationService
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:72:9-83:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:75:13-41
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:74:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:77:13-99
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:76:13-48
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:73:13-68
+service#com.mohgwatch.wear.service.TrendWhiteComplicationService
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:86:9-97:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:89:13-42
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:88:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:91:13-99
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:90:13-53
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:87:13-66
+service#com.mohgwatch.wear.service.GlucoseHistoryTileService
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:100:9-110:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:103:13-55
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:102:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:104:13-91
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:101:13-62
+intent-filter#action:name:androidx.wear.tiles.action.BIND_TILE_PROVIDER
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:105:13-107:29
+action#androidx.wear.tiles.action.BIND_TILE_PROVIDER
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:106:17-88
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:106:25-85
+service#com.mohgwatch.wear.watchface.D1ClassicWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:113:9-127:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:116:13-46
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:115:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:118:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:117:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:114:13-57
+intent-filter#action:name:android.service.wallpaper.WallpaperService+category:name:com.google.android.wearable.watchface.category.WATCH_FACE
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+action#android.service.wallpaper.WallpaperService
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+category#com.google.android.wearable.watchface.category.WATCH_FACE
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+meta-data#android.service.wallpaper
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+	android:resource
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+meta-data#com.google.android.wearable.watchface.declarative
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+	android:resource
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+service#com.mohgwatch.wear.watchface.D2NeonPulseWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:129:9-143:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:132:13-39
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:131:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:134:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:133:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:130:13-59
+service#com.mohgwatch.wear.watchface.D3MinimalWhiteWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:145:9-159:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:148:13-42
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:147:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:150:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:149:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:146:13-62
+service#com.mohgwatch.wear.watchface.D4DashboardWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:161:9-175:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:164:13-38
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:163:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:166:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:165:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:162:13-59
+service#com.mohgwatch.wear.watchface.D5NightModeWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:177:9-191:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:180:13-39
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:179:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:182:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:181:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:178:13-59
+service#com.mohgwatch.wear.watchface.A1SwissHeritageWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:194:9-208:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:197:13-43
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:196:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:199:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:198:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:195:13-63
+service#com.mohgwatch.wear.watchface.A2DiverProWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:210:9-224:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:213:13-38
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:212:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:215:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:214:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:211:13-58
+service#com.mohgwatch.wear.watchface.A3ChronographWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:226:9-240:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:229:13-40
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:228:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:231:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:230:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:227:13-61
+service#com.mohgwatch.wear.watchface.A4FieldWatchWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:242:9-256:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:245:13-40
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:244:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:247:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:246:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:243:13-60
+service#com.mohgwatch.wear.watchface.A5MoonphaseWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:258:9-272:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:261:13-38
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:260:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:263:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:262:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:259:13-59
+service#com.mohgwatch.wear.watchface.H1TechFusionWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:275:9-289:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:278:13-40
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:277:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:280:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:279:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:276:13-60
+service#com.mohgwatch.wear.watchface.H2VitalsMonitorWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:291:9-305:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:294:13-43
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:293:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:296:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:295:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:292:13-63
+service#com.mohgwatch.wear.watchface.H3RetroDigitalWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:307:9-321:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:310:13-42
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:309:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:312:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:311:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:308:13-62
+service#com.mohgwatch.wear.watchface.H4SportTrackerWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:323:9-337:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:326:13-42
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:325:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:328:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:327:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:324:13-62
+service#com.mohgwatch.wear.watchface.H5AuroraWatchFace
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:339:9-353:19
+	android:label
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:342:13-35
+	android:exported
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:341:13-36
+	android:permission
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:344:13-67
+	android:icon
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:343:13-47
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:340:13-56
+meta-data#com.google.android.gms.version
+ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:355:9-357:69
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+	android:value
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:357:13-66
+	android:name
+		ADDED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:356:13-58
+uses-sdk
+INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml
+INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml
+MERGED from [:core] C:\Antigravity Projects\MohgWatch\core\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [:core] C:\Antigravity Projects\MohgWatch\core\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-material3:1.0.0-alpha27] C:\Users\polas\.gradle\caches\8.14.5\transforms\99502ce284f98ce91c6aa5924ae1c96d\transformed\compose-material3-1.0.0-alpha27\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-material3:1.0.0-alpha27] C:\Users\polas\.gradle\caches\8.14.5\transforms\99502ce284f98ce91c6aa5924ae1c96d\transformed\compose-material3-1.0.0-alpha27\AndroidManifest.xml:5:5-44
+MERGED from [com.google.dagger:hilt-android:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\1078343e5fdcbc6e67ae881d2078a20e\transformed\hilt-android-2.53.1\AndroidManifest.xml:18:3-42
+MERGED from [com.google.dagger:hilt-android:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\1078343e5fdcbc6e67ae881d2078a20e\transformed\hilt-android-2.53.1\AndroidManifest.xml:18:3-42
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-wearable:19.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7a9d0f9fb25bee1b42c174eb8cf550b0\transformed\play-services-wearable-19.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:3:5-44
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.room:room-ktx:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\d499be12ac3bcd00c0227bef7239401e\transformed\room-ktx-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.room:room-ktx:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\d499be12ac3bcd00c0227bef7239401e\transformed\room-ktx-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.watchface:watchface-complications:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\7d2ebb9be0701c4535e3e91141f6c396\transformed\watchface-complications-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.watchface:watchface-complications:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\7d2ebb9be0701c4535e3e91141f6c396\transformed\watchface-complications-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.watchface:watchface-complications-data-source:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\fbe4533a2c7a0495ba4a3091d50f1a4b\transformed\watchface-complications-data-source-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.watchface:watchface-complications-data-source:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\fbe4533a2c7a0495ba4a3091d50f1a4b\transformed\watchface-complications-data-source-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.watchface:watchface-complications-data:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\02cc19ef757fd3ad46066e4f3ee9f367\transformed\watchface-complications-data-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.watchface:watchface-complications-data:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\02cc19ef757fd3ad46066e4f3ee9f367\transformed\watchface-complications-data-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-material-core:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\b48a8eca05119f117d51c9db10f92ecb\transformed\compose-material-core-1.5.0-alpha04\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-material-core:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\b48a8eca05119f117d51c9db10f92ecb\transformed\compose-material-core-1.5.0-alpha04\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9dfa77418f39924445d9d9cec8fc8d37\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9dfa77418f39924445d9d9cec8fc8d37\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9ef56ad262fe89554b201021ab84fbb8\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] C:\Users\polas\.gradle\caches\8.14.5\transforms\9ef56ad262fe89554b201021ab84fbb8\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\0353381beed284063fa4727619c60ce7\transformed\ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\0353381beed284063fa4727619c60ce7\transformed\ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\85e9bb820de7a3e5cab253cf45b52a6b\transformed\ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\85e9bb820de7a3e5cab253cf45b52a6b\transformed\ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\c625a63181c81fd1da56bab370a99ba1\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\c625a63181c81fd1da56bab370a99ba1\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\05ab52e50bd1fb7ed59e9edd6b8a6202\transformed\ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\05ab52e50bd1fb7ed59e9edd6b8a6202\transformed\ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\951694e36517c0b792f2e9724e2eb2fe\transformed\ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\951694e36517c0b792f2e9724e2eb2fe\transformed\ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.preference:preference:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\60c625690461277ccf0703b1c501292f\transformed\preference-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.preference:preference:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\60c625690461277ccf0703b1c501292f\transformed\preference-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7c2b0127047df8234cf416a517e4436f\transformed\recyclerview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7c2b0127047df8234cf416a517e4436f\transformed\recyclerview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2e0afc0eb69a2a7b4d999e47beb5d585\transformed\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2e0afc0eb69a2a7b4d999e47beb5d585\transformed\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0b952e7438693dab5741f399f4e59c9\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0b952e7438693dab5741f399f4e59c9\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5e4d53e0bb570d0eeb8b7477c551f4f3\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5e4d53e0bb570d0eeb8b7477c551f4f3\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.graphics:graphics-shapes-android:1.0.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\94449e50cd6075554bae0c67dcd31cb0\transformed\graphics-shapes-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-shapes-android:1.0.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\94449e50cd6075554bae0c67dcd31cb0\transformed\graphics-shapes-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9938aacf3aaa8ed66f7905782f01733e\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\9938aacf3aaa8ed66f7905782f01733e\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\54de3190b3ef11ca9c73bce8a7f907c3\transformed\lifecycle-viewmodel-2.9.0-alpha05\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\54de3190b3ef11ca9c73bce8a7f907c3\transformed\lifecycle-viewmodel-2.9.0-alpha05\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\66c427e2f1aca0c7abf5cee2d26ee258\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\66c427e2f1aca0c7abf5cee2d26ee258\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.3.0-alpha03] C:\Users\polas\.gradle\caches\8.14.5\transforms\e5e3d0aeb8a2ad3a8399c3d675d3aa1c\transformed\savedstate-ktx-1.3.0-alpha03\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.3.0-alpha03] C:\Users\polas\.gradle\caches\8.14.5\transforms\e5e3d0aeb8a2ad3a8399c3d675d3aa1c\transformed\savedstate-ktx-1.3.0-alpha03\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-android:1.3.0-alpha03] C:\Users\polas\.gradle\caches\8.14.5\transforms\1ac37eb4d2455e5fd1ceab50a21783b6\transformed\savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-android:1.3.0-alpha03] C:\Users\polas\.gradle\caches\8.14.5\transforms\1ac37eb4d2455e5fd1ceab50a21783b6\transformed\savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\fe9399c6872e20f8de832131634d5ce9\transformed\lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\fe9399c6872e20f8de832131634d5ce9\transformed\lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\c3342631be3bac97f0b71d30388346a1\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\c3342631be3bac97f0b71d30388346a1\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0e9ec182b2d0dae1e6edd56218c5b25\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0e9ec182b2d0dae1e6edd56218c5b25\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f697400bd6b21313491ef3e78de6d59b\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\f697400bd6b21313491ef3e78de6d59b\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\662b32d0b217923579dddf723fe2f00c\transformed\appcompat-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\662b32d0b217923579dddf723fe2f00c\transformed\appcompat-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4083803515c54a539d9abe74888ab908\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4083803515c54a539d9abe74888ab908\transformed\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\379345b0269fdf67feb7ae0bd6780530\transformed\coordinatorlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\379345b0269fdf67feb7ae0bd6780530\transformed\coordinatorlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e4f10aa0f60758ec33049af49249a9ca\transformed\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e4f10aa0f60758ec33049af49249a9ca\transformed\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\3066b8bb1a1c0d35c717ba451aece48c\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\3066b8bb1a1c0d35c717ba451aece48c\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.tiles:tiles-material:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\137630191fc81b54ae43c3b99f8ef7f9\transformed\tiles-material-1.4.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.tiles:tiles-material:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\137630191fc81b54ae43c3b99f8ef7f9\transformed\tiles-material-1.4.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-expression:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\911d1167252dfe9b47f9bcbe96fbffcc\transformed\protolayout-expression-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-expression:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\911d1167252dfe9b47f9bcbe96fbffcc\transformed\protolayout-expression-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\79d2b7ad36a656c33605891c42923721\transformed\protolayout-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\79d2b7ad36a656c33605891c42923721\transformed\protolayout-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-material:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\e60cc6a04e47616df576f296c24d3838\transformed\protolayout-material-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-material:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\e60cc6a04e47616df576f296c24d3838\transformed\protolayout-material-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-material-core:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\928bb7663fa9c8c1f6bbd440d9dfef0f\transformed\protolayout-material-core-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-material-core:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\928bb7663fa9c8c1f6bbd440d9dfef0f\transformed\protolayout-material-core-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-expression-pipeline:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5946f47eb76036c78eff84f604177b79\transformed\protolayout-expression-pipeline-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.protolayout:protolayout-expression-pipeline:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5946f47eb76036c78eff84f604177b79\transformed\protolayout-expression-pipeline-1.2.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\a5189b26c6b7c12dc27be48c2e92e020\transformed\appcompat-resources-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\a5189b26c6b7c12dc27be48c2e92e020\transformed\appcompat-resources-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f9abb8aa536aa08188f424659c02692\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f9abb8aa536aa08188f424659c02692\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\95620f7de0cd6df21c151579571c081b\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\95620f7de0cd6df21c151579571c081b\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\284bfca0112ebd02539c88584d80bde3\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\284bfca0112ebd02539c88584d80bde3\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\46044dc769f8e3567d5a6d68d4cfd9e9\transformed\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\46044dc769f8e3567d5a6d68d4cfd9e9\transformed\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\08ba71dd2c37b1948de4bdc8719c8b73\transformed\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\08ba71dd2c37b1948de4bdc8719c8b73\transformed\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\c10fdfb531c16e4825b4211f68583c40\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\c10fdfb531c16e4825b4211f68583c40\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\0197d10738bd3bffc0282365e7bf1de5\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\0197d10738bd3bffc0282365e7bf1de5\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\7913729ff36ce1588cef8222f94423b0\transformed\lifecycle-viewmodel-ktx-2.9.0-alpha05\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\7913729ff36ce1588cef8222f94423b0\transformed\lifecycle-viewmodel-ktx-2.9.0-alpha05\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0d6133ec021e5c99200ddbc317f4364\transformed\lifecycle-livedata-core-ktx-2.9.0-alpha05\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\e0d6133ec021e5c99200ddbc317f4364\transformed\lifecycle-livedata-core-ktx-2.9.0-alpha05\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\574855787a53d14b3410ac6f17dcdf5e\transformed\lifecycle-livedata-core-2.9.0-alpha05\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\574855787a53d14b3410ac6f17dcdf5e\transformed\lifecycle-livedata-core-2.9.0-alpha05\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\2831977d4282305c7ff7b435e4634df8\transformed\lifecycle-livedata-2.9.0-alpha05\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\2831977d4282305c7ff7b435e4634df8\transformed\lifecycle-livedata-2.9.0-alpha05\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\55711fe2288097452224d05b6971547f\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\55711fe2288097452224d05b6971547f\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\3f05230a14df69536ad55c6ea5b0c1fa\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\3f05230a14df69536ad55c6ea5b0c1fa\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\9b0a3fe2e17f884db1622b6c3b4e335f\transformed\ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\9b0a3fe2e17f884db1622b6c3b4e335f\transformed\ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\5476ad401b019852018ee3651be2fd2c\transformed\foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\5476ad401b019852018ee3651be2fd2c\transformed\foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\83a44cbcb83f8438095871af971f89a9\transformed\foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\83a44cbcb83f8438095871af971f89a9\transformed\foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\31856f2e2f64cb8b742cc90bee08590e\transformed\animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\31856f2e2f64cb8b742cc90bee08590e\transformed\animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\5758eb5780f1db9309fe8931208df49e\transformed\animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\5758eb5780f1db9309fe8931208df49e\transformed\animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-graphics-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\609a2d095fe47ea073b9a7b9515c9bed\transformed\animation-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-graphics-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\609a2d095fe47ea073b9a7b9515c9bed\transformed\animation-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\3e46cd2330cea7887104fcaf40a94ea4\transformed\runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\3e46cd2330cea7887104fcaf40a94ea4\transformed\runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\0724dea721340d4278becb42000e5ed3\transformed\runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.8.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\0724dea721340d4278becb42000e5ed3\transformed\runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-core-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\04176a948d5b5fcc80a4b348bce9c39b\transformed\datastore-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-core-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\04176a948d5b5fcc80a4b348bce9c39b\transformed\datastore-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\696192e8fc2660dde666f22f728ceb12\transformed\datastore-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\696192e8fc2660dde666f22f728ceb12\transformed\datastore-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\62adaca1abc1c32d0ca4602597924296\transformed\datastore-preferences-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\62adaca1abc1c32d0ca4602597924296\transformed\datastore-preferences-release\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\2d17824f043202ae32d4574b910d27ef\transformed\play-services-tasks-18.2.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ea49bff3986af15d2e7150ea89bda37b\transformed\play-services-basement-18.4.0\AndroidManifest.xml:3:5-44
+MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\e2fae1dbbd39cbf2be7fb0ac2db0d7b5\transformed\fragment-1.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\e2fae1dbbd39cbf2be7fb0ac2db0d7b5\transformed\fragment-1.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\52db7c106147e4d014315008d3d673de\transformed\activity-1.9.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\52db7c106147e4d014315008d3d673de\transformed\activity-1.9.3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\e7ddab3f5e1e80719c62f774d870085b\transformed\activity-ktx-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\e7ddab3f5e1e80719c62f774d870085b\transformed\activity-ktx-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\dc413bf7c060bb6d1be76df1b495d091\transformed\activity-compose-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.3] C:\Users\polas\.gradle\caches\8.14.5\transforms\dc413bf7c060bb6d1be76df1b495d091\transformed\activity-compose-1.9.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f13d1e4d7707fc82d579775c5c350fa\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\4f13d1e4d7707fc82d579775c5c350fa\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4332556c9d2b2788f5ce8c5c0e589b01\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\4332556c9d2b2788f5ce8c5c0e589b01\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ca34b9857818cb42155ca1b30d854350\transformed\sqlite-2.4.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\ca34b9857818cb42155ca1b30d854350\transformed\sqlite-2.4.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\32a8117f96bcd4c46bb9b15aca728ea1\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\740048f3ed82127aa49fe40e62af9df4\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\740048f3ed82127aa49fe40e62af9df4\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\405b28177f6ce60da7d67c2b2d7a39c0\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\405b28177f6ce60da7d67c2b2d7a39c0\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\aa49a9d0a7c295fd6e38db72d37e210f\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\aa49a9d0a7c295fd6e38db72d37e210f\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5966413384fd754656169bfecf0d8415\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5966413384fd754656169bfecf0d8415\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\eccc438d87f6a25d78004a055da29f7d\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\eccc438d87f6a25d78004a055da29f7d\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\71214145128cad7289765d634f938f10\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\71214145128cad7289765d634f938f10\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7aba013239b6927f0a86e6caa447d2d9\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\7aba013239b6927f0a86e6caa447d2d9\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.dagger:dagger-lint-aar:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\794ccfd97d29e877f6625089689d35e3\transformed\dagger-lint-aar-2.53.1\AndroidManifest.xml:18:3-42
+MERGED from [com.google.dagger:dagger-lint-aar:2.53.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\794ccfd97d29e877f6625089689d35e3\transformed\dagger-lint-aar-2.53.1\AndroidManifest.xml:18:3-42
+	android:targetSdkVersion
+		INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
+service#androidx.room.MultiInstanceInvalidationService
+ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+	android:exported
+		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+	tools:ignore
+		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:28:13-60
+	android:directBootAware
+		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+	android:name
+		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+uses-library#com.google.android.wearable
+ADDED from [androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:8:9-10:40
+MERGED from [androidx.wear.watchface:watchface-complications-data-source:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\fbe4533a2c7a0495ba4a3091d50f1a4b\transformed\watchface-complications-data-source-1.2.1\AndroidManifest.xml:8:9-10:40
+MERGED from [androidx.wear.watchface:watchface-complications-data-source:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\fbe4533a2c7a0495ba4a3091d50f1a4b\transformed\watchface-complications-data-source-1.2.1\AndroidManifest.xml:8:9-10:40
+MERGED from [androidx.wear.watchface:watchface-complications-data:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\02cc19ef757fd3ad46066e4f3ee9f367\transformed\watchface-complications-data-1.2.1\AndroidManifest.xml:8:9-10:40
+MERGED from [androidx.wear.watchface:watchface-complications-data:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\02cc19ef757fd3ad46066e4f3ee9f367\transformed\watchface-complications-data-1.2.1\AndroidManifest.xml:8:9-10:40
+	android:required
+		ADDED from [androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:10:13-37
+	android:name
+		ADDED from [androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:9:13-55
+uses-library#wear-sdk
+ADDED from [androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:23:9-25:40
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:14:9-16:40
+MERGED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:14:9-16:40
+	android:required
+		ADDED from [androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:25:13-37
+	android:name
+		ADDED from [androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:24:13-36
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\aeff6b3da34a9cc2a19fb74bb361684b\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:30:17-75
+queries
+ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:7:5-11:15
+intent#action:name:androidx.wear.tiles.action.BIND_UPDATE_REQUESTER
+ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:8:9-10:18
+action#androidx.wear.tiles.action.BIND_UPDATE_REQUESTER
+ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:9:13-87
+	android:name
+		ADDED from [androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:9:21-84
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+permission#com.mohgwatch.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+uses-permission#com.mohgwatch.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:30:17-78
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92

@@ -1,0 +1,1136 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.mohgwatch"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="30"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-feature android:name="android.hardware.type.watch" />
+11-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:4:5-64
+11-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:4:19-61
+12
+13    <uses-permission android:name="android.permission.WAKE_LOCK" />
+13-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:6:5-68
+13-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:6:22-65
+14    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+14-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:7:5-72
+14-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:7:22-69
+15    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+15-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:8:5-77
+15-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:8:22-74
+16
+17    <queries>
+17-->[androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:7:5-11:15
+18        <intent>
+18-->[androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:8:9-10:18
+19            <action android:name="androidx.wear.tiles.action.BIND_UPDATE_REQUESTER" />
+19-->[androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:9:13-87
+19-->[androidx.wear.tiles:tiles:1.4.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\5220ee3e1e8c2da9ebafa4fb7c399136\transformed\tiles-1.4.1\AndroidManifest.xml:9:21-84
+20        </intent>
+21    </queries>
+22
+23    <permission
+23-->[androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+24        android:name="com.mohgwatch.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+24-->[androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+25        android:protectionLevel="signature" />
+25-->[androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+26
+27    <uses-permission android:name="com.mohgwatch.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+27-->[androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+27-->[androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+28
+29    <application
+29-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:10:5-358:19
+30        android:name="com.mohgwatch.wear.MohgWatchApplication"
+30-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:11:9-45
+31        android:allowBackup="true"
+31-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:12:9-35
+32        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+32-->[androidx.core:core:1.15.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\76e9ad2246e33ef2b76143b24323c479\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
+33        android:debuggable="true"
+34        android:extractNativeLibs="false"
+35        android:icon="@mipmap/ic_launcher"
+35-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:13:9-43
+36        android:label="@string/app_name"
+36-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:15:9-41
+37        android:roundIcon="@mipmap/ic_launcher_round"
+37-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:14:9-54
+38        android:supportsRtl="true"
+38-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:16:9-35
+39        android:testOnly="true" >
+40
+41        <!-- Wear Main Activity -->
+42        <activity
+42-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:19:9-29:20
+43            android:name="com.mohgwatch.wear.ui.WearActivity"
+43-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:20:13-44
+44            android:exported="true"
+44-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:21:13-36
+45            android:theme="@android:style/Theme.DeviceDefault" >
+45-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:22:13-63
+46            <intent-filter>
+46-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:23:13-26:29
+47                <action android:name="android.intent.action.MAIN" />
+47-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:24:17-69
+47-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:24:25-66
+48
+49                <category android:name="android.intent.category.LAUNCHER" />
+49-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:25:17-77
+49-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:25:27-74
+50            </intent-filter>
+51
+52            <meta-data
+52-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+53                android:name="android.support.wearable.watchface.preview"
+53-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+54                android:resource="@mipmap/ic_launcher" />
+54-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+55            <meta-data
+55-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+56                android:name="android.support.wearable.watchface.preview_circular"
+56-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+57                android:resource="@mipmap/ic_launcher" />
+57-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+58        </activity>
+59
+60        <!-- Data Layer Listener — receives glucose from phone -->
+61        <service
+61-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:32:9-41:19
+62            android:name="com.mohgwatch.wear.service.DataLayerListenerService"
+62-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:33:13-61
+63            android:exported="true" >
+63-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:34:13-36
+64            <intent-filter>
+64-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:35:13-38:29
+65                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+65-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:36:17-87
+65-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:36:25-84
+66
+67                <data
+67-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:37:17-96
+68                    android:host="*"
+68-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:37:45-61
+69                    android:pathPrefix="/mohgwatch"
+69-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:37:62-93
+70                    android:scheme="wear" />
+70-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:37:23-44
+71            </intent-filter>
+72
+73            <meta-data
+73-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+74                android:name="android.support.wearable.watchface.preview"
+74-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+75                android:resource="@mipmap/ic_launcher" />
+75-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+76            <meta-data
+76-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+77                android:name="android.support.wearable.watchface.preview_circular"
+77-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+78                android:resource="@mipmap/ic_launcher" />
+78-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+79        </service>
+80
+81        <!-- 1. Strzałka + Glukoza -->
+82        <service
+82-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:44:9-55:19
+83            android:name="com.mohgwatch.wear.service.GlucoseTrendWhiteComplicationService"
+83-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:45:13-73
+84            android:exported="true"
+84-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:46:13-36
+85            android:icon="@drawable/ic_glucose"
+85-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:48:13-48
+86            android:label="Strzałka + Glukoza"
+86-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:47:13-47
+87            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER" >
+87-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:49:13-99
+88            <intent-filter>
+88-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:50:13-52:29
+89                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+89-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:17-116
+89-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:25-113
+90            </intent-filter>
+91
+92            <meta-data
+92-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:13-144
+93                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+93-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:24-93
+94                android:value="SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+94-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:94-141
+95            <meta-data
+95-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:13-121
+96                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+96-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:24-99
+97                android:value="60" />
+97-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:100-118
+98        </service>
+99
+100        <!-- 2. Glukoza + Strzałka (Reversed) -->
+101        <service
+101-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:58:9-69:19
+102            android:name="com.mohgwatch.wear.service.GlucoseAndTrendComplicationService"
+102-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:59:13-71
+103            android:exported="true"
+103-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:60:13-36
+104            android:icon="@drawable/ic_glucose"
+104-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:62:13-48
+105            android:label="Glukoza + Strzałka"
+105-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:61:13-47
+106            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER" >
+106-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:63:13-99
+107            <intent-filter>
+107-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:50:13-52:29
+108                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+108-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:17-116
+108-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:25-113
+109            </intent-filter>
+110
+111            <meta-data
+111-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:13-144
+112                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+112-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:24-93
+113                android:value="SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+113-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:94-141
+114            <meta-data
+114-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:13-121
+115                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+115-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:24-99
+116                android:value="60" />
+116-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:100-118
+117        </service>
+118
+119        <!-- 3. Sama Glukoza -->
+120        <service
+120-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:72:9-83:19
+121            android:name="com.mohgwatch.wear.service.GlucoseWhiteComplicationService"
+121-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:73:13-68
+122            android:exported="true"
+122-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:74:13-36
+123            android:icon="@drawable/ic_glucose"
+123-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:76:13-48
+124            android:label="Sama Glukoza"
+124-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:75:13-41
+125            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER" >
+125-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:77:13-99
+126            <intent-filter>
+126-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:50:13-52:29
+127                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+127-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:17-116
+127-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:25-113
+128            </intent-filter>
+129
+130            <meta-data
+130-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:13-144
+131                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+131-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:24-93
+132                android:value="SHORT_TEXT" />
+132-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:94-141
+133            <meta-data
+133-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:13-121
+134                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+134-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:24-99
+135                android:value="60" />
+135-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:100-118
+136        </service>
+137
+138        <!-- 4. Sama Strzałka -->
+139        <service
+139-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:86:9-97:19
+140            android:name="com.mohgwatch.wear.service.TrendWhiteComplicationService"
+140-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:87:13-66
+141            android:exported="true"
+141-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:88:13-36
+142            android:icon="@drawable/ic_trend_stable"
+142-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:90:13-53
+143            android:label="Sama Strzałka"
+143-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:89:13-42
+144            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER" >
+144-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:91:13-99
+145            <intent-filter>
+145-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:50:13-52:29
+146                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+146-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:17-116
+146-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:51:25-113
+147            </intent-filter>
+148
+149            <meta-data
+149-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:13-144
+150                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+150-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:24-93
+151                android:value="SMALL_IMAGE,MONOCHROMATIC_IMAGE" />
+151-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:53:94-141
+152            <meta-data
+152-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:13-121
+153                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+153-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:24-99
+154                android:value="60" />
+154-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:54:100-118
+155        </service>
+156
+157        <!-- 12h History Tile -->
+158        <service
+158-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:100:9-110:19
+159            android:name="com.mohgwatch.wear.service.GlucoseHistoryTileService"
+159-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:101:13-62
+160            android:exported="true"
+160-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:102:13-36
+161            android:label="@string/history_tile_label"
+161-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:103:13-55
+162            android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER" >
+162-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:104:13-91
+163            <intent-filter>
+163-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:105:13-107:29
+164                <action android:name="androidx.wear.tiles.action.BIND_TILE_PROVIDER" />
+164-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:106:17-88
+164-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:106:25-85
+165            </intent-filter>
+166
+167            <meta-data
+167-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+168                android:name="android.support.wearable.watchface.preview"
+168-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+169                android:resource="@mipmap/ic_launcher" />
+169-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+170            <meta-data
+170-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+171                android:name="android.support.wearable.watchface.preview_circular"
+171-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+172                android:resource="@mipmap/ic_launcher" />
+172-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+173        </service>
+174
+175        <!-- WFF WATCH FACES (Digital) -->
+176        <service
+176-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:113:9-127:19
+177            android:name="com.mohgwatch.wear.watchface.D1ClassicWatchFace"
+177-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:114:13-57
+178            android:exported="true"
+178-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:115:13-36
+179            android:icon="@mipmap/ic_launcher"
+179-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:117:13-47
+180            android:label="MohgWatch Classic"
+180-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:116:13-46
+181            android:permission="android.permission.BIND_WALLPAPER" >
+181-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:118:13-67
+182            <intent-filter>
+182-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+183                <action android:name="android.service.wallpaper.WallpaperService" />
+183-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+183-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+184
+185                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+185-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+185-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+186            </intent-filter>
+187
+188            <meta-data
+188-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+189                android:name="android.support.wearable.watchface.preview"
+189-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+190                android:resource="@mipmap/ic_launcher" />
+190-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+191            <meta-data
+191-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+192                android:name="android.support.wearable.watchface.preview_circular"
+192-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+193                android:resource="@mipmap/ic_launcher" />
+193-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+194            <meta-data
+194-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+195                android:name="android.service.wallpaper"
+195-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+196                android:resource="@xml/watch_face_info" />
+196-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+197            <meta-data
+197-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+198                android:name="com.google.android.wearable.watchface.declarative"
+198-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+199                android:resource="@raw/wff_d1_classic" />
+199-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+200        </service>
+201        <service
+201-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:129:9-143:19
+202            android:name="com.mohgwatch.wear.watchface.D2NeonPulseWatchFace"
+202-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:130:13-59
+203            android:exported="true"
+203-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:131:13-36
+204            android:icon="@mipmap/ic_launcher"
+204-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:133:13-47
+205            android:label="Neon Pulse"
+205-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:132:13-39
+206            android:permission="android.permission.BIND_WALLPAPER" >
+206-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:134:13-67
+207            <intent-filter>
+207-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+208                <action android:name="android.service.wallpaper.WallpaperService" />
+208-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+208-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+209
+210                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+210-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+210-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+211            </intent-filter>
+212
+213            <meta-data
+213-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+214                android:name="android.support.wearable.watchface.preview"
+214-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+215                android:resource="@mipmap/ic_launcher" />
+215-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+216            <meta-data
+216-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+217                android:name="android.support.wearable.watchface.preview_circular"
+217-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+218                android:resource="@mipmap/ic_launcher" />
+218-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+219            <meta-data
+219-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+220                android:name="android.service.wallpaper"
+220-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+221                android:resource="@xml/watch_face_info" />
+221-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+222            <meta-data
+222-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+223                android:name="com.google.android.wearable.watchface.declarative"
+223-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+224                android:resource="@raw/wff_d2_neon_pulse" />
+224-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+225        </service>
+226        <service
+226-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:145:9-159:19
+227            android:name="com.mohgwatch.wear.watchface.D3MinimalWhiteWatchFace"
+227-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:146:13-62
+228            android:exported="true"
+228-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:147:13-36
+229            android:icon="@mipmap/ic_launcher"
+229-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:149:13-47
+230            android:label="Minimal White"
+230-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:148:13-42
+231            android:permission="android.permission.BIND_WALLPAPER" >
+231-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:150:13-67
+232            <intent-filter>
+232-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+233                <action android:name="android.service.wallpaper.WallpaperService" />
+233-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+233-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+234
+235                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+235-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+235-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+236            </intent-filter>
+237
+238            <meta-data
+238-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+239                android:name="android.support.wearable.watchface.preview"
+239-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+240                android:resource="@mipmap/ic_launcher" />
+240-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+241            <meta-data
+241-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+242                android:name="android.support.wearable.watchface.preview_circular"
+242-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+243                android:resource="@mipmap/ic_launcher" />
+243-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+244            <meta-data
+244-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+245                android:name="android.service.wallpaper"
+245-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+246                android:resource="@xml/watch_face_info" />
+246-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+247            <meta-data
+247-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+248                android:name="com.google.android.wearable.watchface.declarative"
+248-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+249                android:resource="@raw/wff_d3_minimal_white" />
+249-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+250        </service>
+251        <service
+251-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:161:9-175:19
+252            android:name="com.mohgwatch.wear.watchface.D4DashboardWatchFace"
+252-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:162:13-59
+253            android:exported="true"
+253-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:163:13-36
+254            android:icon="@mipmap/ic_launcher"
+254-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:165:13-47
+255            android:label="Dashboard"
+255-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:164:13-38
+256            android:permission="android.permission.BIND_WALLPAPER" >
+256-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:166:13-67
+257            <intent-filter>
+257-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+258                <action android:name="android.service.wallpaper.WallpaperService" />
+258-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+258-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+259
+260                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+260-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+260-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+261            </intent-filter>
+262
+263            <meta-data
+263-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+264                android:name="android.support.wearable.watchface.preview"
+264-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+265                android:resource="@mipmap/ic_launcher" />
+265-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+266            <meta-data
+266-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+267                android:name="android.support.wearable.watchface.preview_circular"
+267-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+268                android:resource="@mipmap/ic_launcher" />
+268-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+269            <meta-data
+269-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+270                android:name="android.service.wallpaper"
+270-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+271                android:resource="@xml/watch_face_info" />
+271-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+272            <meta-data
+272-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+273                android:name="com.google.android.wearable.watchface.declarative"
+273-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+274                android:resource="@raw/wff_d4_dashboard" />
+274-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+275        </service>
+276        <service
+276-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:177:9-191:19
+277            android:name="com.mohgwatch.wear.watchface.D5NightModeWatchFace"
+277-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:178:13-59
+278            android:exported="true"
+278-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:179:13-36
+279            android:icon="@mipmap/ic_launcher"
+279-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:181:13-47
+280            android:label="Night Mode"
+280-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:180:13-39
+281            android:permission="android.permission.BIND_WALLPAPER" >
+281-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:182:13-67
+282            <intent-filter>
+282-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+283                <action android:name="android.service.wallpaper.WallpaperService" />
+283-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+283-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+284
+285                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+285-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+285-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+286            </intent-filter>
+287
+288            <meta-data
+288-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+289                android:name="android.support.wearable.watchface.preview"
+289-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+290                android:resource="@mipmap/ic_launcher" />
+290-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+291            <meta-data
+291-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+292                android:name="android.support.wearable.watchface.preview_circular"
+292-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+293                android:resource="@mipmap/ic_launcher" />
+293-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+294            <meta-data
+294-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+295                android:name="android.service.wallpaper"
+295-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+296                android:resource="@xml/watch_face_info" />
+296-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+297            <meta-data
+297-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+298                android:name="com.google.android.wearable.watchface.declarative"
+298-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+299                android:resource="@raw/wff_d5_night_mode" />
+299-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+300        </service>
+301
+302        <!-- WFF WATCH FACES (Analog) -->
+303        <service
+303-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:194:9-208:19
+304            android:name="com.mohgwatch.wear.watchface.A1SwissHeritageWatchFace"
+304-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:195:13-63
+305            android:exported="true"
+305-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:196:13-36
+306            android:icon="@mipmap/ic_launcher"
+306-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:198:13-47
+307            android:label="Swiss Heritage"
+307-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:197:13-43
+308            android:permission="android.permission.BIND_WALLPAPER" >
+308-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:199:13-67
+309            <intent-filter>
+309-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+310                <action android:name="android.service.wallpaper.WallpaperService" />
+310-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+310-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+311
+312                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+312-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+312-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+313            </intent-filter>
+314
+315            <meta-data
+315-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+316                android:name="android.support.wearable.watchface.preview"
+316-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+317                android:resource="@mipmap/ic_launcher" />
+317-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+318            <meta-data
+318-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+319                android:name="android.support.wearable.watchface.preview_circular"
+319-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+320                android:resource="@mipmap/ic_launcher" />
+320-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+321            <meta-data
+321-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+322                android:name="android.service.wallpaper"
+322-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+323                android:resource="@xml/watch_face_info" />
+323-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+324            <meta-data
+324-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+325                android:name="com.google.android.wearable.watchface.declarative"
+325-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+326                android:resource="@raw/wff_a1_swiss_heritage" />
+326-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+327        </service>
+328        <service
+328-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:210:9-224:19
+329            android:name="com.mohgwatch.wear.watchface.A2DiverProWatchFace"
+329-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:211:13-58
+330            android:exported="true"
+330-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:212:13-36
+331            android:icon="@mipmap/ic_launcher"
+331-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:214:13-47
+332            android:label="Diver Pro"
+332-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:213:13-38
+333            android:permission="android.permission.BIND_WALLPAPER" >
+333-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:215:13-67
+334            <intent-filter>
+334-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+335                <action android:name="android.service.wallpaper.WallpaperService" />
+335-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+335-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+336
+337                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+337-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+337-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+338            </intent-filter>
+339
+340            <meta-data
+340-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+341                android:name="android.support.wearable.watchface.preview"
+341-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+342                android:resource="@mipmap/ic_launcher" />
+342-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+343            <meta-data
+343-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+344                android:name="android.support.wearable.watchface.preview_circular"
+344-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+345                android:resource="@mipmap/ic_launcher" />
+345-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+346            <meta-data
+346-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+347                android:name="android.service.wallpaper"
+347-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+348                android:resource="@xml/watch_face_info" />
+348-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+349            <meta-data
+349-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+350                android:name="com.google.android.wearable.watchface.declarative"
+350-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+351                android:resource="@raw/wff_a2_diver_pro" />
+351-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+352        </service>
+353        <service
+353-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:226:9-240:19
+354            android:name="com.mohgwatch.wear.watchface.A3ChronographWatchFace"
+354-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:227:13-61
+355            android:exported="true"
+355-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:228:13-36
+356            android:icon="@mipmap/ic_launcher"
+356-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:230:13-47
+357            android:label="Chronograph"
+357-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:229:13-40
+358            android:permission="android.permission.BIND_WALLPAPER" >
+358-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:231:13-67
+359            <intent-filter>
+359-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+360                <action android:name="android.service.wallpaper.WallpaperService" />
+360-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+360-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+361
+362                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+362-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+362-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+363            </intent-filter>
+364
+365            <meta-data
+365-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+366                android:name="android.support.wearable.watchface.preview"
+366-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+367                android:resource="@mipmap/ic_launcher" />
+367-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+368            <meta-data
+368-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+369                android:name="android.support.wearable.watchface.preview_circular"
+369-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+370                android:resource="@mipmap/ic_launcher" />
+370-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+371            <meta-data
+371-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+372                android:name="android.service.wallpaper"
+372-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+373                android:resource="@xml/watch_face_info" />
+373-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+374            <meta-data
+374-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+375                android:name="com.google.android.wearable.watchface.declarative"
+375-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+376                android:resource="@raw/wff_a3_chronograph" />
+376-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+377        </service>
+378        <service
+378-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:242:9-256:19
+379            android:name="com.mohgwatch.wear.watchface.A4FieldWatchWatchFace"
+379-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:243:13-60
+380            android:exported="true"
+380-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:244:13-36
+381            android:icon="@mipmap/ic_launcher"
+381-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:246:13-47
+382            android:label="Field Watch"
+382-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:245:13-40
+383            android:permission="android.permission.BIND_WALLPAPER" >
+383-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:247:13-67
+384            <intent-filter>
+384-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+385                <action android:name="android.service.wallpaper.WallpaperService" />
+385-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+385-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+386
+387                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+387-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+387-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+388            </intent-filter>
+389
+390            <meta-data
+390-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+391                android:name="android.support.wearable.watchface.preview"
+391-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+392                android:resource="@mipmap/ic_launcher" />
+392-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+393            <meta-data
+393-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+394                android:name="android.support.wearable.watchface.preview_circular"
+394-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+395                android:resource="@mipmap/ic_launcher" />
+395-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+396            <meta-data
+396-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+397                android:name="android.service.wallpaper"
+397-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+398                android:resource="@xml/watch_face_info" />
+398-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+399            <meta-data
+399-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+400                android:name="com.google.android.wearable.watchface.declarative"
+400-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+401                android:resource="@raw/wff_a4_field_watch" />
+401-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+402        </service>
+403        <service
+403-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:258:9-272:19
+404            android:name="com.mohgwatch.wear.watchface.A5MoonphaseWatchFace"
+404-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:259:13-59
+405            android:exported="true"
+405-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:260:13-36
+406            android:icon="@mipmap/ic_launcher"
+406-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:262:13-47
+407            android:label="Moonphase"
+407-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:261:13-38
+408            android:permission="android.permission.BIND_WALLPAPER" >
+408-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:263:13-67
+409            <intent-filter>
+409-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+410                <action android:name="android.service.wallpaper.WallpaperService" />
+410-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+410-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+411
+412                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+412-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+412-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+413            </intent-filter>
+414
+415            <meta-data
+415-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+416                android:name="android.support.wearable.watchface.preview"
+416-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+417                android:resource="@mipmap/ic_launcher" />
+417-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+418            <meta-data
+418-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+419                android:name="android.support.wearable.watchface.preview_circular"
+419-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+420                android:resource="@mipmap/ic_launcher" />
+420-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+421            <meta-data
+421-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+422                android:name="android.service.wallpaper"
+422-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+423                android:resource="@xml/watch_face_info" />
+423-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+424            <meta-data
+424-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+425                android:name="com.google.android.wearable.watchface.declarative"
+425-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+426                android:resource="@raw/wff_a5_moonphase" />
+426-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+427        </service>
+428
+429        <!-- WFF WATCH FACES (Hybrid) -->
+430        <service
+430-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:275:9-289:19
+431            android:name="com.mohgwatch.wear.watchface.H1TechFusionWatchFace"
+431-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:276:13-60
+432            android:exported="true"
+432-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:277:13-36
+433            android:icon="@mipmap/ic_launcher"
+433-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:279:13-47
+434            android:label="Tech Fusion"
+434-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:278:13-40
+435            android:permission="android.permission.BIND_WALLPAPER" >
+435-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:280:13-67
+436            <intent-filter>
+436-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+437                <action android:name="android.service.wallpaper.WallpaperService" />
+437-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+437-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+438
+439                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+439-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+439-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+440            </intent-filter>
+441
+442            <meta-data
+442-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+443                android:name="android.support.wearable.watchface.preview"
+443-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+444                android:resource="@mipmap/ic_launcher" />
+444-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+445            <meta-data
+445-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+446                android:name="android.support.wearable.watchface.preview_circular"
+446-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+447                android:resource="@mipmap/ic_launcher" />
+447-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+448            <meta-data
+448-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+449                android:name="android.service.wallpaper"
+449-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+450                android:resource="@xml/watch_face_info" />
+450-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+451            <meta-data
+451-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+452                android:name="com.google.android.wearable.watchface.declarative"
+452-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+453                android:resource="@raw/wff_h1_tech_fusion" />
+453-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+454        </service>
+455        <service
+455-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:291:9-305:19
+456            android:name="com.mohgwatch.wear.watchface.H2VitalsMonitorWatchFace"
+456-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:292:13-63
+457            android:exported="true"
+457-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:293:13-36
+458            android:icon="@mipmap/ic_launcher"
+458-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:295:13-47
+459            android:label="Vitals Monitor"
+459-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:294:13-43
+460            android:permission="android.permission.BIND_WALLPAPER" >
+460-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:296:13-67
+461            <intent-filter>
+461-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+462                <action android:name="android.service.wallpaper.WallpaperService" />
+462-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+462-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+463
+464                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+464-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+464-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+465            </intent-filter>
+466
+467            <meta-data
+467-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+468                android:name="android.support.wearable.watchface.preview"
+468-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+469                android:resource="@mipmap/ic_launcher" />
+469-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+470            <meta-data
+470-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+471                android:name="android.support.wearable.watchface.preview_circular"
+471-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+472                android:resource="@mipmap/ic_launcher" />
+472-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+473            <meta-data
+473-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+474                android:name="android.service.wallpaper"
+474-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+475                android:resource="@xml/watch_face_info" />
+475-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+476            <meta-data
+476-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+477                android:name="com.google.android.wearable.watchface.declarative"
+477-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+478                android:resource="@raw/wff_h2_vitals_monitor" />
+478-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+479        </service>
+480        <service
+480-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:307:9-321:19
+481            android:name="com.mohgwatch.wear.watchface.H3RetroDigitalWatchFace"
+481-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:308:13-62
+482            android:exported="true"
+482-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:309:13-36
+483            android:icon="@mipmap/ic_launcher"
+483-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:311:13-47
+484            android:label="Retro Digital"
+484-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:310:13-42
+485            android:permission="android.permission.BIND_WALLPAPER" >
+485-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:312:13-67
+486            <intent-filter>
+486-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+487                <action android:name="android.service.wallpaper.WallpaperService" />
+487-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+487-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+488
+489                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+489-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+489-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+490            </intent-filter>
+491
+492            <meta-data
+492-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+493                android:name="android.support.wearable.watchface.preview"
+493-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+494                android:resource="@mipmap/ic_launcher" />
+494-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+495            <meta-data
+495-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+496                android:name="android.support.wearable.watchface.preview_circular"
+496-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+497                android:resource="@mipmap/ic_launcher" />
+497-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+498            <meta-data
+498-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+499                android:name="android.service.wallpaper"
+499-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+500                android:resource="@xml/watch_face_info" />
+500-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+501            <meta-data
+501-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+502                android:name="com.google.android.wearable.watchface.declarative"
+502-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+503                android:resource="@raw/wff_h3_retro_digital" />
+503-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+504        </service>
+505        <service
+505-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:323:9-337:19
+506            android:name="com.mohgwatch.wear.watchface.H4SportTrackerWatchFace"
+506-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:324:13-62
+507            android:exported="true"
+507-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:325:13-36
+508            android:icon="@mipmap/ic_launcher"
+508-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:327:13-47
+509            android:label="Sport Tracker"
+509-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:326:13-42
+510            android:permission="android.permission.BIND_WALLPAPER" >
+510-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:328:13-67
+511            <intent-filter>
+511-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+512                <action android:name="android.service.wallpaper.WallpaperService" />
+512-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+512-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+513
+514                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+514-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+514-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+515            </intent-filter>
+516
+517            <meta-data
+517-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+518                android:name="android.support.wearable.watchface.preview"
+518-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+519                android:resource="@mipmap/ic_launcher" />
+519-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+520            <meta-data
+520-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+521                android:name="android.support.wearable.watchface.preview_circular"
+521-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+522                android:resource="@mipmap/ic_launcher" />
+522-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+523            <meta-data
+523-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+524                android:name="android.service.wallpaper"
+524-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+525                android:resource="@xml/watch_face_info" />
+525-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+526            <meta-data
+526-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+527                android:name="com.google.android.wearable.watchface.declarative"
+527-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+528                android:resource="@raw/wff_h4_sport_tracker" />
+528-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+529        </service>
+530        <service
+530-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:339:9-353:19
+531            android:name="com.mohgwatch.wear.watchface.H5AuroraWatchFace"
+531-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:340:13-56
+532            android:exported="true"
+532-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:341:13-36
+533            android:icon="@mipmap/ic_launcher"
+533-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:343:13-47
+534            android:label="Aurora"
+534-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:342:13-35
+535            android:permission="android.permission.BIND_WALLPAPER" >
+535-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:344:13-67
+536            <intent-filter>
+536-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:119:13-122:29
+537                <action android:name="android.service.wallpaper.WallpaperService" />
+537-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:17-85
+537-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:120:25-82
+538
+539                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+539-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:17-102
+539-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:121:27-99
+540            </intent-filter>
+541
+542            <meta-data
+542-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:13-123
+543                android:name="android.support.wearable.watchface.preview"
+543-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:24-81
+544                android:resource="@mipmap/ic_launcher" />
+544-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:27:82-120
+545            <meta-data
+545-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:13-132
+546                android:name="android.support.wearable.watchface.preview_circular"
+546-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:24-90
+547                android:resource="@mipmap/ic_launcher" />
+547-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:28:91-129
+548            <meta-data
+548-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:13-107
+549                android:name="android.service.wallpaper"
+549-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:24-64
+550                android:resource="@xml/watch_face_info" />
+550-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:125:65-104
+551            <meta-data
+551-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:13-130
+552                android:name="com.google.android.wearable.watchface.declarative"
+552-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:24-88
+553                android:resource="@raw/wff_h5_aurora" />
+553-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:126:89-127
+554        </service>
+555
+556        <meta-data
+556-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:355:9-357:69
+557            android:name="com.google.android.gms.version"
+557-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:356:13-58
+558            android:value="@integer/google_play_services_version" />
+558-->C:\Antigravity Projects\MohgWatch\wear\src\main\AndroidManifest.xml:357:13-66
+559
+560        <activity
+560-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
+561            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+561-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
+562            android:exported="false"
+562-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
+563            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+563-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\e11592b896e57ee3552fd5cbceef37de\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
+564
+565        <service
+565-->[androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+566            android:name="androidx.room.MultiInstanceInvalidationService"
+566-->[androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+567            android:directBootAware="true"
+567-->[androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+568            android:exported="false" />
+568-->[androidx.room:room-runtime:2.6.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\3fcc179ec8442ba36baee8e719648337\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+569
+570        <uses-library
+570-->[androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:8:9-10:40
+571            android:name="com.google.android.wearable"
+571-->[androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:9:13-55
+572            android:required="false" />
+572-->[androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1] C:\Users\polas\.gradle\caches\8.14.5\transforms\223c303e6c5eaabfb2e2e594014c2da2\transformed\watchface-complications-data-source-ktx-1.2.1\AndroidManifest.xml:10:13-37
+573        <uses-library
+573-->[androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:23:9-25:40
+574            android:name="wear-sdk"
+574-->[androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:24:13-36
+575            android:required="false" />
+575-->[androidx.wear.compose:compose-foundation:1.5.0-alpha04] C:\Users\polas\.gradle\caches\8.14.5\transforms\d7a7cbefe1869cd5bbf85d31bf71010b\transformed\compose-foundation-1.5.0-alpha04\AndroidManifest.xml:25:13-37
+576
+577        <provider
+577-->[androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:24:9-32:20
+578            android:name="androidx.startup.InitializationProvider"
+578-->[androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:25:13-67
+579            android:authorities="com.mohgwatch.androidx-startup"
+579-->[androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:26:13-68
+580            android:exported="false" >
+580-->[androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:27:13-37
+581            <meta-data
+581-->[androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:29:13-31:52
+582                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+582-->[androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:30:17-75
+583                android:value="androidx.startup" />
+583-->[androidx.emoji2:emoji2:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\584c011840a17d667dd447a5a02280de\transformed\emoji2-1.4.0\AndroidManifest.xml:31:17-49
+584            <meta-data
+584-->[androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:29:13-31:52
+585                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+585-->[androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:30:17-78
+586                android:value="androidx.startup" />
+586-->[androidx.lifecycle:lifecycle-process:2.9.0-alpha05] C:\Users\polas\.gradle\caches\8.14.5\transforms\5ffde72160ded7f8288b8913ac18a3e3\transformed\lifecycle-process-2.9.0-alpha05\AndroidManifest.xml:31:17-49
+587            <meta-data
+587-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+588                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+588-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+589                android:value="androidx.startup" />
+589-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+590        </provider>
+591
+592        <receiver
+592-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+593            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+593-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+594            android:directBootAware="false"
+594-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+595            android:enabled="true"
+595-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+596            android:exported="true"
+596-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+597            android:permission="android.permission.DUMP" >
+597-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+598            <intent-filter>
+598-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+599                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+599-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+599-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+600            </intent-filter>
+601            <intent-filter>
+601-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+602                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+602-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+602-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+603            </intent-filter>
+604            <intent-filter>
+604-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+605                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+605-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+605-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+606            </intent-filter>
+607            <intent-filter>
+607-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+608                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+608-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+608-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\polas\.gradle\caches\8.14.5\transforms\5684279833833e04d42a67656186afb7\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+609            </intent-filter>
+610        </receiver>
+611    </application>
+612
+613</manifest>
