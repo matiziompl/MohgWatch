@@ -301,31 +301,34 @@ class GlucoseSyncService : Service() {
             )
         }
 
+        val now = System.currentTimeMillis()
+        val triggerTime = now - (now % intervalMs) + intervalMs
+
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 if (alarmManager.canScheduleExactAlarms()) {
-                    alarmManager.setExact(
+                    alarmManager.setExactAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis() + intervalMs,
+                        triggerTime,
                         pendingIntent
                     )
                 } else {
                     alarmManager.setAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP,
-                        System.currentTimeMillis() + intervalMs,
+                        triggerTime,
                         pendingIntent
                     )
                 }
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExact(
+                alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis() + intervalMs,
+                    triggerTime,
                     pendingIntent
                 )
             } else {
                 alarmManager.setExact(
                     AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis() + intervalMs,
+                    triggerTime,
                     pendingIntent
                 )
             }
@@ -334,7 +337,7 @@ class GlucoseSyncService : Service() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 alarmManager.setAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis() + intervalMs,
+                    triggerTime,
                     pendingIntent
                 )
             }
@@ -344,58 +347,69 @@ class GlucoseSyncService : Service() {
     private fun doSyncAndScheduleNext() {
         syncJob?.cancel()
         syncJob = serviceScope.launch {
-            val creds = credentialStore.getCredentials()
-            val lang = settingsStore.getSettings().language
-            if (creds == null) {
-                val errorMsg = trStr(lang, "Brak danych logowania. Zaloguj się w zakładce Logowanie!", "No login data. Please sign in in the Login tab!")
-                GlucoseSyncState.syncStatusText.value = errorMsg
-                GlucoseSyncState.lastError.value = errorMsg
-                updateNotification(trStr(lang, "Brak danych logowania — otwórz aplikację", "No login data — open app"), null)
-                return@launch
-            }
-
-            if (!apiClient.isAuthenticated()) {
-                apiClient.restoreSession(
-                    token = creds.token,
-                    userId = creds.userId,
-                    region = creds.region,
-                    expires = creds.expires,
-                    patientId = creds.patientId
-                )
-            }
-
-            val settings = settingsStore.getSettings()
-            val intervalMs = settings.pollIntervalMinutes * 60_000L
-
+            val powerManager = getSystemService(Context.POWER_SERVICE) as android.os.PowerManager
+            val wakeLock = powerManager.newWakeLock(android.os.PowerManager.PARTIAL_WAKE_LOCK, "MohgWatch::SyncWakeLock")
+            wakeLock.acquire(3 * 60 * 1000L) // 3 minuty max timeout
+            
+            var intervalMs = 5 * 60_000L // Domyślny interwał awaryjny
+            
             try {
-                syncOnce(settings.alertLowThreshold, settings.alertHighThreshold)
-            } catch (e: Exception) {
-                Log.e(TAG, "Wyjątek w synchronizacji", e)
-                GlucoseSyncState.lastError.value = e.localizedMessage
-                GlucoseSyncState.syncStatusText.value = "Błąd: ${e.localizedMessage}"
-                updateNotification(trStr(lang, "Błąd synchronizacji: ${e.message}", "Sync error: ${e.message}"), null)
+                val settings = settingsStore.getSettings()
+                intervalMs = settings.pollIntervalMinutes * 60_000L
+                val lang = settings.language
                 
-                if (settings.notifyDisconnect && !isCurrentlyDisconnected) {
-                    isCurrentlyDisconnected = true
-                    sendAlertNotification(trStr(lang, "Rozłączono", "Disconnected"), trStr(lang, "Aplikacja natrafiła na błąd: ${e.message}", "App encountered an error: ${e.message}"), settings.disconnectSoundUri, ALERT_DISCONNECT_CHANNEL_ID)
+                val creds = credentialStore.getCredentials()
+                if (creds == null) {
+                    val errorMsg = trStr(lang, "Brak danych logowania. Zaloguj się w zakładce Logowanie!", "No login data. Please sign in in the Login tab!")
+                    GlucoseSyncState.syncStatusText.value = errorMsg
+                    GlucoseSyncState.lastError.value = errorMsg
+                    updateNotification(trStr(lang, "Brak danych logowania — otwórz aplikację", "No login data — open app"), null)
+                    return@launch
                 }
-            }
-
-            val latestReading = GlucoseSyncState.latestReading.value
-            if (latestReading != null && settings.notifyStaleDataWatch) {
-                val stalenessMinutes = (System.currentTimeMillis() - latestReading.timestamp) / 60000L
-                if (stalenessMinutes >= 5) {
-                    dataLayerSender.sendStaleDataAlert(stalenessMinutes)
+    
+                if (!apiClient.isAuthenticated()) {
+                    apiClient.restoreSession(
+                        token = creds.token,
+                        userId = creds.userId,
+                        region = creds.region,
+                        expires = creds.expires,
+                        patientId = creds.patientId
+                    )
                 }
-            }
-
-            dataLayerSender.sendConnectionStatus(
-                connected = true,
-                lastSync = System.currentTimeMillis()
-            )
-
-            if (GlucoseSyncState.isSyncing.value) {
-                scheduleNextSync(intervalMs)
+    
+                try {
+                    syncOnce(settings.alertLowThreshold, settings.alertHighThreshold)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Wyjątek w synchronizacji", e)
+                    GlucoseSyncState.lastError.value = e.localizedMessage
+                    GlucoseSyncState.syncStatusText.value = "Błąd: ${e.localizedMessage}"
+                    updateNotification(trStr(lang, "Błąd synchronizacji: ${e.message}", "Sync error: ${e.message}"), null)
+                    
+                    if (settings.notifyDisconnect && !isCurrentlyDisconnected) {
+                        isCurrentlyDisconnected = true
+                        sendAlertNotification(trStr(lang, "Rozłączono", "Disconnected"), trStr(lang, "Aplikacja natrafiła na błąd: ${e.message}", "App encountered an error: ${e.message}"), settings.disconnectSoundUri, ALERT_DISCONNECT_CHANNEL_ID)
+                    }
+                }
+    
+                val latestReading = GlucoseSyncState.latestReading.value
+                if (latestReading != null && settings.notifyStaleDataWatch) {
+                    val stalenessMinutes = (System.currentTimeMillis() - latestReading.timestamp) / 60000L
+                    if (stalenessMinutes >= 5) {
+                        dataLayerSender.sendStaleDataAlert(stalenessMinutes)
+                    }
+                }
+    
+                dataLayerSender.sendConnectionStatus(
+                    connected = true,
+                    lastSync = System.currentTimeMillis()
+                )
+            } finally {
+                if (GlucoseSyncState.isSyncing.value) {
+                    scheduleNextSync(intervalMs)
+                }
+                if (wakeLock.isHeld) {
+                    wakeLock.release()
+                }
             }
         }
     }

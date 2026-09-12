@@ -29,10 +29,21 @@ import com.mohgwatch.phone.util.LocalAppLanguage
 import com.mohgwatch.phone.util.tr
 import dagger.hilt.android.AndroidEntryPoint
 
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        lifecycleScope.launch {
+            val credentialStore = com.mohgwatch.phone.data.CredentialStore(this@MainActivity)
+            if (credentialStore.hasCredentials()) {
+                com.mohgwatch.phone.service.GlucoseSyncService.start(this@MainActivity)
+            }
+        }
+        
         enableEdgeToEdge()
         setContent {
             MohgWatchAppContent()

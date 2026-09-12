@@ -311,8 +311,8 @@ class LibreLinkUpClient {
      * Retry z exponential backoff.
      */
     private suspend fun <T> withRetry(
-        maxAttempts: Int = 3,
-        initialDelayMs: Long = 1000,
+        maxAttempts: Int = 5,
+        initialDelayMs: Long = 3000,
         block: suspend () -> ApiResult<T>
     ): ApiResult<T> {
         var currentDelay = initialDelayMs
@@ -320,7 +320,7 @@ class LibreLinkUpClient {
             val result = block()
             if (result is ApiResult.NetworkError) {
                 delay(currentDelay)
-                currentDelay *= 2
+                currentDelay = (currentDelay * 1.5).toLong()
             } else {
                 return result
             }

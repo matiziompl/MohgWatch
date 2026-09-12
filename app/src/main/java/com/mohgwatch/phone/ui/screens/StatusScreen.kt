@@ -295,26 +295,27 @@ fun StatusScreen() {
             OutlinedButton(
                 onClick = {
                     GlucoseSyncService.stop(context)
+                    (context as? android.app.Activity)?.finishAffinity()
                 },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
             ) {
-                Icon(Icons.Filled.Stop, null)
+                Icon(Icons.Filled.PowerSettingsNew, null)
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(tr("Zatrzymaj", "Stop"))
+                Text(tr("Wyłącz aplikację", "Exit app"))
             }
             Button(
                 onClick = {
-                    GlucoseSyncService.start(context)
+                    GlucoseSyncService.forceSync(context)
                 },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen, contentColor = androidx.compose.ui.graphics.Color.White)
             ) {
-                Icon(Icons.Filled.PlayArrow, null)
+                Icon(Icons.Filled.Sync, null)
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(tr("Uruchom", "Start"))
+                Text(tr("Synchronizuj", "Sync"))
             }
         }
         
