@@ -14,6 +14,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -200,7 +205,7 @@ fun MultiThumbSlider(
     onValuesChange: (List<Float>) -> Unit,
     onValuesChangeFinished: () -> Unit
 ) {
-    var width by remember { mutableStateOf(0f) }
+    var sliderWidth by remember { mutableStateOf(0f) }
     var draggingThumb by remember { mutableStateOf<Int?>(null) }
     
     val thumbRadius = 16.dp
@@ -218,15 +223,15 @@ fun MultiThumbSlider(
                 .fillMaxWidth()
                 .height(48.dp)
                 .padding(horizontal = thumbRadius)
-                .androidx.compose.ui.layout.onGloballyPositioned { width = it.size.width.toFloat() }
-                .androidx.compose.ui.input.pointer.pointerInput(width) {
-                    androidx.compose.foundation.gestures.detectHorizontalDragGestures(
+                .onGloballyPositioned { sliderWidth = it.size.width.toFloat() }
+                .pointerInput(sliderWidth) {
+                    detectHorizontalDragGestures(
                         onDragStart = { offset ->
                             // Find closest thumb
                             var closestIdx = -1
                             var minDistance = Float.MAX_VALUE
                             for (i in values.indices) {
-                                val valOffset = ((values[i] - valueRange.start) / rangeSize) * width
+                                val valOffset = ((values[i] - valueRange.start) / rangeSize) * sliderWidth
                                 val distance = Math.abs(valOffset - offset.x)
                                 if (distance < thumbRadiusPx * 2 && distance < minDistance) {
                                     minDistance = distance
@@ -248,9 +253,9 @@ fun MultiThumbSlider(
                             change.consume()
                             draggingThumb?.let { idx ->
                                 val currentVal = values[idx]
-                                val currentOffset = ((currentVal - valueRange.start) / rangeSize) * width
-                                val newOffset = (currentOffset + dragAmount).coerceIn(0f, width)
-                                var newVal = Math.round((newOffset / width) * rangeSize + valueRange.start).toFloat()
+                                val currentOffset = ((currentVal - valueRange.start) / rangeSize) * sliderWidth
+                                val newOffset = (currentOffset + dragAmount).coerceIn(0f, sliderWidth)
+                                var newVal = Math.round((newOffset / sliderWidth) * rangeSize + valueRange.start).toFloat()
                                 
                                 // Enforce minimum distance of 1.0 between thumbs
                                 if (idx > 0) {
