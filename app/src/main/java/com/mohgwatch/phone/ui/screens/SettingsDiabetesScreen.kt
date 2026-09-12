@@ -206,11 +206,10 @@ fun MultiThumbSlider(
     var sliderWidth by remember { mutableStateOf(0f) }
     var draggingThumb by remember { mutableStateOf<Int?>(null) }
     
-    val thumbRadius = 16.dp
+    val thumbRadius = 10.dp
     val thumbRadiusPx = with(androidx.compose.ui.platform.LocalDensity.current) { thumbRadius.toPx() }
-    val trackHeight = 4.dp
-    val trackColor = MaterialTheme.colorScheme.surfaceVariant
-    val activeTrackColor = MaterialTheme.colorScheme.primary
+    val trackHeight = 16.dp
+    val trackColor = androidx.compose.ui.graphics.Color(0xFF81D4FA) // Jasno niebieski
     val thumbColor = MaterialTheme.colorScheme.primary
     
     val rangeSize = valueRange.endInclusive - valueRange.start
