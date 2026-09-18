@@ -191,6 +191,37 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Miejsca wstrzyknięć", style = MaterialTheme.typography.titleMedium)
+                            Text(
+                                "Pokaż sugerowane miejsca wkłuć",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Switch(
+                            checked = settings.showInjectionSites,
+                            onCheckedChange = { 
+                                scope.launch {
+                                    val newSettings = settings.copy(showInjectionSites = it)
+                                    settingsStore.saveSettings(newSettings)
+                                    dataLayerSender.sendSettings(newSettings)
+                                }
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -208,7 +239,7 @@ fun MultiThumbSlider(
     
     val thumbRadius = 10.dp
     val thumbRadiusPx = with(androidx.compose.ui.platform.LocalDensity.current) { thumbRadius.toPx() }
-    val trackHeight = 16.dp
+    val trackHeight = 4.dp
     val trackColor = androidx.compose.ui.graphics.Color(0xFF81D4FA) // Jasno niebieski
     val thumbColor = MaterialTheme.colorScheme.primary
     

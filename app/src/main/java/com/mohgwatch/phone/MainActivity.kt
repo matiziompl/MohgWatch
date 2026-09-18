@@ -84,7 +84,6 @@ fun MohgWatchNavigation() {
     val bottomNavItems = listOf(
         Triple(Screen.Status, Icons.Filled.MonitorHeart, tr("Status", "Status")),
         Triple(Screen.SettingsNotifications, Icons.Filled.Notifications, tr("Powiadomienia", "Notifications")),
-        Triple(Screen.Logs, Icons.AutoMirrored.Filled.List, tr("Logi", "Logs")),
         Triple(Screen.Settings, Icons.Filled.Settings, tr("Ustawienia", "Settings"))
     )
 
@@ -107,8 +106,6 @@ fun MohgWatchNavigation() {
                                     if (screen == Screen.Settings && currentRoute?.startsWith("settings") == true && currentRoute != Screen.SettingsNotifications.route) {
                                         navController.popBackStack(Screen.Settings.route, inclusive = false)
                                     } else if (screen == Screen.SettingsNotifications && currentRoute == Screen.SettingsNotifications.route) {
-                                        // Do nothing
-                                    } else if (screen == Screen.Logs && currentRoute == Screen.Logs.route) {
                                         // Do nothing
                                     } else if (screen == Screen.Status && currentRoute?.startsWith("status") == true) {
                                         navController.popBackStack(Screen.Status.route, inclusive = false)
@@ -156,7 +153,8 @@ fun MohgWatchNavigation() {
                     onNavigateToDiabetes = { navController.navigate(Screen.SettingsDiabetes.route) },
                     onNavigateToAccount = { navController.navigate(Screen.SettingsAccount.route) },
                     onNavigateToTheme = { navController.navigate(Screen.SettingsTheme.route) },
-                    onNavigateToGeneral = { navController.navigate(Screen.SettingsGeneral.route) }
+                    onNavigateToGeneral = { navController.navigate(Screen.SettingsGeneral.route) },
+                    onNavigateToLogs = { navController.navigate(Screen.Logs.route) }
                 )
             }
             composable(Screen.SettingsDiabetes.route) {

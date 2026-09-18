@@ -285,6 +285,34 @@ fun StatusScreen() {
             }
         }
 
+        if (settings.showInjectionSites) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    val epochDay = java.time.LocalDate.now().toEpochDay()
+                    val cycleIndex = (epochDay % 6).toInt()
+                    val sites = when (cycleIndex) {
+                        0 -> "Lewa dolna część brzucha, Dół lewego uda"
+                        1 -> "Prawa dolna część brzucha, Dół prawego uda"
+                        2 -> "Lewa środkowa część brzucha, Środek lewego uda"
+                        3 -> "Prawa środkowa część brzucha, Środek prawego uda"
+                        4 -> "Lewa górna część brzucha, Góra lewego uda"
+                        5 -> "Prawa górna część brzucha, Góra prawego uda"
+                        else -> ""
+                    }
+                    Text(
+                        text = "Dzisiejsze miejsca zastrzyków: $sites",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         // Control buttons

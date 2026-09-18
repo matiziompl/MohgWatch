@@ -213,6 +213,37 @@ fun SettingsGeneralScreen(onBack: () -> Unit) {
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(tr("Trzymaj wybudzenie", "Persistent WakeLock"), style = MaterialTheme.typography.titleMedium)
+                            Text(
+                                tr("Zapobiega uśpieniu telefonu", "Prevents phone from sleeping"),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Switch(
+                            checked = settings.persistentWakeLockEnabled,
+                            onCheckedChange = { 
+                                scope.launch {
+                                    val newSettings = settings.copy(persistentWakeLockEnabled = it)
+                                    settingsStore.saveSettings(newSettings)
+                                    dataLayerSender.sendSettings(newSettings)
+                                }
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 }

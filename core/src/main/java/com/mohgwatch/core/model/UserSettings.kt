@@ -79,7 +79,9 @@ data class UserSettings(
     val trendThresholdFastFalling: Float = -5f,
     val trendThresholdFalling: Float = -2f,
     val trendThresholdRising: Float = 2f,
-    val trendThresholdFastRising: Float = 5f
+    val trendThresholdFastRising: Float = 5f,
+    val persistentWakeLockEnabled: Boolean = false,
+    val showInjectionSites: Boolean = false
 ) {
     fun isInRange(value: Float): Boolean = value in lowThreshold..highThreshold
     fun isLow(value: Float): Boolean = value < lowThreshold

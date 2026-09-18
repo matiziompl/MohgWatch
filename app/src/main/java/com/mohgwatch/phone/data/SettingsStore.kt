@@ -58,6 +58,8 @@ class SettingsStore(private val context: Context) {
         val TREND_FALLING = floatPreferencesKey("trend_falling")
         val TREND_RISING = floatPreferencesKey("trend_rising")
         val TREND_FAST_RISING = floatPreferencesKey("trend_fast_rising")
+        val PERSISTENT_WAKELOCK_ENABLED = booleanPreferencesKey("persistent_wakelock_enabled")
+        val SHOW_INJECTION_SITES = booleanPreferencesKey("show_injection_sites")
     }
 
     val settingsFlow: Flow<UserSettings> = context.settingsDataStore.data.map { prefs ->
@@ -108,7 +110,9 @@ class SettingsStore(private val context: Context) {
             trendThresholdFastFalling = prefs[Keys.TREND_FAST_FALLING] ?: -5f,
             trendThresholdFalling = prefs[Keys.TREND_FALLING] ?: -2f,
             trendThresholdRising = prefs[Keys.TREND_RISING] ?: 2f,
-            trendThresholdFastRising = prefs[Keys.TREND_FAST_RISING] ?: 5f
+            trendThresholdFastRising = prefs[Keys.TREND_FAST_RISING] ?: 5f,
+            persistentWakeLockEnabled = prefs[Keys.PERSISTENT_WAKELOCK_ENABLED] ?: false,
+            showInjectionSites = prefs[Keys.SHOW_INJECTION_SITES] ?: false
         )
     }
 
@@ -151,6 +155,8 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.TREND_FALLING] = settings.trendThresholdFalling
             prefs[Keys.TREND_RISING] = settings.trendThresholdRising
             prefs[Keys.TREND_FAST_RISING] = settings.trendThresholdFastRising
+            prefs[Keys.PERSISTENT_WAKELOCK_ENABLED] = settings.persistentWakeLockEnabled
+            prefs[Keys.SHOW_INJECTION_SITES] = settings.showInjectionSites
         }
     }
 }

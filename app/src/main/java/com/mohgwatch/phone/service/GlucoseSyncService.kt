@@ -108,6 +108,7 @@ class GlucoseSyncService : Service() {
     private lateinit var logsStore: com.mohgwatch.phone.data.LogsStore
 
     private var syncJob: Job? = null
+    private var persistentWakeLock: android.os.PowerManager.WakeLock? = null
     
     // State tracking for alerts
     private var isCurrentlyOutOfRange = false
@@ -115,6 +116,21 @@ class GlucoseSyncService : Service() {
     private val mutedAlerts = java.util.concurrent.CopyOnWriteArraySet<Int>()
     private val activeMediaPlayers = java.util.concurrent.CopyOnWriteArrayList<android.media.MediaPlayer>()
     private var lastClearedTimestamp = 0L
+
+    private fun updatePersistentWakeLock(enabled: Boolean) {
+        if (enabled && GlucoseSyncState.isSyncing.value) {
+            if (persistentWakeLock == null) {
+                val powerManager = getSystemService(Context.POWER_SERVICE) as android.os.PowerManager
+                persistentWakeLock = powerManager.newWakeLock(android.os.PowerManager.PARTIAL_WAKE_LOCK, "MohgWatch::PersistentWakeLock")
+                persistentWakeLock?.acquire()
+            }
+        } else {
+            persistentWakeLock?.let {
+                if (it.isHeld) it.release()
+            }
+            persistentWakeLock = null
+        }
+    }
 
     private val alertActionReceiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -263,6 +279,7 @@ class GlucoseSyncService : Service() {
         unregisterReceiver(alertActionReceiver)
         serviceScope.cancel()
         GlucoseSyncState.isSyncing.value = false
+        updatePersistentWakeLock(false)
         super.onDestroy()
     }
 
@@ -355,6 +372,7 @@ class GlucoseSyncService : Service() {
             
             try {
                 val settings = settingsStore.getSettings()
+                updatePersistentWakeLock(settings.persistentWakeLockEnabled)
                 intervalMs = settings.pollIntervalMinutes * 60_000L
                 val lang = settings.language
                 
@@ -653,6 +671,7 @@ class GlucoseSyncService : Service() {
         alarmManager.cancel(pendingIntent)
         GlucoseSyncState.isSyncing.value = false
         GlucoseSyncState.syncStatusText.value = "Synchronizacja zatrzymana"
+        updatePersistentWakeLock(false)
     }
 
     private fun createNotificationChannel() {

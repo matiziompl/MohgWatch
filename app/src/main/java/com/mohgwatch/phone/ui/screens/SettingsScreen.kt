@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,7 +22,8 @@ fun SettingsScreen(
     onNavigateToDiabetes: () -> Unit,
     onNavigateToAccount: () -> Unit,
     onNavigateToTheme: () -> Unit,
-    onNavigateToGeneral: () -> Unit
+    onNavigateToGeneral: () -> Unit,
+    onNavigateToLogs: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -70,6 +72,13 @@ fun SettingsScreen(
                 description = "Zarządzanie kontem, autoryzacja",
                 icon = Icons.Filled.Person,
                 onClick = onNavigateToAccount
+            )
+
+            SettingsMenuItem(
+                title = "Logi rozłączeń",
+                description = "Historia logów aplikacji",
+                icon = Icons.AutoMirrored.Filled.List,
+                onClick = onNavigateToLogs
             )
 
             Spacer(modifier = Modifier.height(24.dp))
