@@ -63,7 +63,7 @@ fun LogsScreen(onBack: () -> Unit = {}) {
             title = { Text("Logi rozłączeń") },
             navigationIcon = {
                 IconButton(onClick = onBack) {
-                    Icon(androidx.compose.material.icons.Icons.AutoMirrored.Filled.ArrowBack, "Wstecz")
+                    Icon(androidx.compose.material.icons.automirrored.filled.ArrowBack, "Wstecz")
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
