@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.Icons
 import com.mohgwatch.core.model.DisconnectLog
 import com.mohgwatch.core.model.LogBgColor
 import com.mohgwatch.core.model.ThemeMode
@@ -63,7 +65,7 @@ fun LogsScreen(onBack: () -> Unit = {}) {
             title = { Text("Logi rozłączeń") },
             navigationIcon = {
                 IconButton(onClick = onBack) {
-                    Icon(androidx.compose.material.icons.automirrored.filled.ArrowBack, "Wstecz")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Wstecz")
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
