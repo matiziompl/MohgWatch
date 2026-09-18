@@ -296,18 +296,25 @@ fun StatusScreen() {
                     val epochDay = java.time.LocalDate.now().toEpochDay()
                     val cycleIndex = (epochDay % 6).toInt()
                     val sites = when (cycleIndex) {
-                        0 -> "Lewa dolna część brzucha, Dół lewego uda"
-                        1 -> "Prawa dolna część brzucha, Dół prawego uda"
-                        2 -> "Lewa środkowa część brzucha, Środek lewego uda"
-                        3 -> "Prawa środkowa część brzucha, Środek prawego uda"
-                        4 -> "Lewa górna część brzucha, Góra lewego uda"
-                        5 -> "Prawa górna część brzucha, Góra prawego uda"
+                        0 -> "Lewa dolna część brzucha - Dół lewego uda"
+                        1 -> "Prawa dolna część brzucha - Dół prawego uda"
+                        2 -> "Lewa środkowa część brzucha - Środek lewego uda"
+                        3 -> "Prawa środkowa część brzucha - Środek prawego uda"
+                        4 -> "Lewa górna część brzucha - Góra lewego uda"
+                        5 -> "Prawa górna część brzucha - Góra prawego uda"
                         else -> ""
                     }
                     Text(
-                        text = "Dzisiejsze miejsca zastrzyków: $sites",
+                        text = "Dzisiejsze miejsca zastrzyków:",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = sites,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }

@@ -146,7 +146,7 @@ fun MohgWatchNavigation() {
                 StatusScreen()
             }
             composable(Screen.Logs.route) {
-                LogsScreen()
+                LogsScreen(onBack = { navController.popBackStack() })
             }
             composable(Screen.Settings.route) {
                 SettingsScreen(

@@ -325,10 +325,13 @@ fun MultiThumbSlider(
                 // Draw thumbs
                 for (v in values) {
                     val px = ((v - valueRange.start) / rangeSize) * size.width
-                    drawCircle(
+                    val pillWidth = thumbRadiusPx * 0.6f
+                    val pillHeight = thumbRadiusPx * 2f
+                    drawRoundRect(
                         color = thumbColor,
-                        radius = thumbRadiusPx,
-                        center = androidx.compose.ui.geometry.Offset(px, centerY)
+                        topLeft = androidx.compose.ui.geometry.Offset(px - pillWidth / 2f, centerY - pillHeight / 2f),
+                        size = androidx.compose.ui.geometry.Size(pillWidth, pillHeight),
+                        cornerRadius = androidx.compose.ui.geometry.CornerRadius(pillWidth / 2f, pillWidth / 2f)
                     )
                 }
             }

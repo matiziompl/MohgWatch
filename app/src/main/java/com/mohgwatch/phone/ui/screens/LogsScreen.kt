@@ -25,7 +25,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LogsScreen() {
+fun LogsScreen(onBack: () -> Unit = {}) {
     val context = LocalContext.current
     val logsStore = remember { LogsStore(context) }
     val settingsStore = remember { SettingsStore(context) }
@@ -59,12 +59,14 @@ fun LogsScreen() {
     val textColor = if (isDark) Color.White else Color.Black
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Text(
-            "Logi rozłączeń",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 16.dp),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        TopAppBar(
+            title = { Text("Logi rozłączeń") },
+            navigationIcon = {
+                IconButton(onClick = onBack) {
+                    Icon(androidx.compose.material.icons.Icons.AutoMirrored.Filled.ArrowBack, "Wstecz")
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
         )
         
         LazyColumn(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
