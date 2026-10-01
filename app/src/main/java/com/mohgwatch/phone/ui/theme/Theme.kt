@@ -93,7 +93,7 @@ fun MohgWatchTheme(
     } else appTheme
 
     val colorScheme = when (actualAppTheme) {
-        AppTheme.DEFAULT, AppTheme.TEAL, AppTheme.MATCH_BACKGROUND -> if (darkTheme) createDarkColorScheme(Teal500, Teal700, Teal400) else createLightColorScheme(Teal600, Teal400, Teal700)
+        AppTheme.DEFAULT, AppTheme.TEAL, AppTheme.MATCH_BACKGROUND, AppTheme.MATCH_GLUCOSE -> if (darkTheme) createDarkColorScheme(Teal500, Teal700, Teal400) else createLightColorScheme(Teal600, Teal400, Teal700)
         AppTheme.BLUE -> if (darkTheme) createDarkColorScheme(Blue500, Blue700, Blue400) else createLightColorScheme(Blue600, Blue400, Blue700)
         AppTheme.RED -> if (darkTheme) createDarkColorScheme(Red500, Red700, Red400) else createLightColorScheme(Red600, Red400, Red700)
         AppTheme.GREEN -> if (darkTheme) createDarkColorScheme(Green500, Green700, Green400) else createLightColorScheme(Green600, Green400, Green700)

@@ -13,6 +13,7 @@ sealed class Screen(val route: String) {
     data object SettingsAccount : Screen("settings/account")
     data object SettingsTheme : Screen("settings/theme")
     data object SettingsNotifications : Screen("settings/notifications")
+    data object SettingsNotificationTests : Screen("settings/notification_tests")
     data object SettingsGeneral : Screen("settings/general")
     data object SettingsChart : Screen("settings/chart")
     data object SettingsWatch : Screen("settings/watch")

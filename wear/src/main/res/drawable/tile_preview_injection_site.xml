@@ -1,0 +1,51 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    <!-- Circle AMOLED background -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M100,100m-100,0a100,100 0,1 1,200 0a100,100 0,1 1,-200 0" />
+
+    <!-- 2x3 Grid of Injection Sites (lowered & centered) -->
+    <!-- Row 0: Lower abdomen (top) -->
+    <!-- Left slot (inactive) -->
+    <path
+        android:fillColor="#18212F"
+        android:strokeColor="#334155"
+        android:strokeWidth="1.5"
+        android:pathData="M 50,56 L 94,56 A 8,8 0 0 1 102,64 L 102,82 A 8,8 0 0 1 94,90 L 50,90 A 8,8 0 0 1 42,82 L 42,64 A 8,8 0 0 1 50,56 Z" />
+    <!-- Right slot (ACTIVE - Teal) -->
+    <path
+        android:fillColor="#2DD4BF"
+        android:pathData="M 114,56 L 158,56 A 8,8 0 0 1 166,64 L 166,82 A 8,8 0 0 1 158,90 L 114,90 A 8,8 0 0 1 106,82 L 106,64 A 8,8 0 0 1 114,56 Z" />
+
+    <!-- Row 1: Middle abdomen -->
+    <!-- Left slot (inactive) -->
+    <path
+        android:fillColor="#18212F"
+        android:strokeColor="#334155"
+        android:strokeWidth="1.5"
+        android:pathData="M 50,98 L 94,98 A 8,8 0 0 1 102,106 L 102,124 A 8,8 0 0 1 94,132 L 50,132 A 8,8 0 0 1 42,124 L 42,106 A 8,8 0 0 1 50,98 Z" />
+    <!-- Right slot (inactive) -->
+    <path
+        android:fillColor="#18212F"
+        android:strokeColor="#334155"
+        android:strokeWidth="1.5"
+        android:pathData="M 114,98 L 158,98 A 8,8 0 0 1 166,106 L 166,124 A 8,8 0 0 1 158,132 L 114,132 A 8,8 0 0 1 106,124 L 106,106 A 8,8 0 0 1 114,98 Z" />
+
+    <!-- Row 2: Upper abdomen (bottom) -->
+    <!-- Left slot (inactive) -->
+    <path
+        android:fillColor="#18212F"
+        android:strokeColor="#334155"
+        android:strokeWidth="1.5"
+        android:pathData="M 50,140 L 94,140 A 8,8 0 0 1 102,148 L 102,166 A 8,8 0 0 1 94,174 L 50,174 A 8,8 0 0 1 42,166 L 42,148 A 8,8 0 0 1 50,140 Z" />
+    <!-- Right slot (inactive) -->
+    <path
+        android:fillColor="#18212F"
+        android:strokeColor="#334155"
+        android:strokeWidth="1.5"
+        android:pathData="M 114,140 L 158,140 A 8,8 0 0 1 166,148 L 166,166 A 8,8 0 0 1 158,174 L 114,174 A 8,8 0 0 1 106,166 L 106,148 A 8,8 0 0 1 114,140 Z" />
+</vector>

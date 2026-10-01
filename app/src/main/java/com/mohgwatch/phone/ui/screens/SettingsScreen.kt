@@ -22,6 +22,7 @@ fun SettingsScreen(
     onNavigateToDiabetes: () -> Unit,
     onNavigateToAccount: () -> Unit,
     onNavigateToTheme: () -> Unit,
+    onNavigateToNotificationTests: () -> Unit,
     onNavigateToGeneral: () -> Unit,
     onNavigateToLogs: () -> Unit
 ) {
@@ -53,16 +54,22 @@ fun SettingsScreen(
             )
 
             SettingsMenuItem(
-                title = "Motyw",
-                description = "Tryb jasny/ciemny, kolory aplikacji",
+                title = "Wygląd",
+                description = "Tryb jasny/ciemny, kolory, widżety",
                 icon = Icons.Filled.Palette,
                 onClick = onNavigateToTheme
             )
 
+            SettingsMenuItem(
+                title = "Testy powiadomień",
+                description = "Dźwięki, O-Haptics, czujnik skóry",
+                icon = Icons.Filled.NotificationsActive,
+                onClick = onNavigateToNotificationTests
+            )
 
             SettingsMenuItem(
                 title = "Ogólne",
-                description = "Odpytywanie API, testy",
+                description = "Odpytywanie API, niezawodność w nocy",
                 icon = Icons.Filled.Settings,
                 onClick = onNavigateToGeneral
             )

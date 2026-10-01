@@ -15,7 +15,8 @@ enum class AppTheme(val label: String) {
     GRAY("Szary"),
     LIGHT_GRAY("Jasno Szary"),
     BLACK("Czarny"),
-    MATCH_BACKGROUND("Uzależnij od koloru tła")
+    MATCH_BACKGROUND("Uzależnij od koloru tła"),
+    MATCH_GLUCOSE("Taki sam jak kolor glukozy")
 }
 
 enum class ThemeMode(val label: String) {
@@ -23,10 +24,30 @@ enum class ThemeMode(val label: String) {
     LIGHT("Jasny"),
     DARK("Ciemny")
 }
+
 enum class LogBgColor(val label: String) {
     DEFAULT("Domyślny"),
     WHITE("Biały"),
     GRAY("Szary"),
+    ORANGE("Pomarańczowy"),
+    LIGHT_BLUE("Jasno-niebieski"),
+    MONOCHROME("Monochromatyczny"),
+    PURPLE("Fioletowy"),
+    DARK_GREEN("Ciemno-zielony"),
+    CRIMSON("Crimson"),
+    VAPOR("Vapor"),
+    TIDE("Tide"),
+    PULSE("Pulse"),
+    ACID("Acid")
+}
+
+enum class WidgetBgColor(val label: String) {
+    SYSTEM("Systemowy"),
+    LIGHT("Jasny"),
+    DARK("Ciemny"),
+    LIGHT_GRAY("Jasny szary"),
+    GRAY("Szary"),
+    DARK_GRAY("Ciemny szary"),
     ORANGE("Pomarańczowy"),
     LIGHT_BLUE("Jasno-niebieski"),
     MONOCHROME("Monochromatyczny"),
@@ -81,7 +102,14 @@ data class UserSettings(
     val trendThresholdRising: Float = 2f,
     val trendThresholdFastRising: Float = 5f,
     val persistentWakeLockEnabled: Boolean = false,
-    val showInjectionSites: Boolean = false
+    val showInjectionSites: Boolean = false,
+    val widgetPrimaryTheme: AppTheme = AppTheme.DEFAULT,
+    val widgetBgColor: WidgetBgColor = WidgetBgColor.SYSTEM,
+    val widgetGlucoseColor: String = "by_range",
+    val colorPickerStyle: String = "list",
+    val hideStatusHeader: Boolean = false,
+    val mutePhoneWhenWatchConnected: Boolean = true,
+    val isSyncEnabled: Boolean = true
 ) {
     fun isInRange(value: Float): Boolean = value in lowThreshold..highThreshold
     fun isLow(value: Float): Boolean = value < lowThreshold

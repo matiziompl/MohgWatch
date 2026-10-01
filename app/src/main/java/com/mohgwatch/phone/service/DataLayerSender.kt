@@ -137,4 +137,52 @@ class DataLayerSender(private val context: Context) {
             Log.e(TAG, "Błąd wysyłania alertu o starych danych", e)
         }
     }
+
+    /**
+     * Wysyła komendę haptyczną (O-Haptics) na zegarek: LOW (spadek/hipo), HIGH (wzrost/hiper), STABLE (norma).
+     */
+    suspend fun sendHapticAlert(type: String) {
+        try {
+            val request = PutDataMapRequest.create(DataLayerPaths.HAPTIC_ALERT).apply {
+                dataMap.putString(DataLayerPaths.Keys.HAPTIC_TYPE, type)
+                dataMap.putString(DataLayerPaths.Keys.UPDATE_ID, UUID.randomUUID().toString())
+            }.asPutDataRequest().setUrgent()
+
+            dataClient.putDataItem(request).await()
+            Log.d(TAG, "Wysłano alert haptyczny na zegarek: $type")
+        } catch (e: Exception) {
+            Log.e(TAG, "Błąd wysyłania alertu haptycznego", e)
+        }
+    }
+
+    /**
+     * Sprawdza, czy zegarek jest aktualnie połączony przez Bluetooth.
+     */
+    suspend fun isWatchConnected(): Boolean {
+        return try {
+            val nodes = Wearable.getNodeClient(context).connectedNodes.await()
+            nodes.isNotEmpty()
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    /**
+     * Wysyła żądanie natychmiastowego sprawdzenia stanu czujnika nadgarstka do zegarka.
+     */
+    suspend fun requestWristCheck() {
+        try {
+            val nodes = Wearable.getNodeClient(context).connectedNodes.await()
+            for (node in nodes) {
+                Wearable.getMessageClient(context).sendMessage(
+                    node.id,
+                    DataLayerPaths.REQUEST_WRIST_CHECK,
+                    ByteArray(0)
+                ).await()
+            }
+            Log.d(TAG, "Wysłano żądanie sprawdzenia nadgarstka do zegarka")
+        } catch (e: Exception) {
+            Log.e(TAG, "Błąd wysyłania żądania sprawdzenia nadgarstka", e)
+        }
+    }
 }

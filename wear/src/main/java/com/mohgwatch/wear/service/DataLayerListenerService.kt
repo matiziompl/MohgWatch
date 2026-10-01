@@ -29,6 +29,22 @@ class DataLayerListenerService : WearableListenerService() {
         private const val TAG = "DataLayerListener"
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        WristDetectionManager.start(this)
+    }
+
+    override fun onDestroy() {
+        WristDetectionManager.stop()
+        super.onDestroy()
+    }
+
+    override fun onMessageReceived(messageEvent: com.google.android.gms.wearable.MessageEvent) {
+        if (messageEvent.path == DataLayerPaths.REQUEST_WRIST_CHECK) {
+            WristDetectionManager.requestStatusUpdate(notify = true)
+        }
+    }
+
     override fun onDataChanged(dataEvents: DataEventBuffer) {
         for (event in dataEvents) {
             if (event.type != DataEvent.TYPE_CHANGED) continue
@@ -42,6 +58,8 @@ class DataLayerListenerService : WearableListenerService() {
                     DataLayerPaths.SETTINGS -> handleSettings(event)
                     DataLayerPaths.CONNECTION_STATUS -> handleConnectionStatus(event)
                     DataLayerPaths.STALE_DATA_ALERT -> handleStaleDataAlert(event)
+                    DataLayerPaths.HAPTIC_ALERT -> handleHapticAlert(event)
+                    DataLayerPaths.REQUEST_WRIST_CHECK -> WristDetectionManager.requestStatusUpdate(notify = true)
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Błąd przetwarzania zdarzenia Data Layer: $path", e)
@@ -126,6 +144,7 @@ class DataLayerListenerService : WearableListenerService() {
         val settingsStore = com.mohgwatch.wear.data.WearSettingsStore(this)
         scope.launch {
             settingsStore.saveSettings(newSettings)
+            requestTileUpdate()
         }
     }
 
@@ -159,9 +178,11 @@ class DataLayerListenerService : WearableListenerService() {
 
     private fun requestTileUpdate() {
         try {
-            TileService.getUpdater(this).requestUpdate(GlucoseHistoryTileService::class.java)
+            val updater = TileService.getUpdater(this)
+            updater.requestUpdate(GlucoseHistoryTileService::class.java)
+            updater.requestUpdate(InjectionSiteTileService::class.java)
         } catch (e: Exception) {
-            Log.e(TAG, "Błąd aktualizacji kafelka (Tile)", e)
+            Log.e(TAG, "Błąd aktualizacji kafelków (Tile)", e)
         }
     }
 
@@ -194,5 +215,48 @@ class DataLayerListenerService : WearableListenerService() {
             .build()
             
         manager.notify(2001, notification)
+    }
+
+    private fun handleHapticAlert(event: DataEvent) {
+        val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
+        val type = dataMap.getString(DataLayerPaths.Keys.HAPTIC_TYPE) ?: return
+        Log.d(TAG, "Odebrano alert haptyczny: $type")
+
+        val vibrator = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            val vm = getSystemService(android.os.VibratorManager::class.java)
+            vm?.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(android.os.Vibrator::class.java)
+        } ?: return
+
+        if (!vibrator.hasVibrator()) return
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            val effect = when (type) {
+                "LOW", "FALLING_FAST" -> {
+                    // 3 szybkie, ostre impulsy (ostrzeżenie przed hipoglikemią)
+                    val timings = longArrayOf(0, 160, 90, 160, 90, 220)
+                    val amplitudes = intArrayOf(0, 255, 0, 255, 0, 255)
+                    android.os.VibrationEffect.createWaveform(timings, amplitudes, -1)
+                }
+                "HIGH", "RISING_FAST" -> {
+                    // 1 długa wibracja (hiperglikemia)
+                    val timings = longArrayOf(0, 550)
+                    val amplitudes = intArrayOf(0, 220)
+                    android.os.VibrationEffect.createWaveform(timings, amplitudes, -1)
+                }
+                else -> {
+                    // 2 krótkie stuknięcia (powrót do normy / stabilizacja)
+                    val timings = longArrayOf(0, 90, 100, 90)
+                    val amplitudes = intArrayOf(0, 180, 0, 180)
+                    android.os.VibrationEffect.createWaveform(timings, amplitudes, -1)
+                }
+            }
+            vibrator.vibrate(effect)
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(400)
+        }
     }
 }

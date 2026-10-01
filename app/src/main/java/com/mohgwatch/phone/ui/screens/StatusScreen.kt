@@ -55,20 +55,27 @@ fun StatusScreen() {
         credentialsPresent = credentialStore.hasCredentials()
     }
 
+    val compact = false
+    val screenPaddingHorizontal = if (compact) 16.dp else 24.dp
+    val screenPaddingVertical = if (compact) 10.dp else 24.dp
+    val cardPadding = if (compact) 12.dp else 20.dp
+    val cardSpacing = if (compact) 8.dp else 16.dp
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(24.dp),
+            .padding(horizontal = screenPaddingHorizontal, vertical = screenPaddingVertical),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            tr("Status Glukozy", "Glucose Status"),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
+        if (!settings.hideStatusHeader) {
+            Text(
+                tr("Status Glukozy", "Glucose Status"),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
 
         // Glucose display card (Card 1)
         Card(
@@ -77,15 +84,15 @@ fun StatusScreen() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier.padding(cardPadding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     tr("Ostatni odczyt z LibreLinkUp", "Last reading from LibreLinkUp"),
-                    style = MaterialTheme.typography.labelLarge,
+                    style = if (compact) MaterialTheme.typography.labelMedium else MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(if (compact) 6.dp else 12.dp))
 
                 val reading = liveReading
                 if (reading != null) {
@@ -103,14 +110,14 @@ fun StatusScreen() {
                     ) {
                         Text(
                             valueStr,
-                            fontSize = 60.sp,
+                            fontSize = if (compact) 48.sp else 60.sp,
                             fontWeight = FontWeight.Bold,
                             color = rangeColor
                         )
-                        Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(if (compact) 8.dp else 12.dp))
                         Text(
                             reading.trendArrow.symbol,
-                            fontSize = 48.sp,
+                            fontSize = if (compact) 38.sp else 48.sp,
                             fontWeight = FontWeight.Bold,
                             color = rangeColor
                         )
@@ -118,28 +125,28 @@ fun StatusScreen() {
 
                     Text(
                         settings.unit.shortLabel,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(if (compact) 4.dp else 8.dp))
                     Text(
                         GlucoseFormatter.formatMinutesAgo(reading.getMinutesAgo()),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = if (compact) MaterialTheme.typography.bodySmall else MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.outline
                     )
                 } else {
                     Text(
                         tr("---", "---"),
-                        fontSize = 64.sp,
+                        fontSize = if (compact) 48.sp else 64.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.outline
                     )
                     Text(
                         settings.unit.shortLabel,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(if (compact) 4.dp else 8.dp))
                     Text(
                         syncStatusText,
                         style = MaterialTheme.typography.bodyMedium,
@@ -150,7 +157,7 @@ fun StatusScreen() {
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(cardSpacing))
 
         // Warning, Connection, and Demo card (Card 2)
         Card(
@@ -158,21 +165,24 @@ fun StatusScreen() {
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Column(modifier = Modifier.padding(20.dp)) {
+            Column(modifier = Modifier.padding(cardPadding)) {
                 if (!credentialsPresent) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().background(ErrorRed.copy(alpha = 0.15f), RoundedCornerShape(8.dp)).padding(12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(ErrorRed.copy(alpha = 0.15f), RoundedCornerShape(8.dp))
+                            .padding(if (compact) 8.dp else 12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(Icons.Filled.Warning, null, tint = ErrorRed)
-                        Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             tr("Brak danych logowania. Przejdź do zakładki Logowanie!", "No login data. Go to the Login tab!"),
                             color = ErrorRed,
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(if (compact) 8.dp else 16.dp))
                 }
 
                 Row(
@@ -181,24 +191,26 @@ fun StatusScreen() {
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(12.dp)
+                            .size(10.dp)
                             .clip(CircleShape)
                             .background(if (isSyncing) SuccessGreen else MaterialTheme.colorScheme.error)
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         if (isSyncing) "Usługa w tle aktywna" else "Usługa w tle zatrzymana",
                         color = MaterialTheme.colorScheme.onSurface,
+                        style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.weight(1f)
                     )
                     Icon(
                         Icons.Filled.Sync,
                         null,
+                        modifier = Modifier.size(if (compact) 18.dp else 24.dp),
                         tint = if (isSyncing) SuccessGreen else MaterialTheme.colorScheme.outline
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(if (compact) 6.dp else 12.dp))
                 Text(
                     "Status: $syncStatusText",
                     style = MaterialTheme.typography.bodySmall,
@@ -206,7 +218,7 @@ fun StatusScreen() {
                 )
 
                 if (lastSyncTs > 0) {
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
                     val mins = (System.currentTimeMillis() - lastSyncTs) / 60_000
                     Text(
                         "Ostatnia udana próba: ${GlucoseFormatter.formatMinutesAgo(mins)}",
@@ -215,14 +227,14 @@ fun StatusScreen() {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(if (compact) 8.dp else 16.dp))
                 HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant)
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(if (compact) 8.dp else 16.dp))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Filled.Watch, null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(20.dp))
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text("Bluetooth Data Layer", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
+                    Icon(Icons.Filled.Watch, null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text("Bluetooth Data Layer", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
                     Text(
                         if (liveReading != null) "Wysłano na zegarek" else "Gotowe do wysłania",
                         color = SuccessGreen,
@@ -231,7 +243,7 @@ fun StatusScreen() {
                 }
                 
                 if (settings.showDemoButton) {
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(if (compact) 8.dp else 16.dp))
                     OutlinedButton(
                         onClick = {
                             val mockVal = Random.nextInt(75, 195).toFloat()
@@ -273,97 +285,92 @@ fun StatusScreen() {
                                 dataLayerSender.sendGlucoseHistory(mockHistory)
                             }
                         },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(14.dp),
+                        modifier = Modifier.fillMaxWidth().height(if (compact) 40.dp else 48.dp),
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
+                        shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = Teal400)
                     ) {
-                        Icon(Icons.Filled.Bolt, null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Wyślij testowy odczyt (Demo)")
+                        Icon(Icons.Filled.Bolt, null, modifier = Modifier.size(18.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text("Wyślij testowy odczyt (Demo)", style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }
         }
 
         if (settings.showInjectionSites) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(cardSpacing))
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    val epochDay = java.time.LocalDate.now().toEpochDay()
-                    val cycleIndex = (epochDay % 6).toInt()
-                    val sites = when (cycleIndex) {
-                        0 -> "Lewa dolna część brzucha - Dół lewego uda"
-                        1 -> "Prawa dolna część brzucha - Dół prawego uda"
-                        2 -> "Lewa środkowa część brzucha - Środek lewego uda"
-                        3 -> "Prawa środkowa część brzucha - Środek prawego uda"
-                        4 -> "Lewa górna część brzucha - Góra lewego uda"
-                        5 -> "Prawa górna część brzucha - Góra prawego uda"
-                        else -> ""
-                    }
+                Column(modifier = Modifier.padding(cardPadding)) {
+                    val sites = com.mohgwatch.core.util.InjectionSiteHelper.getSiteName(
+                        com.mohgwatch.core.util.InjectionSiteHelper.getTodayCycleIndex()
+                    )
                     Text(
                         text = "Dzisiejsze miejsca zastrzyków:",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        style = if (compact) MaterialTheme.typography.titleSmall else MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = sites,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(if (compact) 12.dp else 24.dp))
 
         // Control buttons
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             OutlinedButton(
                 onClick = {
                     GlucoseSyncService.stop(context)
                     (context as? android.app.Activity)?.finishAffinity()
                 },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(14.dp),
+                modifier = Modifier.weight(1f).height(if (compact) 42.dp else 48.dp),
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
             ) {
-                Icon(Icons.Filled.PowerSettingsNew, null)
+                Icon(Icons.Filled.PowerSettingsNew, null, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(tr("Wyłącz aplikację", "Exit app"))
+                Text(tr("Wyłącz aplikację", "Exit app"), style = MaterialTheme.typography.bodyMedium)
             }
             Button(
                 onClick = {
                     GlucoseSyncService.forceSync(context)
                 },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(14.dp),
+                modifier = Modifier.weight(1f).height(if (compact) 42.dp else 48.dp),
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen, contentColor = androidx.compose.ui.graphics.Color.White)
             ) {
-                Icon(Icons.Filled.Sync, null)
+                Icon(Icons.Filled.Sync, null, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(tr("Synchronizuj", "Sync"))
+                Text(tr("Synchronizuj", "Sync"), style = MaterialTheme.typography.bodyMedium)
             }
         }
         
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(if (compact) 8.dp else 12.dp))
         Button(
             onClick = { GlucoseSyncService.clearNotifications(context) },
-            modifier = Modifier.fillMaxWidth().height(40.dp),
+            modifier = Modifier.fillMaxWidth().height(if (compact) 36.dp else 40.dp),
             contentPadding = PaddingValues(0.dp),
             shape = RoundedCornerShape(8.dp),
             border = androidx.compose.foundation.BorderStroke(1.dp, androidx.compose.ui.graphics.Color.DarkGray),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
         ) {
-            Text("Przerwij wszystkie alerty", fontSize = 16.sp)
+            Text("Przerwij wszystkie alerty", fontSize = if (compact) 14.sp else 16.sp)
         }
     }
 }

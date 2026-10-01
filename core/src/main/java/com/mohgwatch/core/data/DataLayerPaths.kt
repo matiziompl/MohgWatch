@@ -11,10 +11,17 @@ object DataLayerPaths {
     const val WATCH_FACE = "/mohgwatch/watchface"
     const val CONNECTION_STATUS = "/mohgwatch/connection_status"
     const val STALE_DATA_ALERT = "/mohgwatch/stale_data_alert"
+    const val HAPTIC_ALERT = "/mohgwatch/haptic_alert"
+    const val WRIST_STATUS = "/mohgwatch/wrist_status"
+    const val REQUEST_WRIST_CHECK = "/mohgwatch/request_wrist_check"
 
     /** Klucze używane w DataMap */
     object Keys {
         const val STALE_MINUTES = "stale_minutes"
+        const val HAPTIC_TYPE = "haptic_type"
+        const val IS_WORN = "is_worn"
+        const val SENSOR_VALUE = "sensor_value"
+        const val SENSOR_STATUS_TEXT = "sensor_status_text"
         // Glucose
         const val GLUCOSE_VALUE = "glucose_value"
         const val TREND_ARROW = "trend_arrow"

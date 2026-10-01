@@ -153,6 +153,7 @@ fun MohgWatchNavigation() {
                     onNavigateToDiabetes = { navController.navigate(Screen.SettingsDiabetes.route) },
                     onNavigateToAccount = { navController.navigate(Screen.SettingsAccount.route) },
                     onNavigateToTheme = { navController.navigate(Screen.SettingsTheme.route) },
+                    onNavigateToNotificationTests = { navController.navigate(Screen.SettingsNotificationTests.route) },
                     onNavigateToGeneral = { navController.navigate(Screen.SettingsGeneral.route) },
                     onNavigateToLogs = { navController.navigate(Screen.Logs.route) }
                 )
@@ -168,6 +169,9 @@ fun MohgWatchNavigation() {
             }
             composable(Screen.SettingsTheme.route) {
                 SettingsThemeScreen(onBack = { navController.popBackStack() })
+            }
+            composable(Screen.SettingsNotificationTests.route) {
+                SettingsNotificationTestsScreen(onBack = { navController.popBackStack() })
             }
             composable(Screen.SettingsNotifications.route) {
                 SettingsNotificationsScreen(onBack = { navController.popBackStack() })

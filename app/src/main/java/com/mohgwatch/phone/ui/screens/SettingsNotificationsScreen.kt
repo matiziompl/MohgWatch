@@ -52,9 +52,6 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
         )
 
         settings?.let { currentSettings ->
-            var alertLowThreshold by remember(currentSettings) { mutableFloatStateOf(currentSettings.alertLowThreshold) }
-            var alertHighThreshold by remember(currentSettings) { mutableFloatStateOf(currentSettings.alertHighThreshold) }
-
             val disconnectSoundLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     @Suppress("DEPRECATION")
@@ -98,7 +95,7 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                     .verticalScroll(rememberScrollState())
             ) {
                 Text(
-                    "Alerty o glukozie",
+                    "Alerty i powiadomienia",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -110,11 +107,12 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
+                        // 1. Alert progowy (Poza zakresem docelowym)
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text("Poza docelowym zakresem", style = MaterialTheme.typography.bodyLarge)
                                 Text(
-                                    "Otrzymuj alerty, gdy glukoza przekroczy wybrane progi alarmowe.",
+                                    "Otrzymuj alerty, gdy glukoza przekroczy wybrane progi zdefiniowane w Ustawienia → Cukrzyca.",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -128,79 +126,34 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                         }
 
                         if (currentSettings.notifyOutOfRange) {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            
-                            // Próg Niski
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Filled.ArrowDownward, null, tint = GlucoseLow)
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("Alarm Niskiego Cukru", modifier = Modifier.weight(1f))
-                                Text("${alertLowThreshold.roundToInt()} mg/dL", color = GlucoseLow, fontWeight = FontWeight.Bold)
-                            }
-                            Slider(
-                                value = alertLowThreshold,
-                                onValueChange = { alertLowThreshold = it.roundToInt().toFloat() },
-                                onValueChangeFinished = {
-                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(alertLowThreshold = alertLowThreshold)) }
-                                },
-                                valueRange = 50f..100f,
-                                steps = 49,
-                                colors = SliderDefaults.colors(thumbColor = GlucoseLow, activeTrackColor = GlucoseLow)
-                            )
-                            OutlinedButton(onClick = { launchRingtonePicker(lowGlucoseSoundLauncher, currentSettings.lowGlucoseSoundUri) }) {
-                                Icon(Icons.Filled.MusicNote, null)
+                            Spacer(modifier = Modifier.height(12.dp))
+                            OutlinedButton(
+                                onClick = { launchRingtonePicker(lowGlucoseSoundLauncher, currentSettings.lowGlucoseSoundUri) },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Icon(Icons.Filled.MusicNote, null, modifier = Modifier.size(16.dp))
                                 Spacer(Modifier.width(8.dp))
-                                Text("Wybierz dźwięk niskiego cukru")
+                                Text("Wybierz dźwięk dla niskiego cukru")
                             }
-
-                            Spacer(modifier = Modifier.height(24.dp))
-                            
-                            // Próg Wysoki
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Filled.ArrowUpward, null, tint = GlucoseHigh)
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("Alarm Wysokiego Cukru", modifier = Modifier.weight(1f))
-                                Text("${alertHighThreshold.roundToInt()} mg/dL", color = GlucoseHigh, fontWeight = FontWeight.Bold)
-                            }
-                            Slider(
-                                value = alertHighThreshold,
-                                onValueChange = { alertHighThreshold = it.roundToInt().toFloat() },
-                                onValueChangeFinished = {
-                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(alertHighThreshold = alertHighThreshold)) }
-                                },
-                                valueRange = 120f..300f,
-                                steps = 179,
-                                colors = SliderDefaults.colors(thumbColor = GlucoseHigh, activeTrackColor = GlucoseHigh)
-                            )
-                            OutlinedButton(onClick = { launchRingtonePicker(highGlucoseSoundLauncher, currentSettings.highGlucoseSoundUri) }) {
-                                Icon(Icons.Filled.MusicNote, null)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            OutlinedButton(
+                                onClick = { launchRingtonePicker(highGlucoseSoundLauncher, currentSettings.highGlucoseSoundUri) },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Icon(Icons.Filled.MusicNote, null, modifier = Modifier.size(16.dp))
                                 Spacer(Modifier.width(8.dp))
-                                Text("Wybierz dźwięk wysokiego cukru")
+                                Text("Wybierz dźwięk dla wysokiego cukru")
                             }
                         }
-                    }
-                }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
 
-                Text(
-                    "Problemy z połączeniem",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
+                        // 2. Alert rozłączenia
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Rozłączenie / Błędy", style = MaterialTheme.typography.bodyLarge)
+                                Text("Rozłączenie / Błędy sieci", style = MaterialTheme.typography.bodyLarge)
                                 Text(
-                                    "Alerty o braku nowych odczytów (np. problem z siecią, wygaśnięcie sesji).",
+                                    "Alerty o braku nowych odczytów (problem z siecią, wygaśnięcie sesji LibreLinkUp).",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -213,8 +166,11 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                             )
                         }
                         if (currentSettings.notifyDisconnect) {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            OutlinedButton(onClick = { launchRingtonePicker(disconnectSoundLauncher, currentSettings.disconnectSoundUri) }) {
+                            Spacer(modifier = Modifier.height(12.dp))
+                            OutlinedButton(
+                                onClick = { launchRingtonePicker(disconnectSoundLauncher, currentSettings.disconnectSoundUri) },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
                                 Icon(Icons.Filled.MusicNote, null)
                                 Spacer(Modifier.width(8.dp))
                                 Text("Wybierz dźwięk rozłączenia")
@@ -223,6 +179,7 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                         
                         HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                         
+                        // 3. Brak danych na zegarku
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text("Powiadomienie na zegarku (> 5 min)", style = MaterialTheme.typography.bodyLarge)
@@ -239,11 +196,25 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                                 }
                             )
                         }
-                        if (currentSettings.notifyStaleDataWatch) {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            OutlinedButton(onClick = { GlucoseSyncService.testAlertStaleDataWatch(context) }) {
-                                Text("Testuj powiadomienie na zegarku")
+
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+
+                        // 4. Wycisz telefon gdy zegarek połączony
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Wycisz telefon przy obecności zegarka", style = MaterialTheme.typography.bodyLarge)
+                                Text(
+                                    "Gdy zegarek jest połączony (założony na ręku), telefon nie odtwarza głośnego alarmu — wibracje O-Haptics trafiają bezpośrednio na zegarek. W razie rozłączenia telefon zadzwoni normalnie.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             }
+                            Switch(
+                                checked = currentSettings.mutePhoneWhenWatchConnected,
+                                onCheckedChange = { checked ->
+                                     scope.launch { settingsStore.saveSettings(currentSettings.copy(mutePhoneWhenWatchConnected = checked)) }
+                                }
+                            )
                         }
                     }
                 }
@@ -340,44 +311,7 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Testowanie alertów (Dzień / Noc)", style = MaterialTheme.typography.titleSmall)
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            Spacer(modifier = Modifier.weight(1f))
-                            Text("Dzień", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-                            Text("Noc", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-                        }
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                        
-                        // Niski
-                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text("Niski cukier", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
-                            Button(onClick = { GlucoseSyncService.testAlertLow(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
-                            Button(onClick = { GlucoseSyncService.testAlertLow(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
-                        }
-                        // Wysoki
-                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text("Wysoki cukier", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
-                            Button(onClick = { GlucoseSyncService.testAlertHigh(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
-                            Button(onClick = { GlucoseSyncService.testAlertHigh(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
-                        }
-                        // Rozłączenie
-                        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text("Rozłączenie", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
-                            Button(onClick = { GlucoseSyncService.testAlertDisconnect(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
-                            Button(onClick = { GlucoseSyncService.testAlertDisconnect(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
-                        }
-                    }
-                }
-                
-                Spacer(modifier = Modifier.height(24.dp))
+
                 
                 Card(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),

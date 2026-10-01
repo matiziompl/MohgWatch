@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material3.*
 import com.mohgwatch.core.util.GlucoseFormatter
 import com.mohgwatch.wear.data.GlucoseRepository
+import com.mohgwatch.wear.service.WristDetectionManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -110,12 +112,28 @@ fun WearAppScreen(repository: GlucoseRepository) {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Text(
-                text = "Komplikacje i Kafelek 12h są aktywne",
-                fontSize = 10.sp,
-                color = Color(0xFF64748B),
-                textAlign = TextAlign.Center
-            )
+            val isWorn by WristDetectionManager.isWornState.collectAsState()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .background(
+                            color = if (isWorn) Color(0xFF10B981) else Color(0xFFEF4444),
+                            shape = CircleShape
+                        )
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = if (isWorn) "Na ręku" else "Zdjęty z ręki",
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = if (isWorn) Color(0xFF10B981) else Color(0xFFEF4444),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }

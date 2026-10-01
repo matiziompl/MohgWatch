@@ -41,4 +41,16 @@
     <string name="sync_stopped">Synchronizacja zatrzymana</string>
     <string name="logout">Wyloguj</string>
     <string name="interval_minutes">%d min</string>
+    <string name="widget_mohgwatch_label">Glukoza</string>
+    <string name="widget_mohgwatch_desc">Aktualny poziom glukozy i strzałka trendu</string>
+    <string name="widget_injection_sites_label">Miejsca wkłuć</string>
+    <string name="widget_injection_sites_desc">Siatka 6 miejsc wkłuć w cyklu rotacji</string>
+    <string name="widget_combined_label">Łączony (Glukoza / Wkłucia)</string>
+    <string name="widget_combined_desc">Przełączanie jednym dotknięciem między odczytem a wkłuciami</string>
+    <string name="widget_dashboard_label">Dashboard</string>
+    <string name="widget_dashboard_desc">Skalowalny widżet: glukoza oraz siatka wkłuć</string>
+    <string name="widget_compact_bar_label">Pasek kompaktowy</string>
+    <string name="widget_compact_bar_desc">Poziomy pasek z glukozą i dzisiejszym miejscem wkłucia</string>
+    <string name="widget_clean_glucose_label">Glukoza czysta</string>
+    <string name="widget_clean_glucose_desc">Minimalistyczny odczyt glukozy</string>
 </resources>

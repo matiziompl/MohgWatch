@@ -3,7 +3,8 @@
     <string name="app_name">MohgWatch</string>
     <string name="glucose_complication_label">Glukoza</string>
     <string name="trend_complication_label">Trend glukozy</string>
-    <string name="history_tile_label">Historia glukozy 12h</string>
+    <string name="history_tile_label">Historia Glukozy</string>
+    <string name="injection_site_tile_label">Miejsca wkłucia</string>
     <string name="no_data">Brak danych</string>
     <string name="disconnected">Rozłączono</string>
     <string name="configure_on_phone">Skonfiguruj w MohgWatch na telefonie</string>

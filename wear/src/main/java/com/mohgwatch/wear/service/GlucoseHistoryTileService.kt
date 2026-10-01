@@ -34,8 +34,8 @@ class GlucoseHistoryTileService : TileService() {
 
         val image = LayoutElementBuilders.Image.Builder()
             .setResourceId(CHART_RESOURCE_ID)
-            .setWidth(DimensionBuilders.dp(384f))
-            .setHeight(DimensionBuilders.dp(384f))
+            .setWidth(DimensionBuilders.expand())
+            .setHeight(DimensionBuilders.expand())
             .build()
 
         val box = LayoutElementBuilders.Box.Builder()

@@ -1,0 +1,35 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    <!-- Circle AMOLED background -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M100,100m-100,0a100,100 0,1 1,200 0a100,100 0,1 1,-200 0" />
+
+    <!-- Subtle grid lines -->
+    <path
+        android:strokeColor="#1E293B"
+        android:strokeWidth="1"
+        android:pathData="M35,70 L165,70 M35,110 L165,110 M35,145 L165,145" />
+
+    <!-- Glucose target zone band (70-180) -->
+    <path
+        android:fillColor="#064E3B"
+        android:fillAlpha="0.25"
+        android:pathData="M35,85 L165,85 L165,135 L35,135 Z" />
+
+    <!-- Glucose Trend Wave/Curve -->
+    <path
+        android:strokeColor="#10B981"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M40,125 C 60,130 80,105 105,100 C 130,95 145,110 160,102" />
+
+    <!-- Latest Reading Dot -->
+    <path
+        android:fillColor="#10B981"
+        android:pathData="M160,102m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0" />
+</vector>

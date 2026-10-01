@@ -82,27 +82,7 @@ fun SettingsGeneralScreen(onBack: () -> Unit) {
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(tr("Przycisk Demo", "Demo Button"), style = MaterialTheme.typography.titleMedium)
-                            Text(
-                                tr("Generuj testowe dane", "Generate test data"),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                        Switch(
-                            checked = settings.showDemoButton,
-                            onCheckedChange = { 
-                                scope.launch {
-                                    val newSettings = settings.copy(showDemoButton = it)
-                                    settingsStore.saveSettings(newSettings)
-                                    dataLayerSender.sendSettings(newSettings)
-                                }
-                            }
-                        )
-                    }
+
                 }
             }
 
@@ -238,6 +218,7 @@ fun SettingsGeneralScreen(onBack: () -> Unit) {
                                     val newSettings = settings.copy(persistentWakeLockEnabled = it)
                                     settingsStore.saveSettings(newSettings)
                                     dataLayerSender.sendSettings(newSettings)
+                                    com.mohgwatch.phone.service.GlucoseSyncService.updateWakeLock(context)
                                 }
                             }
                         )

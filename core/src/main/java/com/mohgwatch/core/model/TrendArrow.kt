@@ -8,11 +8,11 @@ package com.mohgwatch.core.model
  * @property description Opis po polsku
  */
 enum class TrendArrow(val apiValue: Int, val symbol: String, val description: String) {
-    RISING_FAST(1, "↑", "Szybki wzrost"),
-    RISING(2, "↗", "Wzrost"),
+    FALLING_FAST(1, "↓", "Szybki spadek"),
+    FALLING(2, "↘", "Spadek"),
     STABLE(3, "→", "Stabilny"),
-    FALLING(4, "↘", "Spadek"),
-    FALLING_FAST(5, "↓", "Szybki spadek"),
+    RISING(4, "↗", "Wzrost"),
+    RISING_FAST(5, "↑", "Szybki wzrost"),
     UNKNOWN(0, "?", "Nieznany");
 
     companion object {

@@ -45,6 +45,12 @@ abstract class BaseGlucoseComplicationService : SuspendingComplicationDataSource
         return when (request.complicationType) {
             ComplicationType.SHORT_TEXT -> ShortTextComplicationData.Builder(text, desc).build()
             ComplicationType.LONG_TEXT -> LongTextComplicationData.Builder(text, desc).build()
+            ComplicationType.RANGED_VALUE -> RangedValueComplicationData.Builder(
+                value = 40f,
+                min = 40f,
+                max = 400f,
+                contentDescription = desc
+            ).setText(text).build()
             ComplicationType.SMALL_IMAGE -> if (showTrend && !showGlucose) {
                 SmallImageComplicationData.Builder(
                     smallImage = SmallImage.Builder(
@@ -125,11 +131,7 @@ abstract class BaseGlucoseComplicationService : SuspendingComplicationDataSource
         
         val textColor = if (isColorCoded) getGlucoseColor(reading) else Color.WHITE
         
-        val primaryStr = if (trendOnTop) {
-            if (showGlucose) valueText else trendSymbol
-        } else {
-            trendSymbol
-        }
+        val primaryStr = if (showGlucose) valueText else trendSymbol
 
         val textSpan = SpannableString(primaryStr)
         if (isColorCoded) {
@@ -141,6 +143,26 @@ abstract class BaseGlucoseComplicationService : SuspendingComplicationDataSource
         return when (request.complicationType) {
             ComplicationType.SHORT_TEXT -> {
                 val builder = ShortTextComplicationData.Builder(mainText, descText)
+                if (showGlucose && showTrend) {
+                    builder.setTitle(PlainComplicationText.Builder(trendSymbol).build())
+                    builder.setMonochromaticImage(
+                        MonochromaticImage.Builder(
+                            Icon.createWithResource(this, getTrendDrawableRes(reading.trendArrow))
+                        ).build()
+                    )
+                }
+                builder.build()
+            }
+            ComplicationType.RANGED_VALUE -> {
+                val valueClamped = reading.value.coerceIn(40f, 400f)
+                val builder = RangedValueComplicationData.Builder(
+                    value = valueClamped,
+                    min = 40f,
+                    max = 400f,
+                    contentDescription = descText
+                )
+                .setText(mainText)
+                .setTitle(PlainComplicationText.Builder(reading.trendArrow.symbol).build())
                 builder.build()
             }
             ComplicationType.SMALL_IMAGE -> {
@@ -186,11 +208,7 @@ abstract class BaseGlucoseComplicationService : SuspendingComplicationDataSource
     }
 
     override fun getPreviewData(type: ComplicationType): ComplicationData? {
-        val primaryStr = if (trendOnTop) {
-            if (showGlucose) "120" else "→"
-        } else {
-            "→"
-        }
+        val primaryStr = if (showGlucose) "120" else "→"
 
         val textSpan = SpannableString(primaryStr)
         if (isColorCoded) {
@@ -211,7 +229,26 @@ abstract class BaseGlucoseComplicationService : SuspendingComplicationDataSource
         return when (type) {
             ComplicationType.SHORT_TEXT -> {
                 val builder = ShortTextComplicationData.Builder(mainText, descText)
+                if (showGlucose && showTrend) {
+                    builder.setTitle(PlainComplicationText.Builder("→").build())
+                    builder.setMonochromaticImage(
+                        MonochromaticImage.Builder(
+                            Icon.createWithResource(this, R.drawable.ic_trend_stable)
+                        ).build()
+                    )
+                }
                 builder.build()
+            }
+            ComplicationType.RANGED_VALUE -> {
+                RangedValueComplicationData.Builder(
+                    value = 120f,
+                    min = 40f,
+                    max = 400f,
+                    contentDescription = descText
+                )
+                .setText(mainText)
+                .setTitle(PlainComplicationText.Builder("→").build())
+                .build()
             }
             ComplicationType.SMALL_IMAGE -> {
                 if (showGlucose && showTrend) {

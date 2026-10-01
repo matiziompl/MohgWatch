@@ -60,6 +60,13 @@ class SettingsStore(private val context: Context) {
         val TREND_FAST_RISING = floatPreferencesKey("trend_fast_rising")
         val PERSISTENT_WAKELOCK_ENABLED = booleanPreferencesKey("persistent_wakelock_enabled")
         val SHOW_INJECTION_SITES = booleanPreferencesKey("show_injection_sites")
+        val WIDGET_PRIMARY_THEME = stringPreferencesKey("widget_primary_theme")
+        val WIDGET_BG_COLOR = stringPreferencesKey("widget_bg_color")
+        val WIDGET_GLUCOSE_COLOR = stringPreferencesKey("widget_glucose_color")
+        val COLOR_PICKER_STYLE = stringPreferencesKey("color_picker_style")
+        val HIDE_STATUS_HEADER = booleanPreferencesKey("hide_status_header")
+        val MUTE_PHONE_WHEN_WATCH_CONNECTED = booleanPreferencesKey("mute_phone_when_watch_connected")
+        val IS_SYNC_ENABLED = booleanPreferencesKey("is_sync_enabled")
     }
 
     val settingsFlow: Flow<UserSettings> = context.settingsDataStore.data.map { prefs ->
@@ -112,11 +119,28 @@ class SettingsStore(private val context: Context) {
             trendThresholdRising = prefs[Keys.TREND_RISING] ?: 2f,
             trendThresholdFastRising = prefs[Keys.TREND_FAST_RISING] ?: 5f,
             persistentWakeLockEnabled = prefs[Keys.PERSISTENT_WAKELOCK_ENABLED] ?: false,
-            showInjectionSites = prefs[Keys.SHOW_INJECTION_SITES] ?: false
+            showInjectionSites = prefs[Keys.SHOW_INJECTION_SITES] ?: false,
+            widgetPrimaryTheme = prefs[Keys.WIDGET_PRIMARY_THEME]?.let {
+                try { AppTheme.valueOf(it) } catch (e: Exception) { AppTheme.DEFAULT }
+            } ?: AppTheme.DEFAULT,
+            widgetBgColor = prefs[Keys.WIDGET_BG_COLOR]?.let {
+                try { com.mohgwatch.core.model.WidgetBgColor.valueOf(it) } catch (e: Exception) { com.mohgwatch.core.model.WidgetBgColor.SYSTEM }
+            } ?: com.mohgwatch.core.model.WidgetBgColor.SYSTEM,
+            widgetGlucoseColor = prefs[Keys.WIDGET_GLUCOSE_COLOR] ?: "by_range",
+            colorPickerStyle = prefs[Keys.COLOR_PICKER_STYLE] ?: "list",
+            hideStatusHeader = prefs[Keys.HIDE_STATUS_HEADER] ?: false,
+            mutePhoneWhenWatchConnected = prefs[Keys.MUTE_PHONE_WHEN_WATCH_CONNECTED] ?: true,
+            isSyncEnabled = prefs[Keys.IS_SYNC_ENABLED] ?: true
         )
     }
 
     suspend fun getSettings(): UserSettings = settingsFlow.first()
+
+    suspend fun setSyncEnabled(enabled: Boolean) {
+        context.settingsDataStore.edit { prefs ->
+            prefs[Keys.IS_SYNC_ENABLED] = enabled
+        }
+    }
 
     suspend fun saveSettings(settings: UserSettings) {
         context.settingsDataStore.edit { prefs ->
@@ -157,6 +181,13 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.TREND_FAST_RISING] = settings.trendThresholdFastRising
             prefs[Keys.PERSISTENT_WAKELOCK_ENABLED] = settings.persistentWakeLockEnabled
             prefs[Keys.SHOW_INJECTION_SITES] = settings.showInjectionSites
+            prefs[Keys.WIDGET_PRIMARY_THEME] = settings.widgetPrimaryTheme.name
+            prefs[Keys.WIDGET_BG_COLOR] = settings.widgetBgColor.name
+            prefs[Keys.WIDGET_GLUCOSE_COLOR] = settings.widgetGlucoseColor
+            prefs[Keys.COLOR_PICKER_STYLE] = settings.colorPickerStyle
+            prefs[Keys.HIDE_STATUS_HEADER] = settings.hideStatusHeader
+            prefs[Keys.MUTE_PHONE_WHEN_WATCH_CONNECTED] = settings.mutePhoneWhenWatchConnected
+            prefs[Keys.IS_SYNC_ENABLED] = settings.isSyncEnabled
         }
     }
 }

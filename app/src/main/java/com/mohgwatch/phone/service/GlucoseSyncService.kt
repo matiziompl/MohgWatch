@@ -47,8 +47,16 @@ class GlucoseSyncService : Service() {
         const val ACTION_FORCE_SYNC = "com.mohgwatch.FORCE_SYNC"
         const val ACTION_ALARM_WAKEUP = "com.mohgwatch.ALARM_WAKEUP"
         const val ACTION_MUTE_ALERT = "com.mohgwatch.MUTE_ALERT"
+        const val ACTION_UPDATE_WAKELOCK = "com.mohgwatch.UPDATE_WAKELOCK"
         
         const val ACTION_CLEAR_NOTIFICATIONS = "com.mohgwatch.CLEAR_NOTIFICATIONS"
+
+        fun updateWakeLock(context: Context) {
+            val intent = Intent(context, GlucoseSyncService::class.java).apply {
+                action = ACTION_UPDATE_WAKELOCK
+            }
+            context.startService(intent)
+        }
 
         fun start(context: Context) {
             val intent = Intent(context, GlucoseSyncService::class.java).apply {
@@ -77,8 +85,13 @@ class GlucoseSyncService : Service() {
         fun testAlertDisconnect(context: Context, forceMode: String? = null) {
             context.startService(Intent(context, GlucoseSyncService::class.java).apply { action = ACTION_TEST_ALERT_DISCONNECT; forceMode?.let { putExtra("force_mode", it) } })
         }
-        fun testAlertStaleDataWatch(context: Context) {
-            context.startService(Intent(context, GlucoseSyncService::class.java).apply { action = "com.mohgwatch.TEST_ALERT_STALE_WATCH" })
+        const val ACTION_TEST_HAPTIC_WATCH = "com.mohgwatch.TEST_HAPTIC_WATCH"
+
+        fun testHapticWatch(context: Context, type: String) {
+            context.startService(Intent(context, GlucoseSyncService::class.java).apply {
+                action = ACTION_TEST_HAPTIC_WATCH
+                putExtra("haptic_type", type)
+            })
         }
         
         fun clearNotifications(context: Context) {
@@ -150,6 +163,8 @@ class GlucoseSyncService : Service() {
         }
     }
 
+    private var networkCallback: android.net.ConnectivityManager.NetworkCallback? = null
+
     override fun onCreate() {
         super.onCreate()
         dataLayerSender = DataLayerSender(this)
@@ -157,11 +172,54 @@ class GlucoseSyncService : Service() {
         settingsStore = SettingsStore(this)
         logsStore = com.mohgwatch.phone.data.LogsStore(this)
         createNotificationChannel()
+        registerNetworkCallback()
+        observeWristState()
+    }
+
+    private fun observeWristState() {
+        serviceScope.launch {
+            com.mohgwatch.phone.data.WatchState.isWornOnWrist.collect { isWorn ->
+                val reading = GlucoseSyncState.latestReading.value
+                if (reading != null && !isCurrentlyDisconnected) {
+                    val lang = settingsStore.getSettings().language
+                    val wristLabel = if (isWorn) trStr(lang, "Na ręku", "On wrist") else trStr(lang, "Zdjęty", "Off wrist")
+                    val minutesAgo = reading.getMinutesAgo()
+                    val timeText = GlucoseFormatter.formatMinutesAgo(minutesAgo)
+                    val title = "${trStr(lang, "Glukoza:", "Glucose:")} ${reading.value.toInt()} mg/dL ${reading.trendArrow.symbol}  •  $wristLabel"
+                    updateNotification(title, timeText)
+                }
+            }
+        }
+    }
+
+    private fun registerNetworkCallback() {
+        val cm = getSystemService(android.net.ConnectivityManager::class.java) ?: return
+        networkCallback = object : android.net.ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: android.net.Network) {
+                serviceScope.launch {
+                    val settings = settingsStore.getSettings()
+                    if (settings.isSyncEnabled) {
+                        val lastSync = GlucoseSyncState.lastSyncTimestamp.value
+                        val intervalMs = settings.pollIntervalMinutes * 60_000L
+                        if (System.currentTimeMillis() - lastSync >= intervalMs || isCurrentlyDisconnected) {
+                            Log.d(TAG, "Połączenie sieciowe przywrócone — wznawiam synchronizację")
+                            doSyncAndScheduleNext()
+                        }
+                    }
+                }
+            }
+        }
+        try {
+            cm.registerDefaultNetworkCallback(networkCallback!!)
+        } catch (e: Exception) {
+            Log.e(TAG, "Nie udało się zarejestrować network callback", e)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_STOP -> {
+                serviceScope.launch { settingsStore.setSyncEnabled(false) }
                 stopSync()
                 stopSelf()
                 return START_NOT_STICKY
@@ -238,9 +296,10 @@ class GlucoseSyncService : Service() {
                 }
                 return START_STICKY
             }
-            "com.mohgwatch.TEST_ALERT_STALE_WATCH" -> {
+            ACTION_TEST_HAPTIC_WATCH -> {
+                val hapticType = intent?.getStringExtra("haptic_type") ?: "STABLE"
                 serviceScope.launch {
-                    dataLayerSender.sendStaleDataAlert(6)
+                    dataLayerSender.sendHapticAlert(hapticType)
                 }
                 return START_STICKY
             }
@@ -252,6 +311,13 @@ class GlucoseSyncService : Service() {
                 )
                 return START_STICKY
             }
+            ACTION_UPDATE_WAKELOCK -> {
+                serviceScope.launch {
+                    val settings = settingsStore.getSettings()
+                    updatePersistentWakeLock(settings.persistentWakeLockEnabled)
+                }
+                return START_STICKY
+            }
             ACTION_FORCE_SYNC -> {
                 startForegroundWithNotification()
                 doSyncAndScheduleNext()
@@ -259,12 +325,15 @@ class GlucoseSyncService : Service() {
             }
             ACTION_ALARM_WAKEUP -> {
                 startForegroundWithNotification()
-                if (GlucoseSyncState.isSyncing.value) {
+                val isEnabled = runBlocking { settingsStore.getSettings().isSyncEnabled }
+                if (isEnabled) {
+                    GlucoseSyncState.isSyncing.value = true
                     doSyncAndScheduleNext()
                 }
                 return START_STICKY
             }
             else -> {
+                serviceScope.launch { settingsStore.setSyncEnabled(true) }
                 startForegroundWithNotification()
                 GlucoseSyncState.isSyncing.value = true
                 doSyncAndScheduleNext()
@@ -276,6 +345,10 @@ class GlucoseSyncService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
+        networkCallback?.let {
+            val cm = getSystemService(android.net.ConnectivityManager::class.java)
+            try { cm?.unregisterNetworkCallback(it) } catch (e: Exception) {}
+        }
         unregisterReceiver(alertActionReceiver)
         serviceScope.cancel()
         GlucoseSyncState.isSyncing.value = false
@@ -396,7 +469,7 @@ class GlucoseSyncService : Service() {
                 }
     
                 try {
-                    syncOnce(settings.alertLowThreshold, settings.alertHighThreshold)
+                    syncOnce(settings.lowThreshold, settings.highThreshold)
                 } catch (e: kotlinx.coroutines.CancellationException) {
                     throw e
                 } catch (e: Exception) {
@@ -424,7 +497,8 @@ class GlucoseSyncService : Service() {
                     lastSync = System.currentTimeMillis()
                 )
             } finally {
-                if (GlucoseSyncState.isSyncing.value) {
+                val isEnabled = runBlocking { settingsStore.getSettings().isSyncEnabled }
+                if (isEnabled) {
                     scheduleNextSync(intervalMs)
                 }
                 if (wakeLock.isHeld) {
@@ -472,59 +546,6 @@ class GlucoseSyncService : Service() {
                 GlucoseSyncState.history.value = currentHistory
                 dataLayerSender.sendGlucoseHistory(currentHistory)
                 
-                val nowTimestamp = reading.timestamp
-                val timeWindowAgo = nowTimestamp - (25 * 60 * 1000)
-                
-                val recentReadings = currentHistory.filter { it.timestamp >= timeWindowAgo }
-                
-                if (recentReadings.size >= 3) {
-                    val startT = recentReadings.first().timestamp
-                    var sumX = 0f
-                    var sumY = 0f
-                    var sumXY = 0f
-                    var sumX2 = 0f
-                    val n = recentReadings.size.toFloat()
-                    
-                    for (r in recentReadings) {
-                        val x = (r.timestamp - startT) / 60000f
-                        val y = r.value
-                        sumX += x
-                        sumY += y
-                        sumXY += x * y
-                        sumX2 += x * x
-                    }
-                    
-                    val divisor = n * sumX2 - sumX * sumX
-                    if (divisor != 0f) {
-                        val rateOfChange = (n * sumXY - sumX * sumY) / divisor
-                        val customTrend = when {
-                            rateOfChange >= settings.trendThresholdFastRising -> com.mohgwatch.core.model.TrendArrow.RISING_FAST
-                            rateOfChange >= settings.trendThresholdRising -> com.mohgwatch.core.model.TrendArrow.RISING
-                            rateOfChange > settings.trendThresholdFalling -> com.mohgwatch.core.model.TrendArrow.STABLE
-                            rateOfChange > settings.trendThresholdFastFalling -> com.mohgwatch.core.model.TrendArrow.FALLING
-                            else -> com.mohgwatch.core.model.TrendArrow.FALLING_FAST
-                        }
-                        reading = reading.copy(trendArrow = customTrend)
-                    }
-                } else {
-                    val pastReading = currentHistory.minByOrNull { Math.abs(it.timestamp - timeWindowAgo) }
-                    if (pastReading != null && Math.abs(pastReading.timestamp - timeWindowAgo) <= 7 * 60 * 1000) {
-                        val delta = reading.value - pastReading.value
-                        val minutes = (reading.timestamp - pastReading.timestamp) / 60000f
-                        if (minutes > 0) {
-                            val rateOfChange = delta / minutes
-                            val customTrend = when {
-                                rateOfChange >= 5f -> com.mohgwatch.core.model.TrendArrow.RISING_FAST
-                                rateOfChange >= 2f -> com.mohgwatch.core.model.TrendArrow.RISING
-                                rateOfChange > -2f -> com.mohgwatch.core.model.TrendArrow.STABLE
-                                rateOfChange > -5f -> com.mohgwatch.core.model.TrendArrow.FALLING
-                                else -> com.mohgwatch.core.model.TrendArrow.FALLING_FAST
-                            }
-                            reading = reading.copy(trendArrow = customTrend)
-                        }
-                    }
-                }
-                
                 reading = reading.copy(
                     measurementColor = when {
                         reading.value < settings.watchLowThreshold -> com.mohgwatch.core.model.MeasurementColor.LOW
@@ -542,9 +563,9 @@ class GlucoseSyncService : Service() {
                 handleConnect()
 
                 try {
-                    MohgWatchWidget().updateAll(this)
+                    com.mohgwatch.phone.widget.WidgetUpdateHelper.updateAllWidgets(this)
                 } catch (e: Exception) {
-                    Log.e(TAG, "Failed to update widget", e)
+                    Log.e(TAG, "Failed to update widgets", e)
                 }
 
                 dataLayerSender.sendGlucoseReading(reading)
@@ -555,19 +576,26 @@ class GlucoseSyncService : Service() {
                     reading.value > settings.highThreshold -> trStr(lang, "⬆ Wysoki", "⬆ High")
                     else -> trStr(lang, "✓ W normie", "✓ In Range")
                 }
+                val isWorn = com.mohgwatch.phone.data.WatchState.isWornOnWrist.value
+                val wristLabel = if (isWorn) trStr(lang, "Na ręku", "On wrist") else trStr(lang, "Zdjęty", "Off wrist")
                 val minutesAgo = reading.getMinutesAgo()
                 val timeText = GlucoseFormatter.formatMinutesAgo(minutesAgo)
-                val title = "${trStr(lang, "Glukoza:", "Glucose:")} ${reading.value.toInt()} mg/dL ${reading.trendArrow.symbol}  •  $rangeLabel"
+                val title = "${trStr(lang, "Glukoza:", "Glucose:")} ${reading.value.toInt()} mg/dL ${reading.trendArrow.symbol}  •  $wristLabel"
                 updateNotification(title, timeText)
 
                 if (reading.value < alertLowThreshold || reading.value > alertHighThreshold) {
                     if (settings.notifyOutOfRange && !isCurrentlyOutOfRange) {
                         isCurrentlyOutOfRange = true
+                        val hapticType = if (reading.value < alertLowThreshold) "LOW" else "HIGH"
+                        dataLayerSender.sendHapticAlert(hapticType)
                         val channel = if (reading.value < alertLowThreshold) ALERT_LOW_CHANNEL_ID else ALERT_HIGH_CHANNEL_ID
                         val soundUri = if (reading.value < alertLowThreshold) settings.lowGlucoseSoundUri else settings.highGlucoseSoundUri
                         sendAlertNotification("Uwaga na Glukozę!", "Ostatni odczyt to ${reading.value.toInt()} mg/dL ($rangeLabel)", soundUri, channel)
                     }
                 } else {
+                    if (isCurrentlyOutOfRange) {
+                        dataLayerSender.sendHapticAlert("STABLE")
+                    }
                     isCurrentlyOutOfRange = false
                 }
             }
@@ -735,15 +763,18 @@ class GlucoseSyncService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        val settings = runBlocking { settingsStore.getSettings() }
+
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.sync_notification_title))
             .setContentText(title)
             .apply { if (subtitle != null) setSubText(subtitle) }
-            .setSmallIcon(android.R.drawable.ic_menu_info_details)
+            .setSmallIcon(R.drawable.ic_glucose)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
             .setSilent(true)
-            .build()
+
+        return builder.build()
     }
 
     private fun updateNotification(title: String, subtitle: String?) {
@@ -775,11 +806,10 @@ class GlucoseSyncService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Najpierw wysyłamy powiadomienie bez dźwięku z przyciskiem Pomiń
         val silentNotification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(if (forceMode != null) "$title (Test)" else title)
             .setContentText(content)
-            .setSmallIcon(android.R.drawable.ic_dialog_alert)
+            .setSmallIcon(R.drawable.ic_glucose)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -793,6 +823,14 @@ class GlucoseSyncService : Service() {
         // Czekamy konfigurawalny czas (lub natychmiast dla testu) i podmieniamy na głośne powiadomienie
         serviceScope.launch {
             val settingsFirst = settingsStore.getSettings()
+            if (settingsFirst.mutePhoneWhenWatchConnected && forceMode == null) {
+                val isConnected = try { dataLayerSender.isWatchConnected() } catch (e: Exception) { false }
+                val isWorn = com.mohgwatch.phone.data.WatchState.isWornOnWrist.value
+                if (isConnected && isWorn) {
+                    Log.d(TAG, "Zegarek jest połączony i na ręku (czujnik: $isWorn) — pomijam odtwarzanie głośnego alarmu na telefonie (mutePhoneWhenWatchConnected)")
+                    return@launch
+                }
+            }
             val delayMs = if (forceMode != null) 0L else settingsFirst.notificationSoundDelaySeconds * 1000L
             delay(delayMs)
             if (!mutedAlerts.contains(alertId) && alertTime >= lastClearedTimestamp) {
@@ -864,7 +902,7 @@ class GlucoseSyncService : Service() {
                 val loudNotification = NotificationCompat.Builder(this@GlucoseSyncService, channelId)
                     .setContentTitle(if (forceMode != null) "$title (Test)" else title)
                     .setContentText(content)
-                    .setSmallIcon(android.R.drawable.ic_dialog_alert)
+                    .setSmallIcon(R.drawable.ic_glucose)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
