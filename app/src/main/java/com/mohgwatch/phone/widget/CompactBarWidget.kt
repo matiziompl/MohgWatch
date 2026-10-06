@@ -78,15 +78,34 @@ class CompactBarWidget : GlanceAppWidget() {
 
                 Spacer(modifier = GlanceModifier.width(10.dp))
 
-                Text(
-                    text = InjectionSiteHelper.getShortSiteName(todayIndex),
-                    style = TextStyle(
-                        color = primaryColor,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium
-                    ),
-                    modifier = GlanceModifier.defaultWeight()
-                )
+                val dosesText = listOfNotNull(
+                    settings.doseBreakfast.takeIf { it.isNotBlank() }?.let { "Ś:$it" },
+                    settings.doseLunch.takeIf { it.isNotBlank() }?.let { "O:$it" },
+                    settings.doseDinner.takeIf { it.isNotBlank() }?.let { "K:$it" },
+                    settings.doseNight.takeIf { it.isNotBlank() }?.let { "N:$it" }
+                ).joinToString(" ")
+
+                Column(modifier = GlanceModifier.defaultWeight()) {
+                    Text(
+                        text = InjectionSiteHelper.getShortSiteName(todayIndex),
+                        style = TextStyle(
+                            color = primaryColor,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                    if (dosesText.isNotBlank()) {
+                        Text(
+                            text = dosesText,
+                            style = TextStyle(
+                                color = primaryColor,
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Normal
+                            ),
+                            maxLines = 1
+                        )
+                    }
+                }
 
                 Spacer(modifier = GlanceModifier.width(6.dp))
 

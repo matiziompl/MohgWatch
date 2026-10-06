@@ -56,6 +56,13 @@ class DashboardWidget : GlanceAppWidget() {
         val inactiveColor = WidgetThemeHelper.inactiveSlot(settings.widgetBgColor)
         val isHorizontal = size.width >= 200.dp && size.height < 170.dp
 
+        val dosesText = listOfNotNull(
+            settings.doseBreakfast.takeIf { it.isNotBlank() }?.let { "Ś:$it" },
+            settings.doseLunch.takeIf { it.isNotBlank() }?.let { "O:$it" },
+            settings.doseDinner.takeIf { it.isNotBlank() }?.let { "K:$it" },
+            settings.doseNight.takeIf { it.isNotBlank() }?.let { "N:$it" }
+        ).joinToString(" ")
+
         Column(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -71,7 +78,7 @@ class DashboardWidget : GlanceAppWidget() {
                     modifier = GlanceModifier.fillMaxSize(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Lewa strona: Glukoza
+                    // Lewa strona: Glukoza + dawki
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalAlignment = Alignment.CenterVertically,
@@ -95,8 +102,22 @@ class DashboardWidget : GlanceAppWidget() {
                                 text = GlucoseFormatter.formatMinutesAgo(reading.getMinutesAgo()),
                                 style = TextStyle(color = primaryColor, fontSize = 11.sp, fontWeight = FontWeight.Medium)
                             )
+                            if (dosesText.isNotBlank()) {
+                                Spacer(modifier = GlanceModifier.height(2.dp))
+                                Text(
+                                    text = dosesText,
+                                    style = TextStyle(color = primaryColor, fontSize = 10.sp, fontWeight = FontWeight.Normal)
+                                )
+                            }
                         } else {
                             Text(text = "Brak danych", style = TextStyle(color = primaryColor, fontSize = 12.sp))
+                            if (dosesText.isNotBlank()) {
+                                Spacer(modifier = GlanceModifier.height(2.dp))
+                                Text(
+                                    text = dosesText,
+                                    style = TextStyle(color = primaryColor, fontSize = 10.sp, fontWeight = FontWeight.Normal)
+                                )
+                            }
                         }
                     }
 
@@ -141,6 +162,14 @@ class DashboardWidget : GlanceAppWidget() {
                     } else {
                         Text(text = "Brak danych", style = TextStyle(color = primaryColor, fontSize = 12.sp))
                     }
+                }
+
+                if (dosesText.isNotBlank()) {
+                    Spacer(modifier = GlanceModifier.height(2.dp))
+                    Text(
+                        text = dosesText,
+                        style = TextStyle(color = primaryColor, fontSize = 10.sp, fontWeight = FontWeight.Normal)
+                    )
                 }
 
                 // Dół: Siatka 6 wkłuć (lekko obniżona, dopasowana bez obcinania)

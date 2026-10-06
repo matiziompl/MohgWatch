@@ -109,7 +109,16 @@ data class UserSettings(
     val colorPickerStyle: String = "list",
     val hideStatusHeader: Boolean = false,
     val mutePhoneWhenWatchConnected: Boolean = true,
-    val isSyncEnabled: Boolean = true
+    val isSyncEnabled: Boolean = true,
+    val showWristStatusInNotification: Boolean = true,
+    val watchWristNotifyMode: String = "both", // "both", "off_only"
+    val staleDataTimeoutMinutes: Int = 5,
+    val doseBreakfast: String = "",
+    val doseLunch: String = "",
+    val doseDinner: String = "",
+    val doseNight: String = "",
+    val watchNotifyOutOfRange: Boolean = false,
+    val nightPhoneNotificationsEnabled: Boolean = false
 ) {
     fun isInRange(value: Float): Boolean = value in lowThreshold..highThreshold
     fun isLow(value: Float): Boolean = value < lowThreshold
@@ -118,4 +127,30 @@ data class UserSettings(
     
     fun isAlertLow(value: Float): Boolean = value < alertLowThreshold
     fun isAlertHigh(value: Float): Boolean = value > alertHighThreshold
+
+    fun isNightTime(currentMinutes: Int? = null): Boolean {
+        if (!nightModeEnabled) return false
+        val minutes = currentMinutes ?: run {
+            val cal = java.util.Calendar.getInstance()
+            cal.get(java.util.Calendar.HOUR_OF_DAY) * 60 + cal.get(java.util.Calendar.MINUTE)
+        }
+        val startParts = nightStartTime.split(":")
+        val startMinutes = (startParts.getOrNull(0)?.toIntOrNull() ?: 22) * 60 + (startParts.getOrNull(1)?.toIntOrNull() ?: 0)
+        val endParts = nightEndTime.split(":")
+        val endMinutes = (endParts.getOrNull(0)?.toIntOrNull() ?: 7) * 60 + (endParts.getOrNull(1)?.toIntOrNull() ?: 0)
+        return if (startMinutes > endMinutes) {
+            minutes >= startMinutes || minutes < endMinutes
+        } else {
+            minutes in startMinutes..<endMinutes
+        }
+    }
+
+    fun shouldMutePhoneAlert(isWatchConnected: Boolean, isWatchWorn: Boolean, currentMinutes: Int? = null): Boolean {
+        if (!mutePhoneWhenWatchConnected) return false
+        if (!isWatchConnected || !isWatchWorn) return false
+        if (isNightTime(currentMinutes) && nightPhoneNotificationsEnabled) {
+            return false
+        }
+        return true
+    }
 }

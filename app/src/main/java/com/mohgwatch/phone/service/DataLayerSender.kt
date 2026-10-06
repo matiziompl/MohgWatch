@@ -94,6 +94,9 @@ class DataLayerSender(private val context: Context) {
                 dataMap.putBoolean(DataLayerPaths.Keys.SYNC_THEME_WITH_WATCH, settings.syncThemeWithWatch)
                 dataMap.putString(DataLayerPaths.Keys.WATCH_APP_THEME, settings.watchAppTheme.name)
                 dataMap.putString(DataLayerPaths.Keys.LANGUAGE, settings.language)
+                dataMap.putString(DataLayerPaths.Keys.WATCH_WRIST_NOTIFY_MODE, settings.watchWristNotifyMode)
+                dataMap.putInt(DataLayerPaths.Keys.STALE_DATA_TIMEOUT_MINUTES, settings.staleDataTimeoutMinutes)
+                dataMap.putBoolean(DataLayerPaths.Keys.WATCH_NOTIFY_OUT_OF_RANGE, settings.watchNotifyOutOfRange)
                 dataMap.putString(DataLayerPaths.Keys.UPDATE_ID, UUID.randomUUID().toString())
             }.asPutDataRequest().setUrgent()
 
@@ -141,15 +144,23 @@ class DataLayerSender(private val context: Context) {
     /**
      * Wysyła komendę haptyczną (O-Haptics) na zegarek: LOW (spadek/hipo), HIGH (wzrost/hiper), STABLE (norma).
      */
-    suspend fun sendHapticAlert(type: String) {
+    suspend fun sendHapticAlert(
+        type: String,
+        glucoseValue: Float? = null,
+        showNotification: Boolean = false
+    ) {
         try {
             val request = PutDataMapRequest.create(DataLayerPaths.HAPTIC_ALERT).apply {
                 dataMap.putString(DataLayerPaths.Keys.HAPTIC_TYPE, type)
+                if (glucoseValue != null) {
+                    dataMap.putFloat(DataLayerPaths.Keys.GLUCOSE_VALUE, glucoseValue)
+                }
+                dataMap.putBoolean(DataLayerPaths.Keys.SHOW_NOTIFICATION, showNotification)
                 dataMap.putString(DataLayerPaths.Keys.UPDATE_ID, UUID.randomUUID().toString())
             }.asPutDataRequest().setUrgent()
 
             dataClient.putDataItem(request).await()
-            Log.d(TAG, "Wysłano alert haptyczny na zegarek: $type")
+            Log.d(TAG, "Wysłano alert haptyczny na zegarek: $type (notyfikacja: $showNotification, glukoza: $glucoseValue)")
         } catch (e: Exception) {
             Log.e(TAG, "Błąd wysyłania alertu haptycznego", e)
         }

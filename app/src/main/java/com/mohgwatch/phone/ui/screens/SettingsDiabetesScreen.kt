@@ -175,6 +175,101 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text("Dzisiejsze dawki", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        "Wpisz dzisiejsze dawki insuliny dla poszczególnych posiłków i na noc",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    var breakfast by remember(settings.doseBreakfast) { mutableStateOf(settings.doseBreakfast) }
+                    var lunch by remember(settings.doseLunch) { mutableStateOf(settings.doseLunch) }
+                    var dinner by remember(settings.doseDinner) { mutableStateOf(settings.doseDinner) }
+                    var night by remember(settings.doseNight) { mutableStateOf(settings.doseNight) }
+
+                    fun formatDose(raw: String): String {
+                        val t = raw.trim()
+                        if (t.isEmpty()) return ""
+                        val num = t.replace(".", ",")
+                        return if (!num.endsWith("j", ignoreCase = true)) "${num}j" else num
+                    }
+
+                    fun saveDoses(b: String, l: String, d: String, n: String) {
+                        scope.launch {
+                            val newSettings = settings.copy(
+                                doseBreakfast = formatDose(b),
+                                doseLunch = formatDose(l),
+                                doseDinner = formatDose(d),
+                                doseNight = formatDose(n)
+                            )
+                            settingsStore.saveSettings(newSettings)
+                            com.mohgwatch.phone.widget.WidgetUpdateHelper.updateAllWidgets(context)
+                        }
+                    }
+
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        OutlinedTextField(
+                            value = breakfast,
+                            onValueChange = {
+                                breakfast = it
+                                saveDoses(breakfast, lunch, dinner, night)
+                            },
+                            label = { Text("Śniadanie") },
+                            placeholder = { Text("1,1j") },
+                            singleLine = true,
+                            modifier = Modifier.weight(1f)
+                        )
+                        OutlinedTextField(
+                            value = lunch,
+                            onValueChange = {
+                                lunch = it
+                                saveDoses(breakfast, lunch, dinner, night)
+                            },
+                            label = { Text("Obiad") },
+                            placeholder = { Text("1,2j") },
+                            singleLine = true,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        OutlinedTextField(
+                            value = dinner,
+                            onValueChange = {
+                                dinner = it
+                                saveDoses(breakfast, lunch, dinner, night)
+                            },
+                            label = { Text("Kolacja") },
+                            placeholder = { Text("1,3j") },
+                            singleLine = true,
+                            modifier = Modifier.weight(1f)
+                        )
+                        OutlinedTextField(
+                            value = night,
+                            onValueChange = {
+                                night = it
+                                saveDoses(breakfast, lunch, dinner, night)
+                            },
+                            label = { Text("Na noc") },
+                            placeholder = { Text("3j") },
+                            singleLine = true,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+            }
         }
     }
 }

@@ -31,6 +31,9 @@ class WearSettingsStore(private val context: Context) {
         val SYNC_THEME_WITH_WATCH = booleanPreferencesKey("sync_theme_with_watch")
         val WATCH_APP_THEME = stringPreferencesKey("watch_app_theme")
         val LANGUAGE = stringPreferencesKey("language")
+        val WATCH_WRIST_NOTIFY_MODE = stringPreferencesKey("watch_wrist_notify_mode")
+        val STALE_DATA_TIMEOUT_MINUTES = intPreferencesKey("stale_data_timeout_minutes")
+        val WATCH_NOTIFY_OUT_OF_RANGE = booleanPreferencesKey("watch_notify_out_of_range")
     }
 
     val settingsFlow: Flow<UserSettings> = context.wearSettingsDataStore.data.map { prefs ->
@@ -55,7 +58,10 @@ class WearSettingsStore(private val context: Context) {
             watchAppTheme = prefs[Keys.WATCH_APP_THEME]?.let {
                 try { AppTheme.valueOf(it) } catch (e: Exception) { AppTheme.DEFAULT }
             } ?: AppTheme.DEFAULT,
-            language = prefs[Keys.LANGUAGE] ?: "system"
+            language = prefs[Keys.LANGUAGE] ?: "system",
+            watchWristNotifyMode = prefs[Keys.WATCH_WRIST_NOTIFY_MODE] ?: "both",
+            staleDataTimeoutMinutes = prefs[Keys.STALE_DATA_TIMEOUT_MINUTES] ?: 5,
+            watchNotifyOutOfRange = prefs[Keys.WATCH_NOTIFY_OUT_OF_RANGE] ?: false
         )
     }
 
@@ -74,6 +80,9 @@ class WearSettingsStore(private val context: Context) {
             prefs[Keys.SYNC_THEME_WITH_WATCH] = settings.syncThemeWithWatch
             prefs[Keys.WATCH_APP_THEME] = settings.watchAppTheme.name
             prefs[Keys.LANGUAGE] = settings.language
+            prefs[Keys.WATCH_WRIST_NOTIFY_MODE] = settings.watchWristNotifyMode
+            prefs[Keys.STALE_DATA_TIMEOUT_MINUTES] = settings.staleDataTimeoutMinutes
+            prefs[Keys.WATCH_NOTIFY_OUT_OF_RANGE] = settings.watchNotifyOutOfRange
         }
     }
 }

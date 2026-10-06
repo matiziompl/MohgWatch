@@ -9,6 +9,8 @@ object WidgetUpdateHelper {
             MohgWatchWidget(),
             InjectionSitesWidget(),
             CombinedWidget(),
+            DoseWidget(),
+            GlucoseDoseSitesWidget(),
             DashboardWidget(),
             CompactBarWidget()
         ).forEach { runCatching { it.updateAll(context) } }

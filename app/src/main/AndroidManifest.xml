@@ -93,6 +93,30 @@
         </receiver>
 
         <receiver
+            android:name=".widget.DoseWidgetReceiver"
+            android:label="@string/widget_dose_label"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/dose_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.GlucoseDoseSitesWidgetReceiver"
+            android:label="@string/widget_multi_combined_label"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glucose_dose_sites_widget_info" />
+        </receiver>
+
+        <receiver
             android:name=".widget.DashboardWidgetReceiver"
             android:label="@string/widget_dashboard_label"
             android:exported="true">

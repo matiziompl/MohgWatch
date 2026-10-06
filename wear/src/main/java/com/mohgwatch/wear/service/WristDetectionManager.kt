@@ -50,12 +50,28 @@ object WristDetectionManager {
                 sendWristStatus(isWorn, value)
 
                 if (stateChanged) {
-                    showWatchNotification(isWorn, value)
+                    checkAndNotify(isWorn, value)
                 }
             }
         }
 
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+    }
+
+    private fun checkAndNotify(isWorn: Boolean, value: Float) {
+        val context = appContext ?: return
+        scope.launch {
+            val settings = try { com.mohgwatch.wear.data.WearSettingsStore(context).getSettings() } catch (e: Exception) { null }
+            val mode = settings?.watchWristNotifyMode ?: "both"
+            val shouldNotify = when (mode) {
+                "off_only" -> !isWorn
+                "none" -> false
+                else -> true
+            }
+            if (shouldNotify) {
+                showWatchNotification(isWorn, value)
+            }
+        }
     }
 
     private var appContext: Context? = null
@@ -90,7 +106,7 @@ object WristDetectionManager {
     fun requestStatusUpdate(notify: Boolean = true) {
         sendWristStatus(lastWornState, lastSensorValue)
         if (notify) {
-            showWatchNotification(lastWornState, lastSensorValue)
+            checkAndNotify(lastWornState, lastSensorValue)
         }
     }
 

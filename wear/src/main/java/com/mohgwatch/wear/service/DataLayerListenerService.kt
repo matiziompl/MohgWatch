@@ -136,7 +136,10 @@ class DataLayerListenerService : WearableListenerService() {
             themeMode = try { ThemeMode.valueOf(dataMap.getString(DataLayerPaths.Keys.THEME_MODE) ?: ThemeMode.SYSTEM.name) } catch(e: Exception) { ThemeMode.SYSTEM },
             syncThemeWithWatch = dataMap.getBoolean(DataLayerPaths.Keys.SYNC_THEME_WITH_WATCH, true),
             watchAppTheme = try { AppTheme.valueOf(dataMap.getString(DataLayerPaths.Keys.WATCH_APP_THEME) ?: AppTheme.DEFAULT.name) } catch(e: Exception) { AppTheme.DEFAULT },
-            language = dataMap.getString(DataLayerPaths.Keys.LANGUAGE) ?: "system"
+            language = dataMap.getString(DataLayerPaths.Keys.LANGUAGE) ?: "system",
+            watchWristNotifyMode = dataMap.getString(DataLayerPaths.Keys.WATCH_WRIST_NOTIFY_MODE) ?: "both",
+            staleDataTimeoutMinutes = dataMap.getInt(DataLayerPaths.Keys.STALE_DATA_TIMEOUT_MINUTES, 5),
+            watchNotifyOutOfRange = dataMap.getBoolean(DataLayerPaths.Keys.WATCH_NOTIFY_OUT_OF_RANGE, false)
         )
 
         Log.d(TAG, "Odebrano ustawienia: unit=${newSettings.unit}, theme=${newSettings.appTheme}")
@@ -257,6 +260,56 @@ class DataLayerListenerService : WearableListenerService() {
         } else {
             @Suppress("DEPRECATION")
             vibrator.vibrate(400)
+        }
+
+        val showNotificationExplicit = dataMap.getBoolean(DataLayerPaths.Keys.SHOW_NOTIFICATION, false)
+        val glucoseVal = dataMap.getFloat(DataLayerPaths.Keys.GLUCOSE_VALUE, 0f)
+
+        scope.launch {
+            val wearSettings = com.mohgwatch.wear.data.WearSettingsStore(this@DataLayerListenerService).getSettings()
+            val shouldNotify = showNotificationExplicit || wearSettings.watchNotifyOutOfRange
+            val notificationManager = getSystemService(android.app.NotificationManager::class.java)
+
+            if (shouldNotify && (type == "LOW" || type == "FALLING_FAST" || type == "HIGH" || type == "RISING_FAST")) {
+                val channelId = "mohgwatch_glucose_alert"
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    val channel = android.app.NotificationChannel(
+                        channelId,
+                        "Alerty Glukozy",
+                        android.app.NotificationManager.IMPORTANCE_HIGH
+                    ).apply {
+                        description = "Standardowe powiadomienia o stężeniu glukozy poza normą"
+                        enableVibration(true)
+                    }
+                    notificationManager.createNotificationChannel(channel)
+                }
+
+                val title = if (type == "LOW" || type == "FALLING_FAST") "Niski cukier!" else "Wysoki cukier!"
+                val subtext = if (type == "LOW" || type == "FALLING_FAST") "Poniżej normy" else "Powyżej normy"
+                val content = if (glucoseVal > 0f) "${glucoseVal.toInt()} mg/dL ($subtext)" else subtext
+
+                val openIntent = android.content.Intent(this@DataLayerListenerService, com.mohgwatch.wear.ui.WearActivity::class.java)
+                val pendingIntent = android.app.PendingIntent.getActivity(
+                    this@DataLayerListenerService,
+                    2002,
+                    openIntent,
+                    android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
+                )
+
+                val notification = androidx.core.app.NotificationCompat.Builder(this@DataLayerListenerService, channelId)
+                    .setContentTitle(title)
+                    .setContentText(content)
+                    .setSmallIcon(android.R.drawable.ic_dialog_alert)
+                    .setContentIntent(pendingIntent)
+                    .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(androidx.core.app.NotificationCompat.CATEGORY_ALARM)
+                    .setAutoCancel(true)
+                    .build()
+
+                notificationManager.notify(2002, notification)
+            } else if (type == "STABLE") {
+                notificationManager.cancel(2002)
+            }
         }
     }
 }

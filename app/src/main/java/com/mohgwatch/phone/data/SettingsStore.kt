@@ -67,6 +67,15 @@ class SettingsStore(private val context: Context) {
         val HIDE_STATUS_HEADER = booleanPreferencesKey("hide_status_header")
         val MUTE_PHONE_WHEN_WATCH_CONNECTED = booleanPreferencesKey("mute_phone_when_watch_connected")
         val IS_SYNC_ENABLED = booleanPreferencesKey("is_sync_enabled")
+        val SHOW_WRIST_STATUS_IN_NOTIFICATION = booleanPreferencesKey("show_wrist_status_in_notification")
+        val WATCH_WRIST_NOTIFY_MODE = stringPreferencesKey("watch_wrist_notify_mode")
+        val STALE_DATA_TIMEOUT_MINUTES = intPreferencesKey("stale_data_timeout_minutes")
+        val DOSE_BREAKFAST = stringPreferencesKey("dose_breakfast")
+        val DOSE_LUNCH = stringPreferencesKey("dose_lunch")
+        val DOSE_DINNER = stringPreferencesKey("dose_dinner")
+        val DOSE_NIGHT = stringPreferencesKey("dose_night")
+        val WATCH_NOTIFY_OUT_OF_RANGE = booleanPreferencesKey("watch_notify_out_of_range")
+        val NIGHT_PHONE_NOTIFICATIONS_ENABLED = booleanPreferencesKey("night_phone_notifications_enabled")
     }
 
     val settingsFlow: Flow<UserSettings> = context.settingsDataStore.data.map { prefs ->
@@ -130,7 +139,16 @@ class SettingsStore(private val context: Context) {
             colorPickerStyle = prefs[Keys.COLOR_PICKER_STYLE] ?: "list",
             hideStatusHeader = prefs[Keys.HIDE_STATUS_HEADER] ?: false,
             mutePhoneWhenWatchConnected = prefs[Keys.MUTE_PHONE_WHEN_WATCH_CONNECTED] ?: true,
-            isSyncEnabled = prefs[Keys.IS_SYNC_ENABLED] ?: true
+            isSyncEnabled = prefs[Keys.IS_SYNC_ENABLED] ?: true,
+            showWristStatusInNotification = prefs[Keys.SHOW_WRIST_STATUS_IN_NOTIFICATION] ?: true,
+            watchWristNotifyMode = prefs[Keys.WATCH_WRIST_NOTIFY_MODE] ?: "both",
+            staleDataTimeoutMinutes = prefs[Keys.STALE_DATA_TIMEOUT_MINUTES] ?: 5,
+            doseBreakfast = prefs[Keys.DOSE_BREAKFAST] ?: "",
+            doseLunch = prefs[Keys.DOSE_LUNCH] ?: "",
+            doseDinner = prefs[Keys.DOSE_DINNER] ?: "",
+            doseNight = prefs[Keys.DOSE_NIGHT] ?: "",
+            watchNotifyOutOfRange = prefs[Keys.WATCH_NOTIFY_OUT_OF_RANGE] ?: false,
+            nightPhoneNotificationsEnabled = prefs[Keys.NIGHT_PHONE_NOTIFICATIONS_ENABLED] ?: false
         )
     }
 
@@ -188,6 +206,15 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.HIDE_STATUS_HEADER] = settings.hideStatusHeader
             prefs[Keys.MUTE_PHONE_WHEN_WATCH_CONNECTED] = settings.mutePhoneWhenWatchConnected
             prefs[Keys.IS_SYNC_ENABLED] = settings.isSyncEnabled
+            prefs[Keys.SHOW_WRIST_STATUS_IN_NOTIFICATION] = settings.showWristStatusInNotification
+            prefs[Keys.WATCH_WRIST_NOTIFY_MODE] = settings.watchWristNotifyMode
+            prefs[Keys.STALE_DATA_TIMEOUT_MINUTES] = settings.staleDataTimeoutMinutes
+            prefs[Keys.DOSE_BREAKFAST] = settings.doseBreakfast
+            prefs[Keys.DOSE_LUNCH] = settings.doseLunch
+            prefs[Keys.DOSE_DINNER] = settings.doseDinner
+            prefs[Keys.DOSE_NIGHT] = settings.doseNight
+            prefs[Keys.WATCH_NOTIFY_OUT_OF_RANGE] = settings.watchNotifyOutOfRange
+            prefs[Keys.NIGHT_PHONE_NOTIFICATIONS_ENABLED] = settings.nightPhoneNotificationsEnabled
         }
     }
 }

@@ -49,6 +49,10 @@ object DataLayerPaths {
         const val SYNC_THEME_WITH_WATCH = "sync_theme_with_watch"
         const val WATCH_APP_THEME = "watch_app_theme"
         const val LANGUAGE = "language"
+        const val WATCH_WRIST_NOTIFY_MODE = "watch_wrist_notify_mode"
+        const val STALE_DATA_TIMEOUT_MINUTES = "stale_data_timeout_minutes"
+        const val WATCH_NOTIFY_OUT_OF_RANGE = "watch_notify_out_of_range"
+        const val SHOW_NOTIFICATION = "show_notification"
 
         // History (arrays)
         const val HISTORY_VALUES = "history_values"

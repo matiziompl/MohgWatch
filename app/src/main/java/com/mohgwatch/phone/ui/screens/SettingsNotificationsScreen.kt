@@ -37,6 +37,7 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val settingsStore = remember { SettingsStore(context) }
+    val dataLayerSender = remember { com.mohgwatch.phone.service.DataLayerSender(context) }
     val settings by settingsStore.settingsFlow.collectAsState(initial = null)
 
     Column(
@@ -148,6 +149,30 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
 
                         HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
 
+                        // Zwykłe powiadomienia na zegarku przy cukrze poza normą
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Zwykłe powiadomienia na zegarku", style = MaterialTheme.typography.bodyLarge)
+                                Text(
+                                    "Wyświetlaj standardowe powiadomienie z odczytem glukozy na zegarku (obok wibracji O-Haptics) po przekroczeniu progów z Ustawienia → Cukrzyca.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Switch(
+                                checked = currentSettings.watchNotifyOutOfRange,
+                                onCheckedChange = { checked ->
+                                    val newSettings = currentSettings.copy(watchNotifyOutOfRange = checked)
+                                    scope.launch {
+                                        settingsStore.saveSettings(newSettings)
+                                        dataLayerSender.sendSettings(newSettings)
+                                    }
+                                }
+                            )
+                        }
+
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+
                         // 2. Alert rozłączenia
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(modifier = Modifier.weight(1f)) {
@@ -182,9 +207,9 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                         // 3. Brak danych na zegarku
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Powiadomienie na zegarku (> 5 min)", style = MaterialTheme.typography.bodyLarge)
+                                Text("Powiadomienie na zegarku (> ${currentSettings.staleDataTimeoutMinutes} min)", style = MaterialTheme.typography.bodyLarge)
                                 Text(
-                                    "Wibruj na zegarku przy braku nowych danych przez ponad 5 minut.",
+                                    "Wibruj na zegarku przy braku nowych danych przez ponad ${currentSettings.staleDataTimeoutMinutes} minut.",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -197,9 +222,118 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                             )
                         }
 
+                        if (currentSettings.notifyStaleDataWatch) {
+                            Spacer(modifier = Modifier.height(12.dp))
+                            var staleMinutes by remember(currentSettings.staleDataTimeoutMinutes) { mutableFloatStateOf(currentSettings.staleDataTimeoutMinutes.toFloat()) }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("Czas braku danych:", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                                Text("${staleMinutes.roundToInt()} min", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                            }
+                            Slider(
+                                value = staleMinutes,
+                                onValueChange = { staleMinutes = it },
+                                onValueChangeFinished = {
+                                    val newSettings = currentSettings.copy(staleDataTimeoutMinutes = staleMinutes.roundToInt())
+                                    scope.launch {
+                                        settingsStore.saveSettings(newSettings)
+                                        dataLayerSender.sendSettings(newSettings)
+                                    }
+                                },
+                                valueRange = 5f..30f,
+                                steps = 24
+                            )
+                        }
+
                         HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
 
-                        // 4. Wycisz telefon gdy zegarek połączony
+                        // 4. Stan zegarka na ręku w powiadomieniu telefonu
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Obecność zegarka w powiadomieniu", style = MaterialTheme.typography.bodyLarge)
+                                Text(
+                                    "Pokazuj informację 'Na ręku' lub 'Zdjęty' w stałym powiadomieniu telefonu.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Switch(
+                                checked = currentSettings.showWristStatusInNotification,
+                                onCheckedChange = { checked ->
+                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(showWristStatusInNotification = checked)) }
+                                }
+                            )
+                        }
+
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+
+                        // 5. Powiadomienia na zegarku o zdjęciu z ręki
+                        val watchWristEnabled = currentSettings.watchWristNotifyMode != "none"
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Powiadomienia na zegarku o zdjęciu z ręki", style = MaterialTheme.typography.bodyLarge)
+                                Text(
+                                    "Wysyłaj powiadomienie na zegarek informujące o zdjęciu zegarka z ręki.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Switch(
+                                checked = watchWristEnabled,
+                                onCheckedChange = { checked ->
+                                    val newMode = if (checked) "both" else "none"
+                                    val newSettings = currentSettings.copy(watchWristNotifyMode = newMode)
+                                    scope.launch {
+                                        settingsStore.saveSettings(newSettings)
+                                        dataLayerSender.sendSettings(newSettings)
+                                    }
+                                }
+                            )
+                        }
+
+                        if (watchWristEnabled) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                FilterChip(
+                                    selected = currentSettings.watchWristNotifyMode == "both",
+                                    onClick = {
+                                        val newSettings = currentSettings.copy(watchWristNotifyMode = "both")
+                                        scope.launch {
+                                            settingsStore.saveSettings(newSettings)
+                                            dataLayerSender.sendSettings(newSettings)
+                                        }
+                                    },
+                                    label = { Text("Założenie i zdjęcie") },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                                    ),
+                                    modifier = Modifier.weight(1f)
+                                )
+                                FilterChip(
+                                    selected = currentSettings.watchWristNotifyMode == "off_only",
+                                    onClick = {
+                                        val newSettings = currentSettings.copy(watchWristNotifyMode = "off_only")
+                                        scope.launch {
+                                            settingsStore.saveSettings(newSettings)
+                                            dataLayerSender.sendSettings(newSettings)
+                                        }
+                                    },
+                                    label = { Text("Tylko zdjęcie") },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                                    ),
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+
+                        // 6. Wycisz telefon gdy zegarek połączony
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text("Wycisz telefon przy obecności zegarka", style = MaterialTheme.typography.bodyLarge)
@@ -298,6 +432,25 @@ fun SettingsNotificationsScreen(onBack: () -> Unit) {
                                 valueRange = 0f..1f,
                                 steps = 99
                             )
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text("Zwykłe powiadomienia telefonu w nocy", style = MaterialTheme.typography.bodyLarge)
+                                    Text(
+                                        "Odtwarzaj alerty telefonu w czasie nocy nawet wtedy, gdy zegarek jest założony na ręku (pomija wyciszanie przez zegarek).",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                Switch(
+                                    checked = currentSettings.nightPhoneNotificationsEnabled,
+                                    onCheckedChange = { checked ->
+                                        scope.launch { settingsStore.saveSettings(currentSettings.copy(nightPhoneNotificationsEnabled = checked)) }
+                                    }
+                                )
+                            }
                         }
                     }
                 }
