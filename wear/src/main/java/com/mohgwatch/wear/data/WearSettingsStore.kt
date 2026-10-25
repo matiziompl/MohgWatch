@@ -4,11 +4,9 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
-import com.mohgwatch.core.model.AppTheme
 import com.mohgwatch.core.model.GlucoseUnit
-import com.mohgwatch.core.model.ThemeMode
 import com.mohgwatch.core.model.UserSettings
-import com.mohgwatch.core.model.WatchFacePreset
+import com.mohgwatch.core.model.TrendVibrationPattern
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -23,17 +21,19 @@ class WearSettingsStore(private val context: Context) {
         val UNIT = stringPreferencesKey("unit")
         val LOW_THRESHOLD = floatPreferencesKey("low_threshold")
         val HIGH_THRESHOLD = floatPreferencesKey("high_threshold")
-        val PRESET = stringPreferencesKey("preset")
         val POLL_INTERVAL = intPreferencesKey("poll_interval")
-        val SHOW_DEMO_BUTTON = booleanPreferencesKey("show_demo_button")
-        val APP_THEME = stringPreferencesKey("app_theme")
-        val THEME_MODE = stringPreferencesKey("theme_mode")
-        val SYNC_THEME_WITH_WATCH = booleanPreferencesKey("sync_theme_with_watch")
-        val WATCH_APP_THEME = stringPreferencesKey("watch_app_theme")
         val LANGUAGE = stringPreferencesKey("language")
         val WATCH_WRIST_NOTIFY_MODE = stringPreferencesKey("watch_wrist_notify_mode")
-        val STALE_DATA_TIMEOUT_MINUTES = intPreferencesKey("stale_data_timeout_minutes")
         val WATCH_NOTIFY_OUT_OF_RANGE = booleanPreferencesKey("watch_notify_out_of_range")
+        val NOTIFY_OUT_OF_RANGE = booleanPreferencesKey("notify_out_of_range")
+        val NOTIFY_STALE_DATA_WATCH = booleanPreferencesKey("notify_stale_data_watch")
+        val STALE_DATA_MINUTES = intPreferencesKey("stale_data_minutes")
+        val ALERT_LOW_HAPTIC_ENABLED = booleanPreferencesKey("alert_low_haptic_enabled")
+        val ALERT_HIGH_HAPTIC_ENABLED = booleanPreferencesKey("alert_high_haptic_enabled")
+        val TREND_STABLE_ENABLED = booleanPreferencesKey("trend_stable_enabled")
+        val TREND_RISING_PATTERN = stringPreferencesKey("trend_rising_pattern")
+        val TREND_FALLING_PATTERN = stringPreferencesKey("trend_falling_pattern")
+        val TREND_STABLE_PATTERN = stringPreferencesKey("trend_stable_pattern")
     }
 
     val settingsFlow: Flow<UserSettings> = context.wearSettingsDataStore.data.map { prefs ->
@@ -43,25 +43,19 @@ class WearSettingsStore(private val context: Context) {
             } ?: GlucoseUnit.MG_DL,
             lowThreshold = prefs[Keys.LOW_THRESHOLD] ?: 70f,
             highThreshold = prefs[Keys.HIGH_THRESHOLD] ?: 180f,
-            preset = prefs[Keys.PRESET]?.let {
-                try { WatchFacePreset.valueOf(it) } catch (e: Exception) { WatchFacePreset.D1_CLASSIC }
-            } ?: WatchFacePreset.D1_CLASSIC,
             pollIntervalMinutes = prefs[Keys.POLL_INTERVAL] ?: 5,
-            showDemoButton = prefs[Keys.SHOW_DEMO_BUTTON] ?: true,
-            appTheme = prefs[Keys.APP_THEME]?.let {
-                try { AppTheme.valueOf(it) } catch (e: Exception) { AppTheme.DEFAULT }
-            } ?: AppTheme.DEFAULT,
-            themeMode = prefs[Keys.THEME_MODE]?.let {
-                try { ThemeMode.valueOf(it) } catch (e: Exception) { ThemeMode.SYSTEM }
-            } ?: ThemeMode.SYSTEM,
-            syncThemeWithWatch = prefs[Keys.SYNC_THEME_WITH_WATCH] ?: true,
-            watchAppTheme = prefs[Keys.WATCH_APP_THEME]?.let {
-                try { AppTheme.valueOf(it) } catch (e: Exception) { AppTheme.DEFAULT }
-            } ?: AppTheme.DEFAULT,
             language = prefs[Keys.LANGUAGE] ?: "system",
             watchWristNotifyMode = prefs[Keys.WATCH_WRIST_NOTIFY_MODE] ?: "both",
-            staleDataTimeoutMinutes = prefs[Keys.STALE_DATA_TIMEOUT_MINUTES] ?: 5,
-            watchNotifyOutOfRange = prefs[Keys.WATCH_NOTIFY_OUT_OF_RANGE] ?: false
+            watchNotifyOutOfRange = prefs[Keys.WATCH_NOTIFY_OUT_OF_RANGE] ?: false,
+            notifyOutOfRange = prefs[Keys.NOTIFY_OUT_OF_RANGE] ?: true,
+            notifyStaleDataWatch = prefs[Keys.NOTIFY_STALE_DATA_WATCH] ?: true,
+            staleDataMinutes = (prefs[Keys.STALE_DATA_MINUTES] ?: 10).coerceIn(1, 60),
+            alertLowHapticEnabled = prefs[Keys.ALERT_LOW_HAPTIC_ENABLED] ?: true,
+            alertHighHapticEnabled = prefs[Keys.ALERT_HIGH_HAPTIC_ENABLED] ?: true,
+            trendStableEnabled = prefs[Keys.TREND_STABLE_ENABLED] ?: false,
+            trendRisingPattern = TrendVibrationPattern.fromName(prefs[Keys.TREND_RISING_PATTERN]),
+            trendFallingPattern = TrendVibrationPattern.fromName(prefs[Keys.TREND_FALLING_PATTERN]),
+            trendStablePattern = TrendVibrationPattern.fromName(prefs[Keys.TREND_STABLE_PATTERN])
         )
     }
 
@@ -72,17 +66,19 @@ class WearSettingsStore(private val context: Context) {
             prefs[Keys.UNIT] = settings.unit.name
             prefs[Keys.LOW_THRESHOLD] = settings.lowThreshold
             prefs[Keys.HIGH_THRESHOLD] = settings.highThreshold
-            prefs[Keys.PRESET] = settings.preset.name
             prefs[Keys.POLL_INTERVAL] = settings.pollIntervalMinutes
-            prefs[Keys.SHOW_DEMO_BUTTON] = settings.showDemoButton
-            prefs[Keys.APP_THEME] = settings.appTheme.name
-            prefs[Keys.THEME_MODE] = settings.themeMode.name
-            prefs[Keys.SYNC_THEME_WITH_WATCH] = settings.syncThemeWithWatch
-            prefs[Keys.WATCH_APP_THEME] = settings.watchAppTheme.name
             prefs[Keys.LANGUAGE] = settings.language
             prefs[Keys.WATCH_WRIST_NOTIFY_MODE] = settings.watchWristNotifyMode
-            prefs[Keys.STALE_DATA_TIMEOUT_MINUTES] = settings.staleDataTimeoutMinutes
             prefs[Keys.WATCH_NOTIFY_OUT_OF_RANGE] = settings.watchNotifyOutOfRange
+            prefs[Keys.NOTIFY_OUT_OF_RANGE] = settings.notifyOutOfRange
+            prefs[Keys.NOTIFY_STALE_DATA_WATCH] = settings.notifyStaleDataWatch
+            prefs[Keys.STALE_DATA_MINUTES] = settings.staleDataMinutes.coerceIn(1, 60)
+            prefs[Keys.ALERT_LOW_HAPTIC_ENABLED] = settings.alertLowHapticEnabled
+            prefs[Keys.ALERT_HIGH_HAPTIC_ENABLED] = settings.alertHighHapticEnabled
+            prefs[Keys.TREND_STABLE_ENABLED] = settings.trendStableEnabled
+            prefs[Keys.TREND_RISING_PATTERN] = settings.trendRisingPattern.name
+            prefs[Keys.TREND_FALLING_PATTERN] = settings.trendFallingPattern.name
+            prefs[Keys.TREND_STABLE_PATTERN] = settings.trendStablePattern.name
         }
     }
 }

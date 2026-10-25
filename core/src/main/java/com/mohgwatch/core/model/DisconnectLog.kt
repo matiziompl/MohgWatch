@@ -2,6 +2,7 @@ package com.mohgwatch.core.model
 
 enum class DisconnectReason(val label: String) {
     NETWORK_ERROR("Błąd sieci (brak internetu)"),
+    ANDROID_NETWORK_BLOCKED("Android zablokował dostęp do sieci"),
     AUTH_ERROR("Błąd autoryzacji (nieprawidłowe dane)"),
     API_ERROR("Błąd serwera LibreLinkUp"),
     SYSTEM_KILLED("Aplikacja zabita przez system"),

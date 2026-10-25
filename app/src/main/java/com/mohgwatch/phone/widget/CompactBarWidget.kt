@@ -58,7 +58,7 @@ class CompactBarWidget : GlanceAppWidget() {
                 val gluColor = WidgetThemeHelper.glucoseColor(reading, settings)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "${reading.value.toInt()}",
+                        text = GlucoseFormatter.format(reading.value, settings.unit),
                         style = TextStyle(
                             color = gluColor,
                             fontSize = 24.sp,

@@ -1,12 +1,8 @@
 package com.mohgwatch.phone.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Check
@@ -24,42 +20,31 @@ import com.mohgwatch.phone.service.DataLayerSender
 import com.mohgwatch.phone.ui.theme.GlucoseHigh
 import com.mohgwatch.phone.ui.theme.GlucoseLow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class)
+enum class DiabetesSettingsSection { GLUCOSE, DOSES }
+
 @Composable
-fun SettingsDiabetesScreen(onBack: () -> Unit) {
+fun SettingsDiabetesScreen(onBack: () -> Unit, section: DiabetesSettingsSection = DiabetesSettingsSection.GLUCOSE) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val settingsStore = remember { SettingsStore(context) }
     val dataLayerSender = remember { DataLayerSender(context) }
-    val settings by settingsStore.settingsFlow.collectAsState(initial = UserSettings())
+    val loadedSettings by settingsStore.settingsFlow.collectAsState(initial = null)
+    val settings = loadedSettings ?: UserSettings()
+    val doseSaveMutex = remember { Mutex() }
 
     var unit by remember(settings) { mutableStateOf(settings.unit) }
     var lowThreshold by remember(settings) { mutableFloatStateOf(settings.lowThreshold) }
     var highThreshold by remember(settings) { mutableFloatStateOf(settings.highThreshold) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+    com.mohgwatch.phone.ui.components.SettingsPage(
+        title = if (section == DiabetesSettingsSection.GLUCOSE) "Glukoza i progi" else "Dawki i miejsca wkłuć",
+        onBack = onBack
     ) {
-        TopAppBar(
-            title = { Text("Cukrzyca") },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Wstecz")
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
+        if (section == DiabetesSettingsSection.GLUCOSE) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(16.dp),
@@ -145,6 +130,8 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
                 }
             }
 
+        }
+        if (section == DiabetesSettingsSection.DOSES) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Card(
@@ -164,10 +151,14 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
                         }
                         Switch(
                             checked = settings.showInjectionSites,
+                            enabled = loadedSettings != null,
                             onCheckedChange = { 
                                 scope.launch {
-                                    val newSettings = settings.copy(showInjectionSites = it)
-                                    settingsStore.saveSettings(newSettings)
+                                    val newSettings = doseSaveMutex.withLock {
+                                        val updated = settingsStore.getSettings().copy(showInjectionSites = it)
+                                        settingsStore.saveSettings(updated)
+                                        updated
+                                    }
                                     dataLayerSender.sendSettings(newSettings)
                                 }
                             }
@@ -192,51 +183,55 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    var breakfast by remember(settings.doseBreakfast) { mutableStateOf(settings.doseBreakfast) }
-                    var lunch by remember(settings.doseLunch) { mutableStateOf(settings.doseLunch) }
-                    var dinner by remember(settings.doseDinner) { mutableStateOf(settings.doseDinner) }
-                    var night by remember(settings.doseNight) { mutableStateOf(settings.doseNight) }
+                    var breakfast by remember { mutableStateOf(DoseInputState()) }
+                    var lunch by remember { mutableStateOf(DoseInputState()) }
+                    var dinner by remember { mutableStateOf(DoseInputState()) }
+                    var night by remember { mutableStateOf(DoseInputState()) }
 
-                    fun formatDose(raw: String): String {
-                        val t = raw.trim()
-                        if (t.isEmpty()) return ""
-                        val num = t.replace(".", ",")
-                        return if (!num.endsWith("j", ignoreCase = true)) "${num}j" else num
+                    LaunchedEffect(loadedSettings) {
+                        loadedSettings?.let { loaded ->
+                            breakfast = breakfast.receive(loaded.doseBreakfast)
+                            lunch = lunch.receive(loaded.doseLunch)
+                            dinner = dinner.receive(loaded.doseDinner)
+                            night = night.receive(loaded.doseNight)
+                        }
                     }
 
-                    fun saveDoses(b: String, l: String, d: String, n: String) {
+                    fun saveDose(field: DoseField, input: DoseInputState) {
+                        val raw = input.text ?: return
                         scope.launch {
-                            val newSettings = settings.copy(
-                                doseBreakfast = formatDose(b),
-                                doseLunch = formatDose(l),
-                                doseDinner = formatDose(d),
-                                doseNight = formatDose(n)
-                            )
-                            settingsStore.saveSettings(newSettings)
+                            doseSaveMutex.withLock {
+                                val current = settingsStore.getSettings()
+                                settingsStore.saveSettings(current.withDose(field, raw))
+                            }
                             com.mohgwatch.phone.widget.WidgetUpdateHelper.updateAllWidgets(context)
                         }
                     }
 
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         OutlinedTextField(
-                            value = breakfast,
+                            value = breakfast.text.orEmpty(),
                             onValueChange = {
-                                breakfast = it
-                                saveDoses(breakfast, lunch, dinner, night)
+                                breakfast = breakfast.edit(it)
+                                saveDose(DoseField.BREAKFAST, breakfast)
                             },
+                            enabled = breakfast.text != null,
                             label = { Text("Śniadanie") },
-                            placeholder = { Text("1,1j") },
+                            placeholder = { Text("1,1") },
+                            suffix = { Text("j") },
                             singleLine = true,
                             modifier = Modifier.weight(1f)
                         )
                         OutlinedTextField(
-                            value = lunch,
+                            value = lunch.text.orEmpty(),
                             onValueChange = {
-                                lunch = it
-                                saveDoses(breakfast, lunch, dinner, night)
+                                lunch = lunch.edit(it)
+                                saveDose(DoseField.LUNCH, lunch)
                             },
+                            enabled = lunch.text != null,
                             label = { Text("Obiad") },
-                            placeholder = { Text("1,2j") },
+                            placeholder = { Text("1,2") },
+                            suffix = { Text("j") },
                             singleLine = true,
                             modifier = Modifier.weight(1f)
                         )
@@ -246,24 +241,28 @@ fun SettingsDiabetesScreen(onBack: () -> Unit) {
 
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         OutlinedTextField(
-                            value = dinner,
+                            value = dinner.text.orEmpty(),
                             onValueChange = {
-                                dinner = it
-                                saveDoses(breakfast, lunch, dinner, night)
+                                dinner = dinner.edit(it)
+                                saveDose(DoseField.DINNER, dinner)
                             },
+                            enabled = dinner.text != null,
                             label = { Text("Kolacja") },
-                            placeholder = { Text("1,3j") },
+                            placeholder = { Text("1,3") },
+                            suffix = { Text("j") },
                             singleLine = true,
                             modifier = Modifier.weight(1f)
                         )
                         OutlinedTextField(
-                            value = night,
+                            value = night.text.orEmpty(),
                             onValueChange = {
-                                night = it
-                                saveDoses(breakfast, lunch, dinner, night)
+                                night = night.edit(it)
+                                saveDose(DoseField.NIGHT, night)
                             },
+                            enabled = night.text != null,
                             label = { Text("Na noc") },
-                            placeholder = { Text("3j") },
+                            placeholder = { Text("3") },
+                            suffix = { Text("j") },
                             singleLine = true,
                             modifier = Modifier.weight(1f)
                         )

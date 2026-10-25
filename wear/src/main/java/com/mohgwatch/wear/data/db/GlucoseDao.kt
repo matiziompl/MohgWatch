@@ -17,12 +17,7 @@ interface GlucoseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(readings: List<GlucoseReadingEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(reading: GlucoseReadingEntity)
-
     @Query("DELETE FROM readings WHERE timestamp < :before")
     suspend fun deleteOlderThan(before: Long)
 
-    @Query("SELECT COUNT(*) FROM readings")
-    suspend fun count(): Int
 }

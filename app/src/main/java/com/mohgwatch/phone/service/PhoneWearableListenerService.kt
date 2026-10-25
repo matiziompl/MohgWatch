@@ -6,6 +6,7 @@ import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.WearableListenerService
 import com.mohgwatch.core.data.DataLayerPaths
+import com.mohgwatch.core.model.WristStatus
 import com.mohgwatch.phone.data.WatchState
 
 /**
@@ -26,9 +27,13 @@ class PhoneWearableListenerService : WearableListenerService() {
             if (path == DataLayerPaths.WRIST_STATUS) {
                 try {
                     val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
-                    val isWorn = dataMap.getBoolean(DataLayerPaths.Keys.IS_WORN, true)
-                    val timestamp = dataMap.getLong(DataLayerPaths.Keys.TIMESTAMP, System.currentTimeMillis())
+                    val status = WristStatus.fromSensorValue(dataMap.getFloat(DataLayerPaths.Keys.SENSOR_VALUE, -1f))
+                    val isWorn = status == WristStatus.ON_WRIST
+                    val timestamp = dataMap.getLong(DataLayerPaths.Keys.TIMESTAMP, 0L)
+                    if (timestamp <= 0L || timestamp > System.currentTimeMillis() ||
+                        timestamp < WatchState.lastUpdateTimestamp.value) continue
 
+                    WatchState.wristStatus.value = status
                     WatchState.isWornOnWrist.value = isWorn
                     WatchState.lastUpdateTimestamp.value = timestamp
 

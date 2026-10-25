@@ -18,27 +18,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mohgwatch.core.model.GlucoseReading
-import com.mohgwatch.core.model.MeasurementColor
-import com.mohgwatch.core.model.TrendArrow
 import com.mohgwatch.core.util.GlucoseFormatter
 import com.mohgwatch.phone.data.CredentialStore
 import com.mohgwatch.phone.data.SettingsStore
-import com.mohgwatch.phone.service.DataLayerSender
 import com.mohgwatch.phone.service.GlucoseSyncService
 import com.mohgwatch.phone.service.GlucoseSyncState
 import com.mohgwatch.phone.ui.theme.*
 import com.mohgwatch.phone.util.tr
-import kotlinx.coroutines.launch
-import kotlin.random.Random
-import androidx.glance.appwidget.updateAll
-import com.mohgwatch.phone.widget.MohgWatchWidget
 
 @Composable
 fun StatusScreen() {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val dataLayerSender = remember { DataLayerSender(context) }
     val settingsStore = remember { SettingsStore(context) }
     val credentialStore = remember { CredentialStore(context) }
     val settings by settingsStore.settingsFlow.collectAsState(initial = com.mohgwatch.core.model.UserSettings())
@@ -159,7 +149,7 @@ fun StatusScreen() {
 
         Spacer(modifier = Modifier.height(cardSpacing))
 
-        // Warning, Connection, and Demo card (Card 2)
+        // Connection status.
         Card(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             shape = RoundedCornerShape(16.dp),
@@ -177,7 +167,7 @@ fun StatusScreen() {
                         Icon(Icons.Filled.Warning, null, tint = ErrorRed)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            tr("Brak danych logowania. Przejdź do zakładki Logowanie!", "No login data. Go to the Login tab!"),
+                            tr("Brak danych logowania. Otwórz Ustawienia → Profil.", "No login data. Open Settings → Profile."),
                             color = ErrorRed,
                             style = MaterialTheme.typography.bodySmall
                         )
@@ -242,59 +232,6 @@ fun StatusScreen() {
                     )
                 }
                 
-                if (settings.showDemoButton) {
-                    Spacer(modifier = Modifier.height(if (compact) 8.dp else 16.dp))
-                    OutlinedButton(
-                        onClick = {
-                            val mockVal = Random.nextInt(75, 195).toFloat()
-                            val mockReading = GlucoseReading(
-                                value = mockVal,
-                                trendArrow = TrendArrow.entries.filter { it != TrendArrow.UNKNOWN }.random(),
-                                measurementColor = when {
-                                    mockVal < settings.lowThreshold -> MeasurementColor.LOW
-                                    mockVal > settings.veryHighThreshold -> MeasurementColor.VERY_HIGH
-                                    mockVal > settings.highThreshold -> MeasurementColor.HIGH
-                                    else -> MeasurementColor.IN_RANGE
-                                },
-                                timestamp = System.currentTimeMillis(),
-                                isHigh = mockVal > settings.highThreshold,
-                                isLow = mockVal < settings.lowThreshold
-                            )
-                            GlucoseSyncState.latestReading.value = mockReading
-                            GlucoseSyncState.syncStatusText.value = "Wysłano testowy odczyt (Demo)"
-        
-                            val mockHistory = (1..12).map { i ->
-                                GlucoseReading(
-                                    value = Random.nextInt(80, 170).toFloat(),
-                                    trendArrow = TrendArrow.STABLE,
-                                    measurementColor = MeasurementColor.IN_RANGE,
-                                    timestamp = System.currentTimeMillis() - (i * 15 * 60_000L),
-                                    isHigh = false,
-                                    isLow = false
-                                )
-                            }
-                            GlucoseSyncState.history.value = mockHistory
-        
-                            scope.launch {
-                                try {
-                                    MohgWatchWidget().updateAll(context)
-                                } catch (e: Exception) {
-                                    // Ignore
-                                }
-                                dataLayerSender.sendGlucoseReading(mockReading)
-                                dataLayerSender.sendGlucoseHistory(mockHistory)
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth().height(if (compact) 40.dp else 48.dp),
-                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Teal400)
-                    ) {
-                        Icon(Icons.Filled.Bolt, null, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text("Wyślij testowy odczyt (Demo)", style = MaterialTheme.typography.bodyMedium)
-                    }
-                }
             }
         }
 
@@ -332,20 +269,6 @@ fun StatusScreen() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            OutlinedButton(
-                onClick = {
-                    GlucoseSyncService.stop(context)
-                    (context as? android.app.Activity)?.finishAffinity()
-                },
-                modifier = Modifier.weight(1f).height(if (compact) 42.dp else 48.dp),
-                shape = RoundedCornerShape(12.dp),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
-            ) {
-                Icon(Icons.Filled.PowerSettingsNew, null, modifier = Modifier.size(18.dp))
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(tr("Wyłącz aplikację", "Exit app"), style = MaterialTheme.typography.bodyMedium)
-            }
             Button(
                 onClick = {
                     GlucoseSyncService.forceSync(context)

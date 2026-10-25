@@ -24,6 +24,5 @@ data class UserData(
 @JsonClass(generateAdapter = true)
 data class AuthTicket(
     val token: String,
-    val expires: Long,
-    val duration: Long
+    val expires: Long
 )

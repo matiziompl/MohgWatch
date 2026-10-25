@@ -28,10 +28,10 @@ object WristDetectionManager {
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var isListening = false
-    private var lastWornState: Boolean = true
-    private var lastSensorValue: Float = 1.0f
+    private var lastWornState: Boolean = false
+    private var lastSensorValue: Float = -1.0f
 
-    val isWornState = kotlinx.coroutines.flow.MutableStateFlow(true)
+    val isWornState = kotlinx.coroutines.flow.MutableStateFlow(false)
 
     private var sensorManager: SensorManager? = null
     private var offBodySensor: Sensor? = null
@@ -85,9 +85,12 @@ object WristDetectionManager {
         offBodySensor = sensorManager?.getDefaultSensor(Sensor.TYPE_LOW_LATENCY_OFFBODY_DETECT)
 
         if (offBodySensor != null) {
-            sensorManager?.registerListener(sensorListener, offBodySensor, SensorManager.SENSOR_DELAY_FASTEST)
-            isListening = true
-            Log.d(TAG, "Zarejestrowano czujnik LOW_LATENCY_OFFBODY_DETECT")
+            isListening = try {
+                sensorManager?.registerListener(sensorListener, offBodySensor, SensorManager.SENSOR_DELAY_NORMAL) == true
+            } catch (e: SecurityException) {
+                Log.w(TAG, "Brak dostępu do czujnika nadgarstka", e)
+                false
+            }
         } else {
             Log.w(TAG, "Brak sprzętowego sensora LOW_LATENCY_OFFBODY_DETECT na tym urządzeniu")
         }
@@ -101,6 +104,10 @@ object WristDetectionManager {
         if (!isListening) return
         sensorManager?.unregisterListener(sensorListener)
         isListening = false
+        lastWornState = false
+        lastSensorValue = -1.0f
+        isWornState.value = false
+        sendWristStatus(false, -1.0f)
     }
 
     fun requestStatusUpdate(notify: Boolean = true) {
@@ -119,7 +126,11 @@ object WristDetectionManager {
                     dataMap.putFloat(DataLayerPaths.Keys.SENSOR_VALUE, sensorValue)
                     dataMap.putString(
                         DataLayerPaths.Keys.SENSOR_STATUS_TEXT,
-                        if (isWorn) "Na ręku (kontakt ze skórą)" else "Zdjęty z ręki (brak kontaktu)"
+                        when {
+                            sensorValue < 0f -> "Brak odczytu czujnika nadgarstka"
+                            isWorn -> "Na ręku (kontakt ze skórą)"
+                            else -> "Zdjęty z ręki (brak kontaktu)"
+                        }
                     )
                     dataMap.putLong(DataLayerPaths.Keys.TIMESTAMP, System.currentTimeMillis())
                     dataMap.putString(DataLayerPaths.Keys.UPDATE_ID, UUID.randomUUID().toString())
@@ -151,13 +162,14 @@ object WristDetectionManager {
         val context = appContext ?: return
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
 
-        val statusText = if (isWorn) "Zegarek jest NA RĘKU" else "Zegarek jest ZDJĘTY Z RĘKI"
-        val detail = "Wartość sensora: $sensorValue (1.0 = kontakt, 0.0 = brak)"
+        val statusText = when {
+            !sensorValue.isFinite() || sensorValue < 0f -> "Stan zegarka jest nieznany"
+            isWorn -> "Zegarek jest NA RĘKU"
+            else -> "Zegarek jest ZDJĘTY"
+        }
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("Czujnik nadgarstka")
-            .setContentText(statusText)
-            .setStyle(NotificationCompat.BigTextStyle().bigText("$statusText\n$detail"))
+            .setContentTitle(statusText)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)

@@ -84,7 +84,7 @@ class GlucoseDoseSitesWidget : GlanceAppWidget() {
                             modifier = GlanceModifier.defaultWeight()
                         ) {
                             Text(
-                                text = "${reading.value.toInt()}",
+                                text = GlucoseFormatter.format(reading.value, settings.unit),
                                 style = TextStyle(
                                     color = gluColor,
                                     fontSize = 38.sp,

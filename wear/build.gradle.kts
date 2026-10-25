@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -14,8 +13,8 @@ android {
         applicationId = "com.mohgwatch"
         minSdk = 30
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = providers.gradleProperty("mohgwatch.versionCode").get().toInt()
+        versionName = providers.gradleProperty("mohgwatch.versionName").get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,6 +36,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -60,12 +60,7 @@ dependencies {
     // AndroidX
     implementation(libs.activity.compose)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.core.ktx)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
 
     // Data Layer (receive from phone)
     implementation(libs.play.services.wearable)
@@ -96,5 +91,4 @@ dependencies {
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
-    androidTestImplementation(libs.androidx.test.ext)
 }

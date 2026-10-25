@@ -2,7 +2,6 @@ package com.mohgwatch.phone.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
@@ -19,7 +18,6 @@ import androidx.glance.background
 import androidx.glance.layout.*
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
-import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import com.mohgwatch.core.model.GlucoseReading
 import com.mohgwatch.core.model.UserSettings
@@ -88,7 +86,7 @@ class DashboardWidget : GlanceAppWidget() {
                             val gluColor = WidgetThemeHelper.glucoseColor(reading, settings)
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
-                                    text = "${reading.value.toInt()}",
+                                    text = GlucoseFormatter.format(reading.value, settings.unit),
                                     style = TextStyle(color = gluColor, fontSize = 34.sp, fontWeight = FontWeight.Bold)
                                 )
                                 Spacer(modifier = GlanceModifier.width(8.dp))
@@ -146,7 +144,7 @@ class DashboardWidget : GlanceAppWidget() {
                         val gluColor = WidgetThemeHelper.glucoseColor(reading, settings)
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "${reading.value.toInt()}",
+                                text = GlucoseFormatter.format(reading.value, settings.unit),
                                 style = TextStyle(color = gluColor, fontSize = fontSize, fontWeight = FontWeight.Bold)
                             )
                             Spacer(modifier = GlanceModifier.width(8.dp))

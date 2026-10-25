@@ -24,7 +24,6 @@ import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
-import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import com.mohgwatch.core.model.GlucoseReading
 import com.mohgwatch.core.model.UserSettings
@@ -115,7 +114,7 @@ class CombinedWidget : GlanceAppWidget() {
                         modifier = GlanceModifier.defaultWeight()
                     ) {
                         Text(
-                            text = "${reading.value.toInt()}",
+                            text = GlucoseFormatter.format(reading.value, settings.unit),
                             style = TextStyle(
                                 color = gluColor,
                                 fontSize = 38.sp,

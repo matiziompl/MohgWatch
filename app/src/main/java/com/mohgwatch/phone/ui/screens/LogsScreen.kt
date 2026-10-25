@@ -1,5 +1,9 @@
 package com.mohgwatch.phone.ui.screens
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -8,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,11 +21,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.Icons
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.core.content.FileProvider
 import com.mohgwatch.core.model.DisconnectLog
 import com.mohgwatch.core.model.LogBgColor
 import com.mohgwatch.core.model.ThemeMode
 import com.mohgwatch.phone.data.LogsStore
 import com.mohgwatch.phone.data.SettingsStore
+import com.mohgwatch.phone.data.Diagnostics
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -33,6 +47,44 @@ fun LogsScreen(onBack: () -> Unit = {}) {
     val settingsStore = remember { SettingsStore(context) }
     val logs by logsStore.logsFlow.collectAsState(initial = emptyList())
     val settings by settingsStore.settingsFlow.collectAsState(initial = null)
+    val scope = rememberCoroutineScope()
+    var reportHours by rememberSaveable { mutableIntStateOf(24) }
+    var preparingReport by remember { mutableStateOf(false) }
+    var reportStatus by remember { mutableStateOf<String?>(null) }
+
+    fun prepareReport(exportFull: Boolean) {
+        if (preparingReport) return
+        preparingReport = true
+        reportStatus = if (exportFull) "Przygotowuję pełne logi…" else "Przygotowuję raport…"
+        val hours = reportHours
+        scope.launch {
+            try {
+                if (exportFull) {
+                    val file = withContext(Dispatchers.IO) { Diagnostics.export(context, hours) }
+                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.diagnostics.files", file)
+                    val share = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_STREAM, uri)
+                        clipData = ClipData.newRawUri("Logi MohgWatch", uri)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    context.startActivity(Intent.createChooser(share, "Eksportuj pełne logi"))
+                    reportStatus = "Przygotowano logi z ostatnich $hours godz. Faktyczny zakres i ewentualne braki opisano w pliku."
+                } else {
+                    val report = withContext(Dispatchers.IO) { Diagnostics.report(context, hours) }
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    clipboard.setPrimaryClip(ClipData.newPlainText("Raport diagnostyczny MohgWatch", report))
+                    reportStatus = "Skopiowano raport z ostatnich $hours godz. Wklej go do rozmowy."
+                }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (_: Exception) {
+                reportStatus = "Nie udało się przygotować lub udostępnić raportu. Spróbuj ponownie; możesz też wybrać krótszy okres."
+            } finally {
+                preparingReport = false
+            }
+        }
+    }
     
     val bgColorEnum = settings?.logBackgroundColor ?: LogBgColor.WHITE
     
@@ -62,7 +114,7 @@ fun LogsScreen(onBack: () -> Unit = {}) {
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
-            title = { Text("Logi rozłączeń") },
+            title = { Text("Logi i diagnostyka") },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, "Wstecz")
@@ -72,6 +124,51 @@ fun LogsScreen(onBack: () -> Unit = {}) {
         )
         
         LazyColumn(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+            item {
+                Text("Raport diagnostyczny", style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    "Krótki raport zawiera konfigurację, ostatnią awarię i oś zdarzeń. Pełne logi zachowują szczegóły. Wybierz okres obejmujący nocną przerwę.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf(24, 72, 168).forEach { hours ->
+                        FilterChip(
+                            selected = reportHours == hours,
+                            onClick = { reportHours = hours; reportStatus = null },
+                            enabled = !preparingReport,
+                            label = { Text(if (hours == 168) "7 dni" else "$hours godz.") }
+                        )
+                    }
+                }
+                Button(
+                    onClick = { prepareReport(exportFull = false) },
+                    enabled = !preparingReport,
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("Kopiuj raport diagnostyczny") }
+                OutlinedButton(
+                    onClick = { prepareReport(exportFull = true) },
+                    enabled = !preparingReport,
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("Eksportuj pełne logi") }
+                Text(
+                    "Logi przetrwają restart procesu. Retencja: do 7 dni i 8 MiB. Raport podaje faktyczny zakres i ewentualne obcięcie; luka w logach sama nie dowodzi zabicia procesu.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                reportStatus?.let { status ->
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        status,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }
+                    )
+                }
+                HorizontalDivider(Modifier.padding(vertical = 20.dp))
+                Text("Historia rozłączeń", style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.height(12.dp))
+            }
             if (logs.isEmpty()) {
                 item {
                     Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
@@ -97,9 +194,10 @@ fun LogsScreen(onBack: () -> Unit = {}) {
                         com.mohgwatch.core.model.DisconnectReason.entries.forEach { reason ->
                             val desc = when (reason) {
                                 com.mohgwatch.core.model.DisconnectReason.NETWORK_ERROR -> "Brak połączenia z internetem (Wi-Fi lub dane komórkowe)."
+                                com.mohgwatch.core.model.DisconnectReason.ANDROID_NETWORK_BLOCKED -> "Android ograniczył sieć aplikacji. Sprawdź wyjątek od optymalizacji baterii i ustawienia danych w tle."
                                 com.mohgwatch.core.model.DisconnectReason.AUTH_ERROR -> "Nieprawidłowe dane logowania (zmieniono hasło lub wygasła sesja)."
                                 com.mohgwatch.core.model.DisconnectReason.API_ERROR -> "Błąd lub przerwa techniczna po stronie serwerów LibreLinkUp."
-                                com.mohgwatch.core.model.DisconnectReason.SYSTEM_KILLED -> "System Android zabił proces aplikacji w tle (optymalizacja baterii lub pamięci)."
+                                com.mohgwatch.core.model.DisconnectReason.SYSTEM_KILLED -> "Historyczna klasyfikacja przerwy. Sama luka w logach nie potwierdza zabicia procesu; sprawdź raport diagnostyczny i zapis poprzedniego zakończenia procesu."
                                 com.mohgwatch.core.model.DisconnectReason.UNKNOWN -> "Nieznany powód utraty łączności."
                             }
                             Text("- ${reason.label}", style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)

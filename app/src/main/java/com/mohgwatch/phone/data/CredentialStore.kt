@@ -1,25 +1,40 @@
 package com.mohgwatch.phone.data
 
 import android.content.Context
+import androidx.datastore.core.DataMigration
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.crypto.tink.Aead
+import com.google.crypto.tink.integration.android.AndroidKeystoreKmsClient
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOn
 
 private val Context.credentialDataStore: DataStore<Preferences> by preferencesDataStore(
-    name = "mohgwatch_credentials"
+    name = "mohgwatch_credentials",
+    produceMigrations = {
+        listOf(object : DataMigration<Preferences> {
+            override suspend fun shouldMigrate(currentData: Preferences) =
+                CredentialPreferences.needsMigration(currentData)
+
+            override suspend fun migrate(currentData: Preferences): Preferences =
+                CredentialPreferences.migrate(currentData, createCredentialAead())
+
+            override suspend fun cleanUp() = Unit
+        })
+    }
 )
 
-/**
- * Bezpieczne przechowywanie danych logowania LibreLinkUp.
- * Używa DataStore z Preferences.
- *
- * UWAGA: W produkcji powinno używać Tink + EncryptedDataStore.
- * Obecna implementacja używa standardowego DataStore dla uproszczenia.
- */
-class CredentialStore(private val context: Context) {
+// Use the non-exportable Keystore key directly; never persist a software fallback keyset.
+private fun createCredentialAead(): Aead =
+    AndroidKeystoreKmsClient.getOrGenerateNewAeadKey("android-keystore://mohgwatch_credentials")
+
+/** Saved login stays available for automatic renewal; secrets are encrypted at rest. */
+class CredentialStore(context: Context) {
+    private val context = context.applicationContext
+    private val aead by lazy { createCredentialAead() }
 
     data class Credentials(
         val token: String,
@@ -31,29 +46,11 @@ class CredentialStore(private val context: Context) {
         val password: String? = null
     )
 
-    private object Keys {
-        val TOKEN = stringPreferencesKey("token")
-        val USER_ID = stringPreferencesKey("user_id")
-        val REGION = stringPreferencesKey("region")
-        val EXPIRES = longPreferencesKey("expires")
-        val PATIENT_ID = stringPreferencesKey("patient_id")
-        val EMAIL = stringPreferencesKey("email")
-        val PASSWORD = stringPreferencesKey("password")
-    }
-
-    val credentialsFlow: Flow<Credentials?> = context.credentialDataStore.data.map { prefs ->
-        val token = prefs[Keys.TOKEN] ?: return@map null
-        val userId = prefs[Keys.USER_ID] ?: return@map null
-        Credentials(
-            token = token,
-            userId = userId,
-            region = prefs[Keys.REGION] ?: "global",
-            expires = prefs[Keys.EXPIRES] ?: 0L,
-            patientId = prefs[Keys.PATIENT_ID],
-            email = prefs[Keys.EMAIL],
-            password = prefs[Keys.PASSWORD]
-        )
-    }
+    val credentialsFlow: Flow<Credentials?> = CredentialPreferences.observe(
+        context.credentialDataStore.data, { aead }
+    ) { failure ->
+        Diagnostics.record(this.context, "CREDENTIAL_READ_ERROR", Diagnostics.error(failure))
+    }.flowOn(Dispatchers.IO)
 
     suspend fun getCredentials(): Credentials? = credentialsFlow.first()
 
@@ -67,13 +64,7 @@ class CredentialStore(private val context: Context) {
         password: String? = null
     ) {
         context.credentialDataStore.edit { prefs ->
-            prefs[Keys.TOKEN] = token
-            prefs[Keys.USER_ID] = userId
-            prefs[Keys.REGION] = region
-            prefs[Keys.EXPIRES] = expires
-            patientId?.let { prefs[Keys.PATIENT_ID] = it }
-            email?.let { prefs[Keys.EMAIL] = it }
-            password?.let { prefs[Keys.PASSWORD] = it }
+            CredentialPreferences.save(prefs, aead, token, userId, region, expires, patientId, email, password)
         }
     }
 

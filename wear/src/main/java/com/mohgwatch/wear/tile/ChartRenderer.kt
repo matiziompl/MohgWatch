@@ -61,7 +61,6 @@ object ChartRenderer {
         val maxVal = 300f
         val valRange = 300f
 
-        val themeColor = getThemeColor(settings)
         val safeZoneColor = Color.argb(60, 16, 185, 129) // Green with alpha
 
         // 1. Draw Target Zone
@@ -97,7 +96,7 @@ object ChartRenderer {
         linePaint.color = outOfRangeColor
         canvas.drawLine(CHART_LEFT, y200, CHART_RIGHT, y200, linePaint)
         textPaint.color = Color.WHITE
-        canvas.drawText("200", CHART_SIZE / 2f, y200 - 8f, textPaint)
+        canvas.drawText(GlucoseFormatter.format(200f, settings.unit), CHART_SIZE / 2f, y200 - 8f, textPaint)
 
         // 3. Theme highThreshold line
         linePaint.color = Color.parseColor("#10B981") // Green
@@ -112,7 +111,7 @@ object ChartRenderer {
         linePaint.color = outOfRangeColor
         canvas.drawLine(CHART_LEFT, y50, CHART_RIGHT, y50, linePaint)
         textPaint.color = Color.WHITE
-        canvas.drawText("50", CHART_SIZE / 2f, y50 + 20f, textPaint)
+        canvas.drawText(GlucoseFormatter.format(50f, settings.unit), CHART_SIZE / 2f, y50 + 20f, textPaint)
 
         // 6. Bottom Axis
         val axisY = CHART_BOTTOM
@@ -251,17 +250,4 @@ object ChartRenderer {
         return CHART_BOTTOM - ratio * (CHART_BOTTOM - CHART_TOP)
     }
 
-    private fun getThemeColor(settings: UserSettings): Int {
-        return when (settings.appTheme) {
-            com.mohgwatch.core.model.AppTheme.DEFAULT -> Color.parseColor("#3B82F6") // Blue
-            com.mohgwatch.core.model.AppTheme.MONOCHROME -> Color.parseColor("#9CA3AF")
-            com.mohgwatch.core.model.AppTheme.GRAY -> Color.parseColor("#6B7280")
-            com.mohgwatch.core.model.AppTheme.LIGHT_GRAY -> Color.parseColor("#D1D5DB")
-            com.mohgwatch.core.model.AppTheme.BLACK -> Color.parseColor("#4B5563")
-            com.mohgwatch.core.model.AppTheme.RED -> Color.parseColor("#EF4444")
-            com.mohgwatch.core.model.AppTheme.GREEN -> Color.parseColor("#10B981")
-            com.mohgwatch.core.model.AppTheme.AMBER -> Color.parseColor("#F59E0B")
-            else -> Color.parseColor("#3B82F6")
-        }
-    }
 }

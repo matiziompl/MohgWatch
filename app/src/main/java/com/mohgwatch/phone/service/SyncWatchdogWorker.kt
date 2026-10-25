@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.work.*
 import com.mohgwatch.phone.data.SettingsStore
+import com.mohgwatch.phone.data.Diagnostics
+import com.mohgwatch.phone.data.GlucoseHistoryStore
 import java.util.concurrent.TimeUnit
 
 class SyncWatchdogWorker(
@@ -12,16 +14,19 @@ class SyncWatchdogWorker(
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
+        Diagnostics.record(applicationContext, "WATCHDOG_START", Diagnostics.snapshot(applicationContext))
         val settingsStore = SettingsStore(applicationContext)
         val settings = settingsStore.getSettings()
         if (settings.isSyncEnabled) {
-            val lastSync = GlucoseSyncState.lastSyncTimestamp.value
+            val lastSync = GlucoseHistoryStore(applicationContext).lastSuccessfulSync()
             val maxAllowedGapMs = (settings.pollIntervalMinutes + 5) * 60_000L
             if (System.currentTimeMillis() - lastSync > maxAllowedGapMs) {
                 Log.w(TAG, "Watchdog wykrył przestój synchronizacji. Wznawianie usługi...")
-                GlucoseSyncService.start(applicationContext)
+                Diagnostics.record(applicationContext, "WATCHDOG_ACTION", "action=arm_recovery lastSuccessfulSync=$lastSync gapMs=${System.currentTimeMillis() - lastSync} allowedGapMs=$maxAllowedGapMs")
+                SyncScheduler.schedule(applicationContext, 1_000L)
             }
         }
+        Diagnostics.record(applicationContext, "WATCHDOG_END", "enabled=${settings.isSyncEnabled}")
         return Result.success()
     }
 

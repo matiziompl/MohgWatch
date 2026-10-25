@@ -8,7 +8,7 @@ import com.mohgwatch.core.model.AppTheme
 import com.mohgwatch.core.model.GlucoseUnit
 import com.mohgwatch.core.model.ThemeMode
 import com.mohgwatch.core.model.UserSettings
-import com.mohgwatch.core.model.WatchFacePreset
+import com.mohgwatch.core.model.TrendVibrationPattern
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -18,7 +18,7 @@ private val Context.settingsDataStore: DataStore<Preferences> by preferencesData
 )
 
 /**
- * Przechowywanie ustawień użytkownika (jednostki, progi, preset, interwał, przycisk demo).
+ * Przechowywanie ustawień użytkownika (jednostki, progi, interwał, przycisk demo).
  */
 class SettingsStore(private val context: Context) {
 
@@ -26,27 +26,28 @@ class SettingsStore(private val context: Context) {
         val UNIT = stringPreferencesKey("unit")
         val LOW_THRESHOLD = floatPreferencesKey("low_threshold")
         val HIGH_THRESHOLD = floatPreferencesKey("high_threshold")
-        val PRESET = stringPreferencesKey("preset")
+        val VERY_HIGH_THRESHOLD = floatPreferencesKey("very_high_threshold")
         val POLL_INTERVAL = intPreferencesKey("poll_interval")
         val SHOW_DEMO_BUTTON = booleanPreferencesKey("show_demo_button")
         val APP_THEME = stringPreferencesKey("app_theme")
         val THEME_MODE = stringPreferencesKey("theme_mode")
-        val SYNC_THEME_WITH_WATCH = booleanPreferencesKey("sync_theme_with_watch")
-        val WATCH_APP_THEME = stringPreferencesKey("watch_app_theme")
         val LANGUAGE = stringPreferencesKey("language")
         val NOTIFY_DISCONNECT = booleanPreferencesKey("notify_disconnect")
         val NOTIFY_OUT_OF_RANGE = booleanPreferencesKey("notify_out_of_range")
-        val ALERT_LOW_THRESHOLD = floatPreferencesKey("alert_low_threshold")
-        val ALERT_HIGH_THRESHOLD = floatPreferencesKey("alert_high_threshold")
-        val ALERT_VERY_HIGH_THRESHOLD = floatPreferencesKey("alert_very_high_threshold")
+        val NOTIFY_STALE_DATA_WATCH = booleanPreferencesKey("notify_stale_data_watch")
+        val STALE_DATA_MINUTES = intPreferencesKey("stale_data_minutes")
+        val ALERT_LOW_HAPTIC_ENABLED = booleanPreferencesKey("alert_low_haptic_enabled")
+        val ALERT_HIGH_HAPTIC_ENABLED = booleanPreferencesKey("alert_high_haptic_enabled")
+        val TREND_STABLE_ENABLED = booleanPreferencesKey("trend_stable_enabled")
+        val TREND_RISING_PATTERN = stringPreferencesKey("trend_rising_pattern")
+        val TREND_FALLING_PATTERN = stringPreferencesKey("trend_falling_pattern")
+        val TREND_STABLE_PATTERN = stringPreferencesKey("trend_stable_pattern")
         val DISCONNECT_SOUND_URI = stringPreferencesKey("disconnect_sound_uri")
         val LOW_GLUCOSE_SOUND_URI = stringPreferencesKey("low_glucose_sound_uri")
         val HIGH_GLUCOSE_SOUND_URI = stringPreferencesKey("high_glucose_sound_uri")
         val WATCH_LOW_THRESHOLD = floatPreferencesKey("watch_low_threshold")
         val WATCH_HIGH_THRESHOLD = floatPreferencesKey("watch_high_threshold")
         val WATCH_VERY_HIGH_THRESHOLD = floatPreferencesKey("watch_very_high_threshold")
-        val WATCH_TREND_ARROW_STYLE = stringPreferencesKey("watch_trend_arrow_style")
-        val WATCH_GLUCOSE_FONT = stringPreferencesKey("watch_glucose_font")
         val NOTIFICATION_VOLUME = floatPreferencesKey("notification_volume")
         val NIGHT_MODE_ENABLED = booleanPreferencesKey("night_mode_enabled")
         val NIGHT_START_TIME = stringPreferencesKey("night_start_time")
@@ -54,10 +55,6 @@ class SettingsStore(private val context: Context) {
         val NIGHT_NOTIFICATION_VOLUME = floatPreferencesKey("night_notification_volume")
         val LOG_BACKGROUND_COLOR = stringPreferencesKey("log_background_color")
         val NOTIFICATION_SOUND_DELAY_SECONDS = intPreferencesKey("notification_sound_delay_seconds")
-        val TREND_FAST_FALLING = floatPreferencesKey("trend_fast_falling")
-        val TREND_FALLING = floatPreferencesKey("trend_falling")
-        val TREND_RISING = floatPreferencesKey("trend_rising")
-        val TREND_FAST_RISING = floatPreferencesKey("trend_fast_rising")
         val PERSISTENT_WAKELOCK_ENABLED = booleanPreferencesKey("persistent_wakelock_enabled")
         val SHOW_INJECTION_SITES = booleanPreferencesKey("show_injection_sites")
         val WIDGET_PRIMARY_THEME = stringPreferencesKey("widget_primary_theme")
@@ -69,7 +66,6 @@ class SettingsStore(private val context: Context) {
         val IS_SYNC_ENABLED = booleanPreferencesKey("is_sync_enabled")
         val SHOW_WRIST_STATUS_IN_NOTIFICATION = booleanPreferencesKey("show_wrist_status_in_notification")
         val WATCH_WRIST_NOTIFY_MODE = stringPreferencesKey("watch_wrist_notify_mode")
-        val STALE_DATA_TIMEOUT_MINUTES = intPreferencesKey("stale_data_timeout_minutes")
         val DOSE_BREAKFAST = stringPreferencesKey("dose_breakfast")
         val DOSE_LUNCH = stringPreferencesKey("dose_lunch")
         val DOSE_DINNER = stringPreferencesKey("dose_dinner")
@@ -85,9 +81,7 @@ class SettingsStore(private val context: Context) {
             } ?: GlucoseUnit.MG_DL,
             lowThreshold = prefs[Keys.LOW_THRESHOLD] ?: 70f,
             highThreshold = prefs[Keys.HIGH_THRESHOLD] ?: 180f,
-            preset = prefs[Keys.PRESET]?.let {
-                try { WatchFacePreset.valueOf(it) } catch (e: Exception) { WatchFacePreset.D1_CLASSIC }
-            } ?: WatchFacePreset.D1_CLASSIC,
+            veryHighThreshold = prefs[Keys.VERY_HIGH_THRESHOLD] ?: 250f,
             pollIntervalMinutes = prefs[Keys.POLL_INTERVAL] ?: 5,
             showDemoButton = prefs[Keys.SHOW_DEMO_BUTTON] ?: true,
             appTheme = prefs[Keys.APP_THEME]?.let {
@@ -96,24 +90,23 @@ class SettingsStore(private val context: Context) {
             themeMode = prefs[Keys.THEME_MODE]?.let {
                 try { ThemeMode.valueOf(it) } catch (e: Exception) { ThemeMode.SYSTEM }
             } ?: ThemeMode.SYSTEM,
-            syncThemeWithWatch = prefs[Keys.SYNC_THEME_WITH_WATCH] ?: true,
-            watchAppTheme = prefs[Keys.WATCH_APP_THEME]?.let {
-                try { AppTheme.valueOf(it) } catch (e: Exception) { AppTheme.DEFAULT }
-            } ?: AppTheme.DEFAULT,
             language = prefs[Keys.LANGUAGE] ?: "system",
             notifyDisconnect = prefs[Keys.NOTIFY_DISCONNECT] ?: true,
             notifyOutOfRange = prefs[Keys.NOTIFY_OUT_OF_RANGE] ?: true,
-            alertLowThreshold = prefs[Keys.ALERT_LOW_THRESHOLD] ?: 70f,
-            alertHighThreshold = prefs[Keys.ALERT_HIGH_THRESHOLD] ?: 180f,
-            alertVeryHighThreshold = prefs[Keys.ALERT_VERY_HIGH_THRESHOLD] ?: 250f,
+            notifyStaleDataWatch = prefs[Keys.NOTIFY_STALE_DATA_WATCH] ?: true,
+            staleDataMinutes = (prefs[Keys.STALE_DATA_MINUTES] ?: 10).coerceIn(1, 60),
+            alertLowHapticEnabled = prefs[Keys.ALERT_LOW_HAPTIC_ENABLED] ?: true,
+            alertHighHapticEnabled = prefs[Keys.ALERT_HIGH_HAPTIC_ENABLED] ?: true,
+            trendStableEnabled = prefs[Keys.TREND_STABLE_ENABLED] ?: false,
+            trendRisingPattern = TrendVibrationPattern.fromName(prefs[Keys.TREND_RISING_PATTERN]),
+            trendFallingPattern = TrendVibrationPattern.fromName(prefs[Keys.TREND_FALLING_PATTERN]),
+            trendStablePattern = TrendVibrationPattern.fromName(prefs[Keys.TREND_STABLE_PATTERN]),
             disconnectSoundUri = prefs[Keys.DISCONNECT_SOUND_URI],
             lowGlucoseSoundUri = prefs[Keys.LOW_GLUCOSE_SOUND_URI],
             highGlucoseSoundUri = prefs[Keys.HIGH_GLUCOSE_SOUND_URI],
             watchLowThreshold = prefs[Keys.WATCH_LOW_THRESHOLD] ?: 70f,
             watchHighThreshold = prefs[Keys.WATCH_HIGH_THRESHOLD] ?: 180f,
             watchVeryHighThreshold = prefs[Keys.WATCH_VERY_HIGH_THRESHOLD] ?: 250f,
-            watchTrendArrowStyle = prefs[Keys.WATCH_TREND_ARROW_STYLE] ?: "next_to_value",
-            watchGlucoseFont = prefs[Keys.WATCH_GLUCOSE_FONT] ?: "default",
             notificationVolume = prefs[Keys.NOTIFICATION_VOLUME] ?: 1.0f,
             nightModeEnabled = prefs[Keys.NIGHT_MODE_ENABLED] ?: true,
             nightStartTime = prefs[Keys.NIGHT_START_TIME] ?: "22:00",
@@ -123,10 +116,6 @@ class SettingsStore(private val context: Context) {
                 try { com.mohgwatch.core.model.LogBgColor.valueOf(it) } catch (e: Exception) { com.mohgwatch.core.model.LogBgColor.WHITE }
             } ?: com.mohgwatch.core.model.LogBgColor.WHITE,
             notificationSoundDelaySeconds = prefs[Keys.NOTIFICATION_SOUND_DELAY_SECONDS] ?: 5,
-            trendThresholdFastFalling = prefs[Keys.TREND_FAST_FALLING] ?: -5f,
-            trendThresholdFalling = prefs[Keys.TREND_FALLING] ?: -2f,
-            trendThresholdRising = prefs[Keys.TREND_RISING] ?: 2f,
-            trendThresholdFastRising = prefs[Keys.TREND_FAST_RISING] ?: 5f,
             persistentWakeLockEnabled = prefs[Keys.PERSISTENT_WAKELOCK_ENABLED] ?: false,
             showInjectionSites = prefs[Keys.SHOW_INJECTION_SITES] ?: false,
             widgetPrimaryTheme = prefs[Keys.WIDGET_PRIMARY_THEME]?.let {
@@ -142,7 +131,6 @@ class SettingsStore(private val context: Context) {
             isSyncEnabled = prefs[Keys.IS_SYNC_ENABLED] ?: true,
             showWristStatusInNotification = prefs[Keys.SHOW_WRIST_STATUS_IN_NOTIFICATION] ?: true,
             watchWristNotifyMode = prefs[Keys.WATCH_WRIST_NOTIFY_MODE] ?: "both",
-            staleDataTimeoutMinutes = prefs[Keys.STALE_DATA_TIMEOUT_MINUTES] ?: 5,
             doseBreakfast = prefs[Keys.DOSE_BREAKFAST] ?: "",
             doseLunch = prefs[Keys.DOSE_LUNCH] ?: "",
             doseDinner = prefs[Keys.DOSE_DINNER] ?: "",
@@ -165,27 +153,28 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.UNIT] = settings.unit.name
             prefs[Keys.LOW_THRESHOLD] = settings.lowThreshold
             prefs[Keys.HIGH_THRESHOLD] = settings.highThreshold
-            prefs[Keys.PRESET] = settings.preset.name
+            prefs[Keys.VERY_HIGH_THRESHOLD] = settings.veryHighThreshold
             prefs[Keys.POLL_INTERVAL] = settings.pollIntervalMinutes
             prefs[Keys.SHOW_DEMO_BUTTON] = settings.showDemoButton
             prefs[Keys.APP_THEME] = settings.appTheme.name
             prefs[Keys.THEME_MODE] = settings.themeMode.name
-            prefs[Keys.SYNC_THEME_WITH_WATCH] = settings.syncThemeWithWatch
-            prefs[Keys.WATCH_APP_THEME] = settings.watchAppTheme.name
             prefs[Keys.LANGUAGE] = settings.language
             prefs[Keys.NOTIFY_DISCONNECT] = settings.notifyDisconnect
             prefs[Keys.NOTIFY_OUT_OF_RANGE] = settings.notifyOutOfRange
-            prefs[Keys.ALERT_LOW_THRESHOLD] = settings.alertLowThreshold
-            prefs[Keys.ALERT_HIGH_THRESHOLD] = settings.alertHighThreshold
-            prefs[Keys.ALERT_VERY_HIGH_THRESHOLD] = settings.alertVeryHighThreshold
+            prefs[Keys.NOTIFY_STALE_DATA_WATCH] = settings.notifyStaleDataWatch
+            prefs[Keys.STALE_DATA_MINUTES] = settings.staleDataMinutes.coerceIn(1, 60)
+            prefs[Keys.ALERT_LOW_HAPTIC_ENABLED] = settings.alertLowHapticEnabled
+            prefs[Keys.ALERT_HIGH_HAPTIC_ENABLED] = settings.alertHighHapticEnabled
+            prefs[Keys.TREND_STABLE_ENABLED] = settings.trendStableEnabled
+            prefs[Keys.TREND_RISING_PATTERN] = settings.trendRisingPattern.name
+            prefs[Keys.TREND_FALLING_PATTERN] = settings.trendFallingPattern.name
+            prefs[Keys.TREND_STABLE_PATTERN] = settings.trendStablePattern.name
             settings.disconnectSoundUri?.let { prefs[Keys.DISCONNECT_SOUND_URI] = it } ?: prefs.remove(Keys.DISCONNECT_SOUND_URI)
             settings.lowGlucoseSoundUri?.let { prefs[Keys.LOW_GLUCOSE_SOUND_URI] = it } ?: prefs.remove(Keys.LOW_GLUCOSE_SOUND_URI)
             settings.highGlucoseSoundUri?.let { prefs[Keys.HIGH_GLUCOSE_SOUND_URI] = it } ?: prefs.remove(Keys.HIGH_GLUCOSE_SOUND_URI)
             prefs[Keys.WATCH_LOW_THRESHOLD] = settings.watchLowThreshold
             prefs[Keys.WATCH_HIGH_THRESHOLD] = settings.watchHighThreshold
             prefs[Keys.WATCH_VERY_HIGH_THRESHOLD] = settings.watchVeryHighThreshold
-            prefs[Keys.WATCH_TREND_ARROW_STYLE] = settings.watchTrendArrowStyle
-            prefs[Keys.WATCH_GLUCOSE_FONT] = settings.watchGlucoseFont
             prefs[Keys.NOTIFICATION_VOLUME] = settings.notificationVolume
             prefs[Keys.NIGHT_MODE_ENABLED] = settings.nightModeEnabled
             prefs[Keys.NIGHT_START_TIME] = settings.nightStartTime
@@ -193,10 +182,6 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.NIGHT_NOTIFICATION_VOLUME] = settings.nightNotificationVolume
             prefs[Keys.LOG_BACKGROUND_COLOR] = settings.logBackgroundColor.name
             prefs[Keys.NOTIFICATION_SOUND_DELAY_SECONDS] = settings.notificationSoundDelaySeconds
-            prefs[Keys.TREND_FAST_FALLING] = settings.trendThresholdFastFalling
-            prefs[Keys.TREND_FALLING] = settings.trendThresholdFalling
-            prefs[Keys.TREND_RISING] = settings.trendThresholdRising
-            prefs[Keys.TREND_FAST_RISING] = settings.trendThresholdFastRising
             prefs[Keys.PERSISTENT_WAKELOCK_ENABLED] = settings.persistentWakeLockEnabled
             prefs[Keys.SHOW_INJECTION_SITES] = settings.showInjectionSites
             prefs[Keys.WIDGET_PRIMARY_THEME] = settings.widgetPrimaryTheme.name
@@ -208,7 +193,6 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.IS_SYNC_ENABLED] = settings.isSyncEnabled
             prefs[Keys.SHOW_WRIST_STATUS_IN_NOTIFICATION] = settings.showWristStatusInNotification
             prefs[Keys.WATCH_WRIST_NOTIFY_MODE] = settings.watchWristNotifyMode
-            prefs[Keys.STALE_DATA_TIMEOUT_MINUTES] = settings.staleDataTimeoutMinutes
             prefs[Keys.DOSE_BREAKFAST] = settings.doseBreakfast
             prefs[Keys.DOSE_LUNCH] = settings.doseLunch
             prefs[Keys.DOSE_DINNER] = settings.doseDinner

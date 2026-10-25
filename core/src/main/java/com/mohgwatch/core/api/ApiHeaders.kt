@@ -13,8 +13,6 @@ object ApiHeaders {
 
     const val HEADER_PRODUCT = "product"
     const val HEADER_VERSION = "version"
-    const val HEADER_AUTHORIZATION = "Authorization"
-    const val HEADER_ACCOUNT_ID = "Account-Id"
 
     /** Regionalne adresy bazowe API */
     val BASE_URLS = mapOf(

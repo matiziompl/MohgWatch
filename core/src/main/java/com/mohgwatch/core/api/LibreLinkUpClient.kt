@@ -6,9 +6,9 @@ import com.mohgwatch.core.util.TimestampParser
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.CancellationException
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.MessageDigest
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
  * - Retry z exponential backoff
  * - Auto-relogin przy wygaśnięciu tokenu
  */
-class LibreLinkUpClient {
+class LibreLinkUpClient(private val diagnostic: (String, String) -> Unit = { _, _ -> }) {
 
     /** Stan sesji autoryzacji */
     data class AuthSession(
@@ -41,14 +41,17 @@ class LibreLinkUpClient {
         data class Success<T>(val data: T) : ApiResult<T>()
         data class Error(val message: String, val code: Int = 0) : ApiResult<Nothing>()
         data object LoginRequired : ApiResult<Nothing>()
-        data object NetworkError : ApiResult<Nothing>()
+        data class NetworkError(val kind: NetworkFailureKind = NetworkFailureKind.CONNECTION) : ApiResult<Nothing>() {
+            val message: String get() = kind.message
+            val retryable: Boolean get() = kind != NetworkFailureKind.TLS
+        }
     }
 
     private var session: AuthSession? = null
     private var currentApi: LibreLinkUpApi? = null
-    private var currentBaseUrl: String = ApiHeaders.getBaseUrl("global")
 
     private val moshi: Moshi = Moshi.Builder()
+        .add(LoginResponseAdapterFactory)
         .addLast(KotlinJsonAdapterFactory())
         .build()
 
@@ -65,20 +68,25 @@ class LibreLinkUpClient {
         chain.proceed(request)
     }
 
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
     private fun buildOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(headersInterceptor)
-        .addInterceptor(loggingInterceptor)
+        .addInterceptor { chain ->
+            val started = System.nanoTime()
+            try {
+                chain.proceed(chain.request()).also {
+                    diagnostic("HTTP_RESULT", "code=${it.code} durationMs=${(System.nanoTime() - started) / 1_000_000L}")
+                }
+            } catch (error: Exception) {
+                diagnostic("HTTP_ERROR", "causes=${generateSequence(error as Throwable) { it.cause }.take(6).joinToString(" <- ") { it.javaClass.simpleName }} durationMs=${(System.nanoTime() - started) / 1_000_000L}")
+                throw error
+            }
+        }
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
         .writeTimeout(30, TimeUnit.SECONDS)
         .build()
 
     private fun buildApi(baseUrl: String): LibreLinkUpApi {
-        currentBaseUrl = baseUrl
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(buildOkHttpClient())
@@ -111,14 +119,16 @@ class LibreLinkUpClient {
                 val api = buildApi(startUrl)
                 val response = api.login(LoginRequest(email, password))
 
+                if (response.code() == 401 || response.code() == 403) {
+                    return@withRetry ApiResult.LoginRequired
+                }
                 if (!response.isSuccessful) {
-                    return@withRetry ApiResult.Error(
-                        "Błąd logowania: HTTP ${response.code()}",
-                        response.code()
-                    )
+                    return@withRetry loginHttpFailure(response.code())
                 }
 
                 val body = response.body() ?: return@withRetry ApiResult.Error("Pusta odpowiedź serwera")
+                diagnostic("LOGIN_API_STATUS", "stage=initial status=${body.status}")
+                loginApplicationFailure(body.status)?.let { return@withRetry it }
 
                 if (body.data?.redirect == true) {
                     // Redirect do regionalnego serwera
@@ -129,22 +139,26 @@ class LibreLinkUpClient {
                     val regionalApi = buildApi(regionalUrl)
                     val regionalResponse = regionalApi.login(LoginRequest(email, password))
 
+                    if (regionalResponse.code() == 401 || regionalResponse.code() == 403) {
+                        return@withRetry ApiResult.LoginRequired
+                    }
                     if (!regionalResponse.isSuccessful) {
-                        return@withRetry ApiResult.Error(
-                            "Błąd logowania (region $redirectRegion): HTTP ${regionalResponse.code()}",
-                            regionalResponse.code()
-                        )
+                        return@withRetry loginHttpFailure(regionalResponse.code(), redirectRegion)
                     }
 
                     val regionalBody = regionalResponse.body()
                         ?: return@withRetry ApiResult.Error("Pusta odpowiedź regionalnego serwera")
+                    diagnostic("LOGIN_API_STATUS", "stage=regional status=${regionalBody.status}")
+                    loginApplicationFailure(regionalBody.status)?.let { return@withRetry it }
 
                     return@withRetry createSession(regionalBody, redirectRegion)
                 }
 
                 createSession(body, region ?: "global")
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                ApiResult.NetworkError
+                classifyApiFailure(e, diagnostic)
             }
         }
     }
@@ -205,9 +219,13 @@ class LibreLinkUpClient {
                 val measurement = connection.glucoseMeasurement
                     ?: return@withRetry ApiResult.Error("Brak danych glukozy z sensora")
 
-                ApiResult.Success(measurement.toGlucoseReading())
+                val reading = measurement.toGlucoseReading()
+                    ?: return@withRetry ApiResult.Error("Brak prawidłowego czasu pomiaru glukozy")
+                ApiResult.Success(reading)
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                ApiResult.NetworkError
+                classifyApiFailure(e, diagnostic)
             }
         }
     }
@@ -223,9 +241,11 @@ class LibreLinkUpClient {
         if (patientId == null) {
             // Potrzebujemy patientId — najpierw pobierz connections
             val latestResult = getLatestReading()
-            if (latestResult is ApiResult.Error || latestResult is ApiResult.LoginRequired) {
-                @Suppress("UNCHECKED_CAST")
-                return latestResult as ApiResult<List<GlucoseReading>>
+            when (latestResult) {
+                is ApiResult.Success -> Unit
+                is ApiResult.Error -> return latestResult
+                is ApiResult.LoginRequired -> return latestResult
+                is ApiResult.NetworkError -> return latestResult
             }
         }
 
@@ -260,16 +280,15 @@ class LibreLinkUpClient {
                     return@withRetry ApiResult.Success(emptyList())
                 }
 
-                val readings = graphData.map { it.toGlucoseReading() }
+                val readings = graphData.mapNotNull { it.toGlucoseReading() }
                 ApiResult.Success(readings)
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                ApiResult.NetworkError
+                classifyApiFailure(e, diagnostic)
             }
         }
     }
-
-    /** Zwraca aktualną sesję */
-    fun getSession(): AuthSession? = session
 
     /** Czy sesja jest aktywna i nieexpirowana */
     fun isAuthenticated(): Boolean = session?.isExpired == false
@@ -310,7 +329,7 @@ class LibreLinkUpClient {
     /**
      * Retry z exponential backoff.
      */
-    private suspend fun <T> withRetry(
+    internal suspend fun <T> withRetry(
         maxAttempts: Int = 5,
         initialDelayMs: Long = 3000,
         block: suspend () -> ApiResult<T>
@@ -318,7 +337,7 @@ class LibreLinkUpClient {
         var currentDelay = initialDelayMs
         repeat(maxAttempts - 1) { attempt ->
             val result = block()
-            if (result is ApiResult.NetworkError) {
+            if (result is ApiResult.NetworkError && result.retryable) {
                 delay(currentDelay)
                 currentDelay = (currentDelay * 1.5).toLong()
             } else {
@@ -332,10 +351,10 @@ class LibreLinkUpClient {
 /**
  * Konwertuje GlucoseMeasurement DTO na model GlucoseReading.
  */
-private fun GlucoseMeasurement.toGlucoseReading(): GlucoseReading {
+internal fun GlucoseMeasurement.toGlucoseReading(): GlucoseReading? {
     val parsedTimestamp = TimestampParser.parseTimestamp(timestamp)
         ?: TimestampParser.parseFactoryTimestamp(factoryTimestamp)
-        ?: System.currentTimeMillis()
+        ?: return null
 
     return GlucoseReading(
         value = valueInMgPerDl,

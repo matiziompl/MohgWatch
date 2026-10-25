@@ -1,18 +1,21 @@
 package com.mohgwatch.phone
 
 import android.os.Bundle
+import android.os.Build
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -27,23 +30,27 @@ import com.mohgwatch.phone.ui.screens.*
 import com.mohgwatch.phone.ui.theme.MohgWatchTheme
 import com.mohgwatch.phone.util.LocalAppLanguage
 import com.mohgwatch.phone.util.tr
-import dagger.hilt.android.AndroidEntryPoint
 
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val notificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
         lifecycleScope.launch {
             val credentialStore = com.mohgwatch.phone.data.CredentialStore(this@MainActivity)
-            if (credentialStore.hasCredentials()) {
+            if (credentialStore.hasCredentials() && SettingsStore(this@MainActivity).getSettings().isSyncEnabled) {
                 com.mohgwatch.phone.service.GlucoseSyncService.start(this@MainActivity)
             }
         }
-        
+
         enableEdgeToEdge()
         setContent {
             MohgWatchAppContent()
@@ -59,8 +66,8 @@ fun MohgWatchAppContent() {
 
     CompositionLocalProvider(LocalAppLanguage provides settings.language) {
         MohgWatchTheme(
-            appTheme = settings.appTheme, 
-            themeMode = settings.themeMode, 
+            appTheme = settings.appTheme,
+            themeMode = settings.themeMode,
             logBackgroundColor = settings.logBackgroundColor
         ) {
             val backgroundModifier = com.mohgwatch.phone.ui.theme.LocalAppBackgroundBrush.current?.let { brush ->
@@ -74,13 +81,16 @@ fun MohgWatchAppContent() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MohgWatchNavigation() {
     val navController = rememberNavController()
     val currentEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentEntry?.destination?.route
-
+    val selectedTab = Screen.tabForRoute(currentRoute)
+    val onBack: () -> Unit = { navController.popBackStack() }
+    val onNavigate: (Screen) -> Unit = { screen ->
+        navController.navigate(screen.route) { launchSingleTop = true }
+    }
     val bottomNavItems = listOf(
         Triple(Screen.Status, Icons.Filled.MonitorHeart, tr("Status", "Status")),
         Triple(Screen.SettingsNotifications, Icons.Filled.Notifications, tr("Powiadomienia", "Notifications")),
@@ -90,100 +100,76 @@ fun MohgWatchNavigation() {
     Scaffold(
         containerColor = Color.Transparent,
         bottomBar = {
-            if (currentRoute != Screen.Login.route) {
+            if (selectedTab != null) {
                 Column {
-                    HorizontalDivider(color = Color.DarkGray, thickness = 1.dp)
-                    NavigationBar(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    ) {
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 1.dp)
+                    NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                         bottomNavItems.forEach { (screen, icon, label) ->
-                        NavigationBarItem(
-                            selected = currentRoute == screen.route ||
-                                    (screen == Screen.Settings && currentRoute?.startsWith("settings") == true && currentRoute != Screen.SettingsNotifications.route),
-                            onClick = {
-                                if (currentRoute != screen.route) {
-                                    if (screen == Screen.Settings && currentRoute?.startsWith("settings") == true && currentRoute != Screen.SettingsNotifications.route) {
-                                        navController.popBackStack(Screen.Settings.route, inclusive = false)
-                                    } else if (screen == Screen.SettingsNotifications && currentRoute == Screen.SettingsNotifications.route) {
-                                        // Do nothing
-                                    } else if (screen == Screen.Status && currentRoute?.startsWith("status") == true) {
-                                        navController.popBackStack(Screen.Status.route, inclusive = false)
-                                    } else {
+                            NavigationBarItem(
+                                selected = selectedTab == screen.tab,
+                                onClick = {
+                                    if (currentRoute != screen.route) {
                                         navController.navigate(screen.route) {
-                                            popUpTo(Screen.Status.route) { saveState = true }
+                                            popUpTo(Screen.Status.route)
                                             launchSingleTop = true
-                                            restoreState = true
                                         }
                                     }
-                                }
-                            },
-                            icon = { Icon(icon, contentDescription = label) },
-                            label = { Text(label) },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = MaterialTheme.colorScheme.primary,
-                                selectedTextColor = MaterialTheme.colorScheme.primary,
-                                indicatorColor = MaterialTheme.colorScheme.primaryContainer
+                                },
+                                icon = { Icon(icon, contentDescription = null) },
+                                label = { Text(label) },
+                                colors = NavigationBarItemDefaults.colors(
+                                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                                    indicatorColor = MaterialTheme.colorScheme.primaryContainer
+                                )
                             )
-                        )
-                    }
+                        }
                     }
                 }
             }
         }
     ) { padding ->
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Status.route,
-            modifier = Modifier.padding(padding)
-        ) {
-            composable(Screen.Login.route) {
-                LoginScreen(onLoginSuccess = {
-                    navController.popBackStack()
-                })
-            }
-            composable(Screen.Status.route) {
-                StatusScreen()
-            }
-            composable(Screen.Logs.route) {
-                LogsScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Screen.Settings.route) {
-                SettingsScreen(
-                    onNavigateToDiabetes = { navController.navigate(Screen.SettingsDiabetes.route) },
-                    onNavigateToAccount = { navController.navigate(Screen.SettingsAccount.route) },
-                    onNavigateToTheme = { navController.navigate(Screen.SettingsTheme.route) },
-                    onNavigateToNotificationTests = { navController.navigate(Screen.SettingsNotificationTests.route) },
-                    onNavigateToGeneral = { navController.navigate(Screen.SettingsGeneral.route) },
-                    onNavigateToLogs = { navController.navigate(Screen.Logs.route) }
-                )
-            }
-            composable(Screen.SettingsDiabetes.route) {
-                SettingsDiabetesScreen(onBack = { navController.popBackStack() })
+        NavHost(navController = navController, startDestination = Screen.Status.route,
+            modifier = Modifier.padding(padding)) {
+            composable(Screen.Login.route) { LoginScreen(onLoginSuccess = { navController.popBackStack() }) }
+            composable(Screen.Status.route) { StatusScreen() }
+            composable(Screen.Settings.route) { SettingsScreen(onNavigate) }
+            composable(Screen.SettingsNotifications.route) { NotificationsMenuScreen(onNavigate) }
+            composable(Screen.Logs.route) { LogsScreen(onBack) }
+            composable(Screen.SettingsDiabetes.route) { SettingsDiabetesScreen(onBack) }
+            composable(Screen.SettingsDoses.route) {
+                SettingsDiabetesScreen(onBack, DiabetesSettingsSection.DOSES)
             }
             composable(Screen.SettingsAccount.route) {
-                SettingsAccountScreen(
-                    onBack = { navController.popBackStack() },
-                    onNavigateToLogin = { navController.navigate(Screen.Login.route) }
-                )
+                SettingsAccountScreen(onBack = onBack, onNavigateToLogin = { onNavigate(Screen.Login) })
             }
-            composable(Screen.SettingsTheme.route) {
-                SettingsThemeScreen(onBack = { navController.popBackStack() })
+            composable(Screen.SettingsTheme.route) { SettingsThemeScreen(AppearanceSettingsSection.PHONE, onBack) }
+            composable(Screen.SettingsWidgets.route) { SettingsThemeScreen(AppearanceSettingsSection.WIDGETS, onBack) }
+            composable(Screen.SettingsGeneral.route) { SettingsGeneralScreen(onBack, GeneralSettingsSection.BACKGROUND) }
+            composable(Screen.SettingsSync.route) { SettingsGeneralScreen(onBack, GeneralSettingsSection.SYNC) }
+            composable(Screen.SettingsNotificationTests.route) { NotificationTestsMenuScreen(onBack, onNavigate) }
+            listOf(
+                Screen.SettingsTestSounds to NotificationTestSection.SOUNDS,
+                Screen.SettingsTestWatch to NotificationTestSection.WATCH,
+                Screen.SettingsTestSimulation to NotificationTestSection.SIMULATION
+            ).forEach { (screen, section) ->
+                composable(screen.route) { SettingsNotificationTestsScreen(section, onBack) }
             }
-            composable(Screen.SettingsNotificationTests.route) {
-                SettingsNotificationTestsScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Screen.SettingsNotifications.route) {
-                SettingsNotificationsScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Screen.SettingsGeneral.route) {
-                SettingsGeneralScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Screen.SettingsChart.route) {
-                SettingsChartScreen(onBack = { navController.popBackStack() })
-            }
-            composable(Screen.SettingsWatch.route) {
-                SettingsWatchScreen(onBack = { navController.popBackStack() })
+            listOf(
+                Screen.NotificationGlucose to NotificationSettingsSection.GLUCOSE,
+                Screen.NotificationHaptics to NotificationSettingsSection.HAPTICS,
+                Screen.NotificationSounds to NotificationSettingsSection.SOUNDS,
+                Screen.NotificationNight to NotificationSettingsSection.NIGHT,
+                Screen.NotificationConnection to NotificationSettingsSection.CONNECTION,
+                Screen.NotificationWrist to NotificationSettingsSection.WRIST
+            ).forEach { (screen, section) ->
+                composable(screen.route) {
+                    SettingsNotificationsScreen(section, onBack,
+                        onChangeThresholds = { onNavigate(Screen.SettingsDiabetes) },
+                        onTestHaptics = { onNavigate(Screen.SettingsTestWatch) },
+                        onTestSounds = { onNavigate(Screen.SettingsTestSounds) },
+                        onOpenDiagnostics = { onNavigate(Screen.Logs) })
+                }
             }
         }
     }

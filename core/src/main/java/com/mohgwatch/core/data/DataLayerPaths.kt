@@ -6,9 +6,7 @@ package com.mohgwatch.core.data
 object DataLayerPaths {
     const val GLUCOSE_DATA = "/mohgwatch/glucose"
     const val GLUCOSE_HISTORY = "/mohgwatch/glucose_history"
-    const val CREDENTIALS = "/mohgwatch/credentials"
     const val SETTINGS = "/mohgwatch/settings"
-    const val WATCH_FACE = "/mohgwatch/watchface"
     const val CONNECTION_STATUS = "/mohgwatch/connection_status"
     const val STALE_DATA_ALERT = "/mohgwatch/stale_data_alert"
     const val HAPTIC_ALERT = "/mohgwatch/haptic_alert"
@@ -19,6 +17,9 @@ object DataLayerPaths {
     object Keys {
         const val STALE_MINUTES = "stale_minutes"
         const val HAPTIC_TYPE = "haptic_type"
+        const val HAPTIC_PATTERN = "haptic_pattern"
+        const val HAPTIC_PREVIEW = "haptic_preview"
+        const val MEASUREMENT_TIMESTAMP = "measurement_timestamp"
         const val IS_WORN = "is_worn"
         const val SENSOR_VALUE = "sensor_value"
         const val SENSOR_STATUS_TEXT = "sensor_status_text"
@@ -29,29 +30,24 @@ object DataLayerPaths {
         const val TIMESTAMP = "timestamp"
         const val IS_HIGH = "is_high"
         const val IS_LOW = "is_low"
-        const val PATIENT_ID = "patient_id"
-
-        // Credentials
-        const val TOKEN = "token"
-        const val USER_ID = "user_id"
-        const val REGION = "region"
-        const val EXPIRES = "expires"
 
         // Settings
         const val UNIT = "unit"
         const val LOW_THRESHOLD = "low_threshold"
         const val HIGH_THRESHOLD = "high_threshold"
-        const val PRESET = "preset"
         const val POLL_INTERVAL = "poll_interval"
-        const val SHOW_DEMO_BUTTON = "show_demo_button"
-        const val APP_THEME = "app_theme"
-        const val THEME_MODE = "theme_mode"
-        const val SYNC_THEME_WITH_WATCH = "sync_theme_with_watch"
-        const val WATCH_APP_THEME = "watch_app_theme"
         const val LANGUAGE = "language"
         const val WATCH_WRIST_NOTIFY_MODE = "watch_wrist_notify_mode"
-        const val STALE_DATA_TIMEOUT_MINUTES = "stale_data_timeout_minutes"
         const val WATCH_NOTIFY_OUT_OF_RANGE = "watch_notify_out_of_range"
+        const val NOTIFY_OUT_OF_RANGE = "notify_out_of_range"
+        const val NOTIFY_STALE_DATA_WATCH = "notify_stale_data_watch"
+        const val STALE_DATA_MINUTES = "stale_data_minutes"
+        const val ALERT_LOW_HAPTIC_ENABLED = "alert_low_haptic_enabled"
+        const val ALERT_HIGH_HAPTIC_ENABLED = "alert_high_haptic_enabled"
+        const val TREND_STABLE_ENABLED = "trend_stable_enabled"
+        const val TREND_RISING_PATTERN = "trend_rising_pattern"
+        const val TREND_FALLING_PATTERN = "trend_falling_pattern"
+        const val TREND_STABLE_PATTERN = "trend_stable_pattern"
         const val SHOW_NOTIFICATION = "show_notification"
 
         // History (arrays)
@@ -59,8 +55,6 @@ object DataLayerPaths {
         const val HISTORY_TIMESTAMPS = "history_timestamps"
         const val HISTORY_TRENDS = "history_trends"
         const val HISTORY_COLORS = "history_colors"
-        const val HISTORY_IS_HIGH = "history_is_high"
-        const val HISTORY_IS_LOW = "history_is_low"
 
         // Connection
         const val IS_CONNECTED = "is_connected"

@@ -35,23 +35,14 @@ dependencies {
     // Kotlin
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlin.coroutines.core)
-    implementation(libs.kotlin.coroutines.android)
 
     // Networking
     implementation(libs.okhttp)
-    implementation(libs.okhttp.logging)
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     ksp(libs.moshi.codegen)
-
-    // AndroidX Core
-    implementation(libs.core.ktx)
-
-    // Data Layer
-    implementation(libs.play.services.wearable)
-    implementation(libs.kotlin.coroutines.play)
 
     // Testing
     testImplementation(libs.junit)

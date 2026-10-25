@@ -89,16 +89,13 @@ val Indigo600 = Color(0xFF4F46E5)
 val DarkBg = Color(0xFF0F172A)
 val DarkSurface = Color(0xFF1E293B)
 val DarkSurfaceVariant = Color(0xFF334155)
-val DarkCard = Color(0xFF1E293B)
 
 // Background & Surface Light
 val LightBg = Color(0xFFF8FAFC)
 val LightSurface = Color(0xFFFFFFFF)
 val LightSurfaceVariant = Color(0xFFE2E8F0)
-val LightCard = Color(0xFFFFFFFF)
 
 // Glucose range colors
-val GlucoseInRange = Color(0xFF10B981)
 val GlucoseHigh = Color(0xFFF97316)
 val GlucoseVeryHigh = Color(0xFFEF4444)
 val GlucoseLow = Color(0xFFEF4444)
@@ -112,16 +109,6 @@ val TextPrimaryLight = Color(0xFF0F172A)
 val TextSecondaryLight = Color(0xFF475569)
 val TextTertiaryLight = Color(0xFF64748B)
 
-// Aliases for compatibility
-val TextPrimary = TextPrimaryDark
-val TextSecondary = TextSecondaryDark
-val TextTertiary = TextTertiaryDark
-
 // Accents
 val ErrorRed = Color(0xFFEF4444)
 val SuccessGreen = Color(0xFF10B981)
-val WarningAmber = Color(0xFFF59E0B)
-
-// Gradients
-val GradientStart = Teal500
-val GradientEnd = Indigo500

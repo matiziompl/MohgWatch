@@ -1,6 +1,7 @@
 package com.mohgwatch.wear.service
 
 import android.graphics.Bitmap
+import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.wear.protolayout.DimensionBuilders
 import androidx.wear.protolayout.LayoutElementBuilders
 import androidx.wear.protolayout.ResourceBuilders
@@ -8,89 +9,102 @@ import androidx.wear.protolayout.TimelineBuilders
 import androidx.wear.tiles.RequestBuilders
 import androidx.wear.tiles.TileBuilders
 import androidx.wear.tiles.TileService
-import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
-import com.mohgwatch.core.model.UserSettings
 import com.mohgwatch.wear.data.GlucoseRepository
+import com.mohgwatch.wear.data.WearSettingsStore
+import com.mohgwatch.wear.tile.TileImageCache
 import com.mohgwatch.wear.tile.ChartRenderer
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.io.File
 
-/**
- * Tile z 12-godzinną historią glukozy (wykres).
- * Dostępny przez przesunięcie w lewo od tarczy.
- */
 class GlucoseHistoryTileService : TileService() {
-
     private val repository by lazy { GlucoseRepository(this) }
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val imageCache by lazy { TileImageCache(File(cacheDir, "glucose_tile_charts")) }
 
     companion object {
         private const val CHART_RESOURCE_ID = "glucose_chart"
-        private const val RESOURCES_VERSION = "1"
     }
 
-    override fun onTileRequest(requestParams: RequestBuilders.TileRequest): ListenableFuture<TileBuilders.Tile> {
-        val readings = runBlocking { repository.getLast12Hours() }
+    override fun onDestroy() {
+        scope.cancel()
+        super.onDestroy()
+    }
 
+    override fun onTileRequest(requestParams: RequestBuilders.TileRequest): ListenableFuture<TileBuilders.Tile> = future {
+        val version = renderChartResource()
         val image = LayoutElementBuilders.Image.Builder()
             .setResourceId(CHART_RESOURCE_ID)
             .setWidth(DimensionBuilders.expand())
             .setHeight(DimensionBuilders.expand())
             .build()
-
         val box = LayoutElementBuilders.Box.Builder()
             .setWidth(DimensionBuilders.expand())
             .setHeight(DimensionBuilders.expand())
             .addContent(image)
             .build()
-
-        val layout = LayoutElementBuilders.Layout.Builder()
-            .setRoot(box)
-            .build()
-
         val entry = TimelineBuilders.TimelineEntry.Builder()
-            .setLayout(layout)
+            .setLayout(LayoutElementBuilders.Layout.Builder().setRoot(box).build())
             .build()
-
-        val timeline = TimelineBuilders.Timeline.Builder()
-            .addTimelineEntry(entry)
+        TileBuilders.Tile.Builder()
+            .setResourcesVersion(version)
+            .setTileTimeline(TimelineBuilders.Timeline.Builder().addTimelineEntry(entry).build())
+            .setFreshnessIntervalMillis(WearSettingsStore(this@GlucoseHistoryTileService).getSettings().staleAfterMillis)
             .build()
-
-        val tile = TileBuilders.Tile.Builder()
-            .setResourcesVersion(RESOURCES_VERSION)
-            .setTileTimeline(timeline)
-            .setFreshnessIntervalMillis(15 * 60 * 1000L)
-            .build()
-
-        return Futures.immediateFuture(tile)
     }
 
-    override fun onTileResourcesRequest(requestParams: RequestBuilders.ResourcesRequest): ListenableFuture<ResourceBuilders.Resources> {
-        val readings = runBlocking { repository.getLast12Hours() }
-        val settings = runBlocking { com.mohgwatch.wear.data.WearSettingsStore(this@GlucoseHistoryTileService).getSettings() }
-        val chartBitmap = ChartRenderer.renderChart(readings, settings)
-
-        val stream = ByteArrayOutputStream()
-        chartBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        val chartBytes = stream.toByteArray()
-        chartBitmap.recycle()
-
+    override fun onTileResourcesRequest(requestParams: RequestBuilders.ResourcesRequest): ListenableFuture<ResourceBuilders.Resources> = future {
+        val requestedVersion = requestParams.version
+        val bytes = imageCache.read(requestedVersion)
+        if (bytes == null) {
+            TileService.getUpdater(this@GlucoseHistoryTileService).requestUpdate(GlucoseHistoryTileService::class.java)
+            error("Wykres usunięty z pamięci podręcznej; zamówiono aktualizację")
+        }
         val inlineImage = ResourceBuilders.InlineImageResource.Builder()
-            .setData(chartBytes)
+            .setData(bytes)
             .setWidthPx(384)
             .setHeightPx(384)
             .setFormat(ResourceBuilders.IMAGE_FORMAT_UNDEFINED)
             .build()
-
-        val imageResource = ResourceBuilders.ImageResource.Builder()
-            .setInlineResource(inlineImage)
+        ResourceBuilders.Resources.Builder()
+            .setVersion(requestedVersion)
+            .addIdToImageMapping(
+                CHART_RESOURCE_ID,
+                ResourceBuilders.ImageResource.Builder().setInlineResource(inlineImage).build()
+            )
             .build()
-
-        val resources = ResourceBuilders.Resources.Builder()
-            .setVersion(RESOURCES_VERSION)
-            .addIdToImageMapping(CHART_RESOURCE_ID, imageResource)
-            .build()
-
-        return Futures.immediateFuture(resources)
     }
+
+    private suspend fun renderChartResource(): String {
+        val readings = repository.getLast12Hours()
+        val settings = WearSettingsStore(this).getSettings()
+        val bitmap = ChartRenderer.renderChart(readings, settings)
+        val bytes = try {
+            ByteArrayOutputStream().use { stream ->
+                check(bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream))
+                stream.toByteArray()
+            }
+        } finally {
+            bitmap.recycle()
+        }
+        return imageCache.put(bytes)
+    }
+
+    private fun <T : Any> future(block: suspend () -> T): ListenableFuture<T> =
+        CallbackToFutureAdapter.getFuture { completer ->
+            val job = scope.launch {
+                try {
+                    completer.set(block())
+                } catch (e: Exception) {
+                    completer.setException(e)
+                }
+            }
+            completer.addCancellationListener({ job.cancel() }, java.util.concurrent.Executor { it.run() })
+            "MohgWatch glucose tile"
+        }
 }

@@ -1,6 +1,7 @@
 package com.mohgwatch.wear.data
 
 import android.content.Context
+import androidx.room.withTransaction
 import com.mohgwatch.core.model.GlucoseReading
 import com.mohgwatch.wear.data.db.GlucoseDatabase
 import com.mohgwatch.wear.data.db.GlucoseReadingEntity
@@ -13,13 +14,12 @@ import kotlinx.coroutines.flow.map
  */
 class GlucoseRepository(context: Context) {
 
-    private val dao = GlucoseDatabase.getInstance(context).glucoseDao()
+    private val database = GlucoseDatabase.getInstance(context)
+    private val dao = database.glucoseDao()
 
     companion object {
         private const val TWELVE_HOURS_MS = 12 * 60 * 60 * 1000L
         private const val TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000L
-        private const val FRESH_DATA_LIMIT_MS = 15 * 60 * 1000L  // 15 min
-        private const val STALE_DATA_LIMIT_MS = 60 * 60 * 1000L  // 60 min
     }
 
     /** Obserwuj najnowszy odczyt (Flow) */
@@ -38,35 +38,20 @@ class GlucoseRepository(context: Context) {
 
     /** Zapisz pojedynczy odczyt */
     suspend fun insertReading(reading: GlucoseReading) {
-        dao.insert(GlucoseReadingEntity.fromGlucoseReading(reading))
+        insertReadings(listOf(reading))
     }
 
     /** Zapisz listę odczytów (historia) */
     suspend fun insertReadings(readings: List<GlucoseReading>) {
-        dao.insertAll(readings.map { GlucoseReadingEntity.fromGlucoseReading(it) })
+        val now = System.currentTimeMillis()
+        val since = now - TWENTY_FOUR_HOURS_MS
+        val retained = readings.filter { it.timestamp in since..now }
+            .distinctBy { it.timestamp }
+            .map { GlucoseReadingEntity.fromGlucoseReading(it) }
+        database.withTransaction {
+            dao.insertAll(retained)
+            dao.deleteOlderThan(since)
+        }
     }
 
-    /** Usuń odczyty starsze niż 24h */
-    suspend fun cleanup() {
-        val before = System.currentTimeMillis() - TWENTY_FOUR_HOURS_MS
-        dao.deleteOlderThan(before)
-    }
-
-    /** Minuty od ostatniego odczytu */
-    suspend fun getMinutesSinceLastReading(): Long {
-        val latest = dao.getLatest() ?: return Long.MAX_VALUE
-        return (System.currentTimeMillis() - latest.timestamp) / 60_000L
-    }
-
-    /** Czy dane są świeże (< 15 min) */
-    suspend fun isDataFresh(): Boolean {
-        val latest = dao.getLatest() ?: return false
-        return (System.currentTimeMillis() - latest.timestamp) < FRESH_DATA_LIMIT_MS
-    }
-
-    /** Czy dane są nieaktualne (> 60 min) */
-    suspend fun isDataStale(): Boolean {
-        val latest = dao.getLatest() ?: return true
-        return (System.currentTimeMillis() - latest.timestamp) > STALE_DATA_LIMIT_MS
-    }
 }

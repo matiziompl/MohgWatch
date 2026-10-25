@@ -2,8 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -14,8 +12,8 @@ android {
         applicationId = "com.mohgwatch"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = providers.gradleProperty("mohgwatch.versionCode").get().toInt()
+        versionName = providers.gradleProperty("mohgwatch.versionName").get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,6 +35,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -47,7 +46,6 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
-    implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons)
     implementation(libs.compose.runtime)
@@ -57,23 +55,12 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
-
-    // Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
 
     // Wear OS Data Layer
     implementation(libs.play.services.wearable)
     implementation(libs.kotlin.coroutines.play)
-
-    // Room (local cache)
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
 
     // DataStore + Encryption
     implementation(libs.datastore.preferences)
@@ -88,15 +75,11 @@ dependencies {
     implementation(libs.glance.material3)
 
     // Networking (for API calls from phone)
-    implementation(libs.okhttp)
     implementation(libs.retrofit)
-    implementation(libs.retrofit.moshi)
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
 
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
-    androidTestImplementation(libs.androidx.test.ext)
-    androidTestImplementation(libs.espresso.core)
 }

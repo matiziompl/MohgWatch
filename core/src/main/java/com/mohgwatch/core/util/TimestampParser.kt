@@ -1,57 +1,39 @@
 package com.mohgwatch.core.util
 
-import java.text.SimpleDateFormat
+import java.time.DateTimeException
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.format.ResolverStyle
 import java.util.Locale
-import java.util.TimeZone
 
-/**
- * Parser timestampów z LibreLinkUp API.
- * API zwraca dwa formaty:
- * - Timestamp: "M/d/yyyy h:mm:ss a" (12-godzinny, lokalny)
- * - FactoryTimestamp: "yyyy-MM-dd'T'HH:mm:ss" (24-godzinny, UTC)
- */
+/** Local LibreLinkUp timestamps follow the current device zone; factory timestamps default to UTC. */
 object TimestampParser {
+    private val localFormat = DateTimeFormatterBuilder().parseCaseInsensitive()
+        .appendPattern("M/d/uuuu h:mm:ss a").toFormatter(Locale.US)
+        .withResolverStyle(ResolverStyle.STRICT)
 
-    private val timestampFormat = SimpleDateFormat("M/d/yyyy h:mm:ss a", Locale.US)
-
-    private val factoryFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).apply {
-        timeZone = TimeZone.getTimeZone("UTC")
-    }
-
-    private val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply {
-        timeZone = TimeZone.getTimeZone("UTC")
-    }
-
-    /**
-     * Parsuje Timestamp z API (format lokalny 12h).
-     * @return Unix millis lub null w razie błędu
-     */
     fun parseTimestamp(timestamp: String?): Long? {
         if (timestamp.isNullOrBlank()) return null
         return try {
-            timestampFormat.parse(timestamp)?.time
-        } catch (e: Exception) {
-            // Fallback: spróbuj ISO format
-            try {
-                factoryFormat.parse(timestamp)?.time
-            } catch (e2: Exception) {
-                null
-            }
+            LocalDateTime.parse(timestamp, localFormat).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        } catch (_: DateTimeException) {
+            parseFactoryTimestamp(timestamp)
         }
     }
 
-    /**
-     * Parsuje FactoryTimestamp z API (format UTC ISO).
-     * @return Unix millis lub null w razie błędu
-     */
     fun parseFactoryTimestamp(timestamp: String?): Long? {
         if (timestamp.isNullOrBlank()) return null
         return try {
-            factoryFormat.parse(timestamp)?.time
-        } catch (e: Exception) {
+            DateTimeFormatter.ISO_DATE_TIME.parse(timestamp, Instant::from).toEpochMilli()
+        } catch (_: DateTimeException) {
             try {
-                isoFormat.parse(timestamp)?.time
-            } catch (e2: Exception) {
+                LocalDateTime.parse(timestamp, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                    .toInstant(ZoneOffset.UTC).toEpochMilli()
+            } catch (_: DateTimeException) {
                 null
             }
         }

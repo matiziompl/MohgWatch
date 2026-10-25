@@ -5,11 +5,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,6 +24,8 @@ import com.mohgwatch.core.model.UserSettings
 import com.mohgwatch.core.model.WidgetBgColor
 import com.mohgwatch.phone.data.SettingsStore
 import com.mohgwatch.phone.service.DataLayerSender
+import com.mohgwatch.phone.ui.components.SettingsPage
+import com.mohgwatch.phone.util.tr
 import com.mohgwatch.phone.widget.WidgetUpdateHelper
 import kotlinx.coroutines.launch
 
@@ -36,323 +35,102 @@ data class ColorOption(
     val color: Color
 )
 
+enum class AppearanceSettingsSection { PHONE, WIDGETS }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsThemeScreen(onBack: () -> Unit) {
+fun SettingsThemeScreen(
+    section: AppearanceSettingsSection = AppearanceSettingsSection.PHONE,
+    onBack: () -> Unit = {}
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val settingsStore = remember { SettingsStore(context) }
     val dataLayerSender = remember { DataLayerSender(context) }
     val settings by settingsStore.settingsFlow.collectAsState(initial = UserSettings())
-    val isDark = isSystemInDarkTheme() || settings.themeMode == ThemeMode.DARK
+    val isDark = when (settings.themeMode) {
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+    }
+    val title = when (section) {
+        AppearanceSettingsSection.PHONE -> tr("Wygląd telefonu", "Phone appearance")
+        AppearanceSettingsSection.WIDGETS -> tr("Widżety", "Widgets")
+    }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopAppBar(
-            title = { Text("Wygląd") },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Wstecz")
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            // 1. Wygląd aplikacji
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Text("Wygląd aplikacji", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text("Tryb", style = MaterialTheme.typography.titleSmall)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        ThemeMode.entries.forEach { mode ->
-                            FilterChip(
-                                selected = settings.themeMode == mode,
-                                onClick = { 
-                                    scope.launch {
-                                        val newSettings = settings.copy(themeMode = mode)
-                                        settingsStore.saveSettings(newSettings)
-                                        dataLayerSender.sendSettings(newSettings)
-                                    }
-                                },
-                                label = { Text(mode.label) },
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text("Kolor wiodący", style = MaterialTheme.typography.titleSmall)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    val appThemeOptions = AppTheme.entries.filter { it != AppTheme.MATCH_GLUCOSE }.map { theme ->
-                        ColorOption(
-                            id = theme.name,
-                            label = theme.label,
-                            color = resolveAppThemeColor(theme, settings, isDark)
-                        )
-                    }
-                    ColorSelector(
-                        options = appThemeOptions,
-                        selectedId = settings.appTheme.name,
-                        mode = settings.colorPickerStyle,
-                        onSelect = { selectedName ->
-                            val theme = try { AppTheme.valueOf(selectedName) } catch (e: Exception) { AppTheme.DEFAULT }
-                            scope.launch {
-                                val newSettings = settings.copy(appTheme = theme)
-                                settingsStore.saveSettings(newSettings)
-                                dataLayerSender.sendSettings(newSettings)
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text("Kolor tła aplikacji", style = MaterialTheme.typography.titleSmall)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    val logBgOptions = LogBgColor.entries.map { bg ->
-                        ColorOption(
-                            id = bg.name,
-                            label = bg.label,
-                            color = resolveLogBgColor(bg)
-                        )
-                    }
-                    ColorSelector(
-                        options = logBgOptions,
-                        selectedId = settings.logBackgroundColor.name,
-                        mode = settings.colorPickerStyle,
-                        onSelect = { selectedName ->
-                            val bg = try { LogBgColor.valueOf(selectedName) } catch (e: Exception) { LogBgColor.WHITE }
-                            scope.launch {
-                                val newSettings = settings.copy(logBackgroundColor = bg)
-                                settingsStore.saveSettings(newSettings)
-                                dataLayerSender.sendSettings(newSettings)
-                            }
-                        }
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // 2. Wygląd widżetów
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Text("Wygląd widżetów", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text("Kolor wiodący widżetów", style = MaterialTheme.typography.titleSmall)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    val widgetPrimaryOptions = AppTheme.entries.map { theme ->
-                        ColorOption(
-                            id = theme.name,
-                            label = theme.label,
-                            color = resolveAppThemeColor(theme, settings, isDark)
-                        )
-                    }
-                    ColorSelector(
-                        options = widgetPrimaryOptions,
-                        selectedId = settings.widgetPrimaryTheme.name,
-                        mode = settings.colorPickerStyle,
-                        onSelect = { selectedName ->
-                            val theme = try { AppTheme.valueOf(selectedName) } catch (e: Exception) { AppTheme.DEFAULT }
-                            scope.launch {
-                                val newSettings = settings.copy(widgetPrimaryTheme = theme)
-                                settingsStore.saveSettings(newSettings)
-                                WidgetUpdateHelper.updateAllWidgets(context)
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text("Kolor tła widżetów", style = MaterialTheme.typography.titleSmall)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    val widgetBgOptions = WidgetBgColor.entries.map { bg ->
-                        ColorOption(
-                            id = bg.name,
-                            label = bg.label,
-                            color = resolveWidgetBgColor(bg, isDark)
-                        )
-                    }
-                    ColorSelector(
-                        options = widgetBgOptions,
-                        selectedId = settings.widgetBgColor.name,
-                        mode = settings.colorPickerStyle,
-                        onSelect = { selectedName ->
-                            val bg = try { WidgetBgColor.valueOf(selectedName) } catch (e: Exception) { WidgetBgColor.SYSTEM }
-                            scope.launch {
-                                val newSettings = settings.copy(widgetBgColor = bg)
-                                settingsStore.saveSettings(newSettings)
-                                WidgetUpdateHelper.updateAllWidgets(context)
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text("Kolor stężenia glukozy", style = MaterialTheme.typography.titleSmall)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    val glucoseColorRawOptions = listOf(
-                        "by_range" to "Zależny od poziomu (domyślny)",
-                        "theme" to "Motyw systemowy",
-                        "light" to "Jasny",
-                        "dark" to "Ciemny",
-                        "light_gray" to "Jasny szary",
-                        "gray" to "Szary",
-                        "dark_gray" to "Ciemny szary",
-                        "primary" to "Kolor wiodący widżetów",
-                        "blue" to "Niebieski",
-                        "green" to "Zielony",
-                        "amber" to "Bursztynowy",
-                        "purple" to "Fioletowy",
-                        "red" to "Czerwony"
-                    )
-                    val glucoseColorOptions = glucoseColorRawOptions.map { (key, label) ->
-                        ColorOption(
-                            id = key,
-                            label = label,
-                            color = resolveGlucoseColor(key, settings, isDark)
-                        )
-                    }
-                    ColorSelector(
-                        options = glucoseColorOptions,
-                        selectedId = settings.widgetGlucoseColor,
-                        mode = settings.colorPickerStyle,
-                        onSelect = { selectedKey ->
-                            scope.launch {
-                                val newSettings = settings.copy(widgetGlucoseColor = selectedKey)
-                                settingsStore.saveSettings(newSettings)
-                                WidgetUpdateHelper.updateAllWidgets(context)
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-                    HorizontalDivider()
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text("Opcja dobierania kolorów", style = MaterialTheme.typography.titleSmall)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    val pickerStyles = listOf(
-                        "list" to "Nazwy z podglądem",
-                        "grid" to "Tabela"
-                    )
-                    var pickerStyleExpanded by remember { mutableStateOf(false) }
-                    val currentPickerStyleLabel = pickerStyles.find { it.first == settings.colorPickerStyle }?.second ?: "Nazwy z podglądem"
-
-                    ExposedDropdownMenuBox(
-                        expanded = pickerStyleExpanded,
-                        onExpandedChange = { pickerStyleExpanded = it }
-                    ) {
-                        OutlinedTextField(
-                            value = currentPickerStyleLabel,
-                            onValueChange = {},
-                            readOnly = true,
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = pickerStyleExpanded) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .menuAnchor(MenuAnchorType.PrimaryNotEditable)
-                        )
-                        ExposedDropdownMenu(
-                            expanded = pickerStyleExpanded,
-                            onDismissRequest = { pickerStyleExpanded = false }
+    SettingsPage(title = title, onBack = onBack) {
+        when (section) {
+            AppearanceSettingsSection.PHONE -> {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        Text(tr("Język", "Language"), style = MaterialTheme.typography.titleMedium)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            pickerStyles.forEach { (key, label) ->
-                                DropdownMenuItem(
-                                    text = { Text(label) },
+                            listOf(
+                                "system" to tr("Systemowy", "System"),
+                                "en" to tr("Angielski", "English"),
+                                "pl" to tr("Polski", "Polish")
+                            ).forEach { (code, label) ->
+                                FilterChip(
+                                    selected = settings.language == code,
                                     onClick = {
                                         scope.launch {
-                                            val newSettings = settings.copy(colorPickerStyle = key)
+                                            val newSettings = settings.copy(language = code)
                                             settingsStore.saveSettings(newSettings)
+                                            dataLayerSender.sendSettings(newSettings)
+                                            val appLocale = if (code == "system") {
+                                                androidx.core.os.LocaleListCompat.getEmptyLocaleList()
+                                            } else {
+                                                androidx.core.os.LocaleListCompat.forLanguageTags(code)
+                                            }
+                                            androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(appLocale)
                                         }
-                                        pickerStyleExpanded = false
-                                    }
+                                    },
+                                    label = { Text(label) },
+                                    modifier = Modifier.weight(1f)
                                 )
                             }
                         }
                     }
                 }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 3. Usuń nagłówek z zakładki status
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text("Usuń nagłówek z zakładki status", style = MaterialTheme.typography.titleMedium)
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                "Ukrywa tytuł 'Status Glukozy' i dopasowuje układ, aby wszystko mieściło się na ekranie bez przewijania",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                        Switch(
-                            checked = settings.hideStatusHeader,
-                            onCheckedChange = { checked ->
-                                scope.launch {
-                                    val newSettings = settings.copy(hideStatusHeader = checked)
-                                    settingsStore.saveSettings(newSettings)
-                                }
-                            }
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // 4. Motyw zegarka
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Text("Motyw zegarka", style = MaterialTheme.typography.titleMedium)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            "Synchronizuj z zegarkiem",
-                            modifier = Modifier.weight(1f)
-                        )
-                        Switch(
-                            checked = settings.syncThemeWithWatch,
-                            onCheckedChange = {
-                                scope.launch {
-                                    val newSettings = settings.copy(syncThemeWithWatch = it)
-                                    settingsStore.saveSettings(newSettings)
-                                    dataLayerSender.sendSettings(newSettings)
-                                }
-                            }
-                        )
-                    }
-
-                    if (!settings.syncThemeWithWatch) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        Text("Wygląd aplikacji", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text("Kolor wiodący zegarka", style = MaterialTheme.typography.titleMedium)
+
+                        Text("Tryb", style = MaterialTheme.typography.titleSmall)
                         Spacer(modifier = Modifier.height(8.dp))
-                        val watchThemeOptions = AppTheme.entries.filter { it != AppTheme.MATCH_GLUCOSE }.map { theme ->
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            ThemeMode.entries.forEach { mode ->
+                                FilterChip(
+                                    selected = settings.themeMode == mode,
+                                    onClick = {
+                                        scope.launch {
+                                            val newSettings = settings.copy(themeMode = mode)
+                                            settingsStore.saveSettings(newSettings)
+                                        }
+                                    },
+                                    label = { Text(mode.label) },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text("Kolor wiodący", style = MaterialTheme.typography.titleSmall)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        val appThemeOptions = AppTheme.entries.filter { it != AppTheme.MATCH_GLUCOSE }.map { theme ->
                             ColorOption(
                                 id = theme.name,
                                 label = theme.label,
@@ -360,18 +138,215 @@ fun SettingsThemeScreen(onBack: () -> Unit) {
                             )
                         }
                         ColorSelector(
-                            options = watchThemeOptions,
-                            selectedId = settings.watchAppTheme.name,
+                            options = appThemeOptions,
+                            selectedId = settings.appTheme.name,
                             mode = settings.colorPickerStyle,
                             onSelect = { selectedName ->
                                 val theme = try { AppTheme.valueOf(selectedName) } catch (e: Exception) { AppTheme.DEFAULT }
                                 scope.launch {
-                                    val newSettings = settings.copy(watchAppTheme = theme)
+                                    val newSettings = settings.copy(appTheme = theme)
                                     settingsStore.saveSettings(newSettings)
-                                    dataLayerSender.sendSettings(newSettings)
                                 }
                             }
                         )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text("Kolor tła aplikacji", style = MaterialTheme.typography.titleSmall)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        val logBgOptions = LogBgColor.entries.map { bg ->
+                            ColorOption(
+                                id = bg.name,
+                                label = bg.label,
+                                color = resolveLogBgColor(bg)
+                            )
+                        }
+                        ColorSelector(
+                            options = logBgOptions,
+                            selectedId = settings.logBackgroundColor.name,
+                            mode = settings.colorPickerStyle,
+                            onSelect = { selectedName ->
+                                val bg = try { LogBgColor.valueOf(selectedName) } catch (e: Exception) { LogBgColor.WHITE }
+                                scope.launch {
+                                    val newSettings = settings.copy(logBackgroundColor = bg)
+                                    settingsStore.saveSettings(newSettings)
+                                }
+                            }
+                        )
+                    }
+                }
+
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        Text("Opcja dobierania kolorów", style = MaterialTheme.typography.titleSmall)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        val pickerStyles = listOf(
+                            "list" to "Nazwy z podglądem",
+                            "grid" to "Tabela"
+                        )
+                        var pickerStyleExpanded by remember { mutableStateOf(false) }
+                        val currentPickerStyleLabel = pickerStyles.find { it.first == settings.colorPickerStyle }?.second ?: "Nazwy z podglądem"
+
+                        ExposedDropdownMenuBox(
+                            expanded = pickerStyleExpanded,
+                            onExpandedChange = { pickerStyleExpanded = it }
+                        ) {
+                            OutlinedTextField(
+                                value = currentPickerStyleLabel,
+                                onValueChange = {},
+                                readOnly = true,
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = pickerStyleExpanded) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                            )
+                            ExposedDropdownMenu(
+                                expanded = pickerStyleExpanded,
+                                onDismissRequest = { pickerStyleExpanded = false }
+                            ) {
+                                pickerStyles.forEach { (key, label) ->
+                                    DropdownMenuItem(
+                                        text = { Text(label) },
+                                        onClick = {
+                                            scope.launch {
+                                                val newSettings = settings.copy(colorPickerStyle = key)
+                                                settingsStore.saveSettings(newSettings)
+                                            }
+                                            pickerStyleExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Usuń nagłówek z zakładki status", style = MaterialTheme.typography.titleMedium)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    "Ukrywa tytuł 'Status Glukozy' i dopasowuje układ, aby wszystko mieściło się na ekranie bez przewijania",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Switch(
+                                checked = settings.hideStatusHeader,
+                                onCheckedChange = { checked ->
+                                    scope.launch {
+                                        val newSettings = settings.copy(hideStatusHeader = checked)
+                                        settingsStore.saveSettings(newSettings)
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            AppearanceSettingsSection.WIDGETS -> {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        Text("Wygląd widżetów", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text("Kolor wiodący widżetów", style = MaterialTheme.typography.titleSmall)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        val widgetPrimaryOptions = AppTheme.entries.map { theme ->
+                            ColorOption(
+                                id = theme.name,
+                                label = theme.label,
+                                color = resolveAppThemeColor(theme, settings, isDark)
+                            )
+                        }
+                        ColorSelector(
+                            options = widgetPrimaryOptions,
+                            selectedId = settings.widgetPrimaryTheme.name,
+                            mode = settings.colorPickerStyle,
+                            onSelect = { selectedName ->
+                                val theme = try { AppTheme.valueOf(selectedName) } catch (e: Exception) { AppTheme.DEFAULT }
+                                scope.launch {
+                                    val newSettings = settings.copy(widgetPrimaryTheme = theme)
+                                    settingsStore.saveSettings(newSettings)
+                                    WidgetUpdateHelper.updateAllWidgets(context)
+                                }
+                            }
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text("Kolor tła widżetów", style = MaterialTheme.typography.titleSmall)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        val widgetBgOptions = WidgetBgColor.entries.map { bg ->
+                            ColorOption(
+                                id = bg.name,
+                                label = bg.label,
+                                color = resolveWidgetBgColor(bg, isDark)
+                            )
+                        }
+                        ColorSelector(
+                            options = widgetBgOptions,
+                            selectedId = settings.widgetBgColor.name,
+                            mode = settings.colorPickerStyle,
+                            onSelect = { selectedName ->
+                                val bg = try { WidgetBgColor.valueOf(selectedName) } catch (e: Exception) { WidgetBgColor.SYSTEM }
+                                scope.launch {
+                                    val newSettings = settings.copy(widgetBgColor = bg)
+                                    settingsStore.saveSettings(newSettings)
+                                    WidgetUpdateHelper.updateAllWidgets(context)
+                                }
+                            }
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text("Kolor stężenia glukozy", style = MaterialTheme.typography.titleSmall)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        val glucoseColorRawOptions = listOf(
+                            "by_range" to "Zależny od poziomu (domyślny)",
+                            "theme" to "Motyw systemowy",
+                            "light" to "Jasny",
+                            "dark" to "Ciemny",
+                            "light_gray" to "Jasny szary",
+                            "gray" to "Szary",
+                            "dark_gray" to "Ciemny szary",
+                            "primary" to "Kolor wiodący widżetów",
+                            "blue" to "Niebieski",
+                            "green" to "Zielony",
+                            "amber" to "Bursztynowy",
+                            "purple" to "Fioletowy",
+                            "red" to "Czerwony"
+                        )
+                        val glucoseColorOptions = glucoseColorRawOptions.map { (key, label) ->
+                            ColorOption(
+                                id = key,
+                                label = label,
+                                color = resolveGlucoseColor(key, settings, isDark)
+                            )
+                        }
+                        ColorSelector(
+                            options = glucoseColorOptions,
+                            selectedId = settings.widgetGlucoseColor,
+                            mode = settings.colorPickerStyle,
+                            onSelect = { selectedKey ->
+                                scope.launch {
+                                    val newSettings = settings.copy(widgetGlucoseColor = selectedKey)
+                                    settingsStore.saveSettings(newSettings)
+                                    WidgetUpdateHelper.updateAllWidgets(context)
+                                }
+                            }
+                        )
+
                     }
                 }
             }
@@ -546,7 +521,10 @@ fun resolveGlucoseColor(key: String, settings: UserSettings, isDark: Boolean): C
     "light_gray" -> if (isDark) Color(0xFFCBD5E1) else Color(0xFF64748B)
     "gray" -> Color(0xFF9CA3AF)
     "dark_gray" -> if (isDark) Color(0xFF64748B) else Color(0xFF334155)
-    "primary" -> resolveAppThemeColor(settings.widgetPrimaryTheme, settings, isDark)
+    "primary" -> resolveAppThemeColor(
+        settings.widgetPrimaryTheme.takeUnless { it == AppTheme.MATCH_GLUCOSE } ?: AppTheme.DEFAULT,
+        settings, isDark
+    )
     "blue" -> if (isDark) Color(0xFF60A5FA) else Color(0xFF2563EB)
     "green" -> if (isDark) Color(0xFF4ADE80) else Color(0xFF16A34A)
     "amber" -> if (isDark) Color(0xFFFBBF24) else Color(0xFFD97706)

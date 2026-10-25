@@ -4,539 +4,384 @@ import android.app.Activity
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.mohgwatch.core.model.TrendDirection
+import com.mohgwatch.core.model.TrendHaptics
+import com.mohgwatch.core.model.TrendVibrationPattern
+import com.mohgwatch.core.model.UserSettings
 import com.mohgwatch.phone.data.SettingsStore
-import com.mohgwatch.phone.service.GlucoseSyncService
-import com.mohgwatch.phone.ui.theme.GlucoseHigh
-import com.mohgwatch.phone.ui.theme.GlucoseLow
+import com.mohgwatch.phone.ui.components.SettingsPage
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class)
+enum class NotificationSettingsSection(val title: String) {
+    GLUCOSE("Alarmy glukozy"),
+    HAPTICS("Wibracje zegarka"),
+    SOUNDS("Dźwięki telefonu"),
+    NIGHT("Tryb nocny"),
+    CONNECTION("Brak danych i rozłączenia"),
+    WRIST("Nadgarstek i wyciszanie")
+}
+
 @Composable
-fun SettingsNotificationsScreen(onBack: () -> Unit) {
+fun SettingsNotificationsScreen(
+    section: NotificationSettingsSection,
+    onBack: () -> Unit = {},
+    onChangeThresholds: () -> Unit = {},
+    onTestHaptics: () -> Unit = {},
+    onTestSounds: () -> Unit = {},
+    onOpenDiagnostics: () -> Unit = {}
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val settingsStore = remember { SettingsStore(context) }
     val dataLayerSender = remember { com.mohgwatch.phone.service.DataLayerSender(context) }
     val settings by settingsStore.settingsFlow.collectAsState(initial = null)
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Text(
-            "Powiadomienia",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 16.dp),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center
-        )
+    SettingsPage(title = section.title, onBack = onBack) {
+        val currentSettings = settings
+        if (currentSettings == null) {
+            CircularProgressIndicator()
+        } else {
+            val latestSettings by rememberUpdatedState(currentSettings)
+            fun save(updated: UserSettings, syncWithWatch: Boolean = false) {
+                scope.launch {
+                    settingsStore.saveSettings(updated)
+                    if (syncWithWatch) dataLayerSender.sendSettings(updated)
+                }
+            }
 
-        settings?.let { currentSettings ->
             val disconnectSoundLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     @Suppress("DEPRECATION")
                     val uri = result.data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-                    scope.launch { settingsStore.saveSettings(currentSettings.copy(disconnectSoundUri = uri?.toString())) }
+                    save(latestSettings.copy(disconnectSoundUri = uri?.toString()))
                 }
             }
-            
             val lowGlucoseSoundLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     @Suppress("DEPRECATION")
                     val uri = result.data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-                    scope.launch { settingsStore.saveSettings(currentSettings.copy(lowGlucoseSoundUri = uri?.toString())) }
+                    save(latestSettings.copy(lowGlucoseSoundUri = uri?.toString()))
                 }
             }
-
             val highGlucoseSoundLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     @Suppress("DEPRECATION")
                     val uri = result.data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-                    scope.launch { settingsStore.saveSettings(currentSettings.copy(highGlucoseSoundUri = uri?.toString())) }
+                    save(latestSettings.copy(highGlucoseSoundUri = uri?.toString()))
                 }
             }
 
-            fun launchRingtonePicker(launcher: androidx.activity.result.ActivityResultLauncher<Intent>, existingUri: String?) {
-                val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
-                    putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION or RingtoneManager.TYPE_ALARM)
-                    putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
-                    putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
-                    existingUri?.let {
-                        putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(it))
+            when (section) {
+                NotificationSettingsSection.GLUCOSE -> {
+                    NotificationToggle(
+                        title = "Alarmy poza zakresem",
+                        description = "Włącz alarmy telefonu i zegarka po przekroczeniu progów z Ustawienia → Glukoza i progi.",
+                        checked = currentSettings.notifyOutOfRange,
+                        onCheckedChange = { save(currentSettings.copy(notifyOutOfRange = it), true) }
+                    )
+                    HorizontalDivider(Modifier.padding(vertical = 16.dp))
+                    NotificationToggle(
+                        title = "Zwykłe powiadomienia na zegarku",
+                        description = "Wyświetlaj powiadomienie z odczytem glukozy na zegarku. Wibracje można ustawić osobno.",
+                        checked = currentSettings.watchNotifyOutOfRange,
+                        onCheckedChange = { save(currentSettings.copy(watchNotifyOutOfRange = it), true) }
+                    )
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedButton(onClick = onChangeThresholds, modifier = Modifier.fillMaxWidth()) {
+                        Text("Zmień progi")
                     }
                 }
-                launcher.launch(intent)
-            }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(24.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Text(
-                    "Alerty i powiadomienia",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        // 1. Alert progowy (Poza zakresem docelowym)
+                NotificationSettingsSection.HAPTICS -> {
+                    Text(
+                        "Wibracje uruchamia wejście poniżej lub powyżej progów alarmowych z Ustawienia → Glukoza i progi. Wartości równe progom są w zakresie. Sama zmiana strzałki nie wibruje. Mocne i długie wzory używają maksymalnej siły silnika.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    if (!currentSettings.notifyOutOfRange) {
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            "Niski i wysoki cukier nie wibrują, gdy „Alarmy poza zakresem” są wyłączone. Ich indywidualne ustawienia pozostają zapisane.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    TrendDirection.entries.forEach { direction ->
+                        Spacer(Modifier.height(16.dp))
+                        val enabled = when (direction) {
+                            TrendDirection.RISING -> currentSettings.alertHighHapticEnabled
+                            TrendDirection.FALLING -> currentSettings.alertLowHapticEnabled
+                            TrendDirection.STABLE -> currentSettings.trendStableEnabled
+                        }
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text("Poza docelowym zakresem", style = MaterialTheme.typography.bodyLarge)
-                                Text(
-                                    "Otrzymuj alerty, gdy glukoza przekroczy wybrane progi zdefiniowane w Ustawienia → Cukrzyca.",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Switch(
-                                checked = currentSettings.notifyOutOfRange,
-                                onCheckedChange = { checked ->
-                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(notifyOutOfRange = checked)) }
+                            Text(direction.label, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+                            Switch(checked = enabled, onCheckedChange = { checked ->
+                                val updated = when (direction) {
+                                    TrendDirection.RISING -> currentSettings.copy(alertHighHapticEnabled = checked)
+                                    TrendDirection.FALLING -> currentSettings.copy(alertLowHapticEnabled = checked)
+                                    TrendDirection.STABLE -> currentSettings.copy(trendStableEnabled = checked)
                                 }
-                            )
+                                save(updated, true)
+                            })
                         }
-
-                        if (currentSettings.notifyOutOfRange) {
-                            Spacer(modifier = Modifier.height(12.dp))
-                            OutlinedButton(
-                                onClick = { launchRingtonePicker(lowGlucoseSoundLauncher, currentSettings.lowGlucoseSoundUri) },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Icon(Icons.Filled.MusicNote, null, modifier = Modifier.size(16.dp))
-                                Spacer(Modifier.width(8.dp))
-                                Text("Wybierz dźwięk dla niskiego cukru")
-                            }
-                            Spacer(modifier = Modifier.height(8.dp))
-                            OutlinedButton(
-                                onClick = { launchRingtonePicker(highGlucoseSoundLauncher, currentSettings.highGlucoseSoundUri) },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Icon(Icons.Filled.MusicNote, null, modifier = Modifier.size(16.dp))
-                                Spacer(Modifier.width(8.dp))
-                                Text("Wybierz dźwięk dla wysokiego cukru")
-                            }
-                        }
-
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-
-                        // Zwykłe powiadomienia na zegarku przy cukrze poza normą
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text("Zwykłe powiadomienia na zegarku", style = MaterialTheme.typography.bodyLarge)
-                                Text(
-                                    "Wyświetlaj standardowe powiadomienie z odczytem glukozy na zegarku (obok wibracji O-Haptics) po przekroczeniu progów z Ustawienia → Cukrzyca.",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Switch(
-                                checked = currentSettings.watchNotifyOutOfRange,
-                                onCheckedChange = { checked ->
-                                    val newSettings = currentSettings.copy(watchNotifyOutOfRange = checked)
-                                    scope.launch {
-                                        settingsStore.saveSettings(newSettings)
-                                        dataLayerSender.sendSettings(newSettings)
-                                    }
-                                }
-                            )
-                        }
-
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-
-                        // 2. Alert rozłączenia
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text("Rozłączenie / Błędy sieci", style = MaterialTheme.typography.bodyLarge)
-                                Text(
-                                    "Alerty o braku nowych odczytów (problem z siecią, wygaśnięcie sesji LibreLinkUp).",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Switch(
-                                checked = currentSettings.notifyDisconnect,
-                                onCheckedChange = { checked ->
-                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(notifyDisconnect = checked)) }
-                                }
-                            )
-                        }
-                        if (currentSettings.notifyDisconnect) {
-                            Spacer(modifier = Modifier.height(12.dp))
-                            OutlinedButton(
-                                onClick = { launchRingtonePicker(disconnectSoundLauncher, currentSettings.disconnectSoundUri) },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Icon(Icons.Filled.MusicNote, null)
-                                Spacer(Modifier.width(8.dp))
-                                Text("Wybierz dźwięk rozłączenia")
-                            }
-                        }
-                        
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-                        
-                        // 3. Brak danych na zegarku
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text("Powiadomienie na zegarku (> ${currentSettings.staleDataTimeoutMinutes} min)", style = MaterialTheme.typography.bodyLarge)
-                                Text(
-                                    "Wibruj na zegarku przy braku nowych danych przez ponad ${currentSettings.staleDataTimeoutMinutes} minut.",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Switch(
-                                checked = currentSettings.notifyStaleDataWatch,
-                                onCheckedChange = { checked ->
-                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(notifyStaleDataWatch = checked)) }
-                                }
-                            )
-                        }
-
-                        if (currentSettings.notifyStaleDataWatch) {
-                            Spacer(modifier = Modifier.height(12.dp))
-                            var staleMinutes by remember(currentSettings.staleDataTimeoutMinutes) { mutableFloatStateOf(currentSettings.staleDataTimeoutMinutes.toFloat()) }
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text("Czas braku danych:", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
-                                Text("${staleMinutes.roundToInt()} min", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                            }
-                            Slider(
-                                value = staleMinutes,
-                                onValueChange = { staleMinutes = it },
-                                onValueChangeFinished = {
-                                    val newSettings = currentSettings.copy(staleDataTimeoutMinutes = staleMinutes.roundToInt())
-                                    scope.launch {
-                                        settingsStore.saveSettings(newSettings)
-                                        dataLayerSender.sendSettings(newSettings)
-                                    }
-                                },
-                                valueRange = 5f..30f,
-                                steps = 24
-                            )
-                        }
-
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-
-                        // 4. Stan zegarka na ręku w powiadomieniu telefonu
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text("Obecność zegarka w powiadomieniu", style = MaterialTheme.typography.bodyLarge)
-                                Text(
-                                    "Pokazuj informację 'Na ręku' lub 'Zdjęty' w stałym powiadomieniu telefonu.",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Switch(
-                                checked = currentSettings.showWristStatusInNotification,
-                                onCheckedChange = { checked ->
-                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(showWristStatusInNotification = checked)) }
-                                }
-                            )
-                        }
-
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-
-                        // 5. Powiadomienia na zegarku o zdjęciu z ręki
-                        val watchWristEnabled = currentSettings.watchWristNotifyMode != "none"
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text("Powiadomienia na zegarku o zdjęciu z ręki", style = MaterialTheme.typography.bodyLarge)
-                                Text(
-                                    "Wysyłaj powiadomienie na zegarek informujące o zdjęciu zegarka z ręki.",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Switch(
-                                checked = watchWristEnabled,
-                                onCheckedChange = { checked ->
-                                    val newMode = if (checked) "both" else "none"
-                                    val newSettings = currentSettings.copy(watchWristNotifyMode = newMode)
-                                    scope.launch {
-                                        settingsStore.saveSettings(newSettings)
-                                        dataLayerSender.sendSettings(newSettings)
-                                    }
-                                }
-                            )
-                        }
-
-                        if (watchWristEnabled) {
-                            Spacer(modifier = Modifier.height(8.dp))
+                        TrendVibrationPattern.entries.forEach { pattern ->
+                            val selected = TrendHaptics.patternFor(currentSettings, direction) == pattern
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).selectable(
+                                    selected = selected,
+                                    enabled = enabled || direction != TrendDirection.STABLE,
+                                    role = Role.RadioButton,
+                                    onClick = {
+                                        val updated = when (direction) {
+                                            TrendDirection.RISING -> currentSettings.copy(trendRisingPattern = pattern)
+                                            TrendDirection.FALLING -> currentSettings.copy(trendFallingPattern = pattern)
+                                            TrendDirection.STABLE -> currentSettings.copy(trendStablePattern = pattern)
+                                        }
+                                        save(updated, true)
+                                    }
+                                ),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                FilterChip(
-                                    selected = currentSettings.watchWristNotifyMode == "both",
-                                    onClick = {
-                                        val newSettings = currentSettings.copy(watchWristNotifyMode = "both")
-                                        scope.launch {
-                                            settingsStore.saveSettings(newSettings)
-                                            dataLayerSender.sendSettings(newSettings)
-                                        }
-                                    },
-                                    label = { Text("Założenie i zdjęcie") },
-                                    colors = FilterChipDefaults.filterChipColors(
-                                        selectedContainerColor = MaterialTheme.colorScheme.primary,
-                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
-                                    ),
-                                    modifier = Modifier.weight(1f)
+                                RadioButton(
+                                    selected = selected,
+                                    enabled = enabled || direction != TrendDirection.STABLE,
+                                    onClick = null
                                 )
-                                FilterChip(
-                                    selected = currentSettings.watchWristNotifyMode == "off_only",
-                                    onClick = {
-                                        val newSettings = currentSettings.copy(watchWristNotifyMode = "off_only")
-                                        scope.launch {
-                                            settingsStore.saveSettings(newSettings)
-                                            dataLayerSender.sendSettings(newSettings)
-                                        }
-                                    },
-                                    label = { Text("Tylko zdjęcie") },
-                                    colors = FilterChipDefaults.filterChipColors(
-                                        selectedContainerColor = MaterialTheme.colorScheme.primary,
-                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
-                                    ),
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
-                        }
-
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-
-                        // 6. Wycisz telefon gdy zegarek połączony
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text("Wycisz telefon przy obecności zegarka", style = MaterialTheme.typography.bodyLarge)
-                                Text(
-                                    "Gdy zegarek jest połączony (założony na ręku), telefon nie odtwarza głośnego alarmu — wibracje O-Haptics trafiają bezpośrednio na zegarek. W razie rozłączenia telefon zadzwoni normalnie.",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Switch(
-                                checked = currentSettings.mutePhoneWhenWatchConnected,
-                                onCheckedChange = { checked ->
-                                     scope.launch { settingsStore.saveSettings(currentSettings.copy(mutePhoneWhenWatchConnected = checked)) }
-                                }
-                            )
-                        }
-                    }
-                }
-                
-                Spacer(modifier = Modifier.height(24.dp))
-                
-                Text(
-                    "Głośność powiadomień",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        var volume by remember(currentSettings) { mutableFloatStateOf(currentSettings.notificationVolume) }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Filled.MusicNote, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Głośność Dzienna", modifier = Modifier.weight(1f))
-                            Text("${(volume * 100).roundToInt()}%", fontWeight = FontWeight.Bold)
-                        }
-                        Slider(
-                            value = volume,
-                            onValueChange = { volume = it },
-                            onValueChangeFinished = {
-                                scope.launch { settingsStore.saveSettings(currentSettings.copy(notificationVolume = volume)) }
-                            },
-                            valueRange = 0f..1f,
-                            steps = 99
-                        )
-                        
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Tryb nocny głośności", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                            Switch(
-                                checked = currentSettings.nightModeEnabled,
-                                onCheckedChange = { checked ->
-                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(nightModeEnabled = checked)) }
-                                }
-                            )
-                        }
-                        
-                        if (currentSettings.nightModeEnabled) {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                                OutlinedTextField(
-                                    value = currentSettings.nightStartTime,
-                                    onValueChange = { scope.launch { settingsStore.saveSettings(currentSettings.copy(nightStartTime = it)) } },
-                                    label = { Text("Od (HH:mm)") },
-                                    modifier = Modifier.weight(1f),
-                                    singleLine = true
-                                )
-                                OutlinedTextField(
-                                    value = currentSettings.nightEndTime,
-                                    onValueChange = { scope.launch { settingsStore.saveSettings(currentSettings.copy(nightEndTime = it)) } },
-                                    label = { Text("Do (HH:mm)") },
-                                    modifier = Modifier.weight(1f),
-                                    singleLine = true
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(16.dp))
-                            
-                            var nightVolume by remember(currentSettings) { mutableFloatStateOf(currentSettings.nightNotificationVolume) }
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Filled.MusicNote, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("Głośność Nocna", modifier = Modifier.weight(1f))
-                                Text("${(nightVolume * 100).roundToInt()}%", fontWeight = FontWeight.Bold)
-                            }
-                            Slider(
-                                value = nightVolume,
-                                onValueChange = { nightVolume = it },
-                                onValueChangeFinished = {
-                                    scope.launch { settingsStore.saveSettings(currentSettings.copy(nightNotificationVolume = nightVolume)) }
-                                },
-                                valueRange = 0f..1f,
-                                steps = 99
-                            )
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text("Zwykłe powiadomienia telefonu w nocy", style = MaterialTheme.typography.bodyLarge)
-                                    Text(
-                                        "Odtwarzaj alerty telefonu w czasie nocy nawet wtedy, gdy zegarek jest założony na ręku (pomija wyciszanie przez zegarek).",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-                                Switch(
-                                    checked = currentSettings.nightPhoneNotificationsEnabled,
-                                    onCheckedChange = { checked ->
-                                        scope.launch { settingsStore.saveSettings(currentSettings.copy(nightPhoneNotificationsEnabled = checked)) }
-                                    }
-                                )
+                                Text(pattern.label, style = MaterialTheme.typography.bodyMedium)
                             }
                         }
                     }
+                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        "Dotychczasowy wzór „Spada” oznacza niski cukier, „Rośnie” wysoki, a „Stabilnie” powrót do zakresu. Powrót do zakresu jest opcjonalny i nie przerywa trwającego alarmu.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedButton(onClick = onTestHaptics, modifier = Modifier.fillMaxWidth()) {
+                        Text("Testuj wibracje")
+                    }
                 }
-                
-                Spacer(modifier = Modifier.height(24.dp))
-                
-                Text(
-                    "Ustawienia systemowe",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                
 
-                
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Opóźnienie głośnego alarmu", style = MaterialTheme.typography.titleMedium)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            "Czas po którym aplikacja zagra głośny alarm, jeśli nie pominiesz cichego powiadomienia.",
+                NotificationSettingsSection.SOUNDS -> {
+                    if (currentSettings.notifyOutOfRange) {
+                        SoundPickerButton("Wybierz dźwięk dla niskiego cukru") {
+                            launchRingtonePicker(lowGlucoseSoundLauncher, currentSettings.lowGlucoseSoundUri)
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        SoundPickerButton("Wybierz dźwięk dla wysokiego cukru") {
+                            launchRingtonePicker(highGlucoseSoundLauncher, currentSettings.highGlucoseSoundUri)
+                        }
+                    } else {
+                        Text("Wybór dźwięków glukozy jest dostępny po włączeniu „Alarmy poza zakresem”.",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        var delaySeconds by remember(currentSettings) { mutableIntStateOf(currentSettings.notificationSoundDelaySeconds) }
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    if (currentSettings.notifyDisconnect) {
+                        Spacer(Modifier.height(8.dp))
+                        SoundPickerButton("Wybierz dźwięk rozłączenia") {
+                            launchRingtonePicker(disconnectSoundLauncher, currentSettings.disconnectSoundUri)
+                        }
+                    }
+                    Spacer(Modifier.height(24.dp))
+                    var volume by remember(currentSettings.notificationVolume) {
+                        mutableFloatStateOf(currentSettings.notificationVolume)
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Głośność dzienna", modifier = Modifier.weight(1f))
+                        Text("${(volume * 100).roundToInt()}%", fontWeight = FontWeight.Bold)
+                    }
+                    Slider(value = volume, onValueChange = { volume = it },
+                        onValueChangeFinished = { save(currentSettings.copy(notificationVolume = volume)) },
+                        valueRange = 0f..1f, steps = 99)
+                    Spacer(Modifier.height(24.dp))
+                    Text("Opóźnienie głośnego alarmu", style = MaterialTheme.typography.titleMedium)
+                    Spacer(Modifier.height(8.dp))
+                    Text("Czas po którym aplikacja zagra głośny alarm, jeśli nie pominiesz cichego powiadomienia.",
+                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    var delaySeconds by remember(currentSettings.notificationSoundDelaySeconds) {
+                        mutableIntStateOf(currentSettings.notificationSoundDelaySeconds)
+                    }
+                    Spacer(Modifier.height(16.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Opóźnienie:", modifier = Modifier.weight(1f))
+                        Text("$delaySeconds s", fontWeight = FontWeight.Bold)
+                    }
+                    Slider(value = delaySeconds.toFloat(), onValueChange = { delaySeconds = it.roundToInt() },
+                        onValueChangeFinished = { save(currentSettings.copy(notificationSoundDelaySeconds = delaySeconds)) },
+                        valueRange = 0f..30f, steps = 29)
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedButton(onClick = onTestSounds, modifier = Modifier.fillMaxWidth()) {
+                        Text("Testuj dźwięki")
+                    }
+                }
+
+                NotificationSettingsSection.NIGHT -> {
+                    NotificationToggle("Tryb nocny głośności", checked = currentSettings.nightModeEnabled,
+                        onCheckedChange = { save(currentSettings.copy(nightModeEnabled = it)) })
+                    if (currentSettings.nightModeEnabled) {
+                        Spacer(Modifier.height(16.dp))
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                            OutlinedTextField(value = currentSettings.nightStartTime,
+                                onValueChange = { save(currentSettings.copy(nightStartTime = it)) },
+                                label = { Text("Od (HH:mm)") }, modifier = Modifier.weight(1f), singleLine = true)
+                            OutlinedTextField(value = currentSettings.nightEndTime,
+                                onValueChange = { save(currentSettings.copy(nightEndTime = it)) },
+                                label = { Text("Do (HH:mm)") }, modifier = Modifier.weight(1f), singleLine = true)
+                        }
+                        Spacer(Modifier.height(24.dp))
+                        var nightVolume by remember(currentSettings.nightNotificationVolume) {
+                            mutableFloatStateOf(currentSettings.nightNotificationVolume)
+                        }
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Opóźnienie:", modifier = Modifier.weight(1f))
-                            Text("${delaySeconds} s", fontWeight = FontWeight.Bold)
+                            Text("Głośność nocna", modifier = Modifier.weight(1f))
+                            Text("${(nightVolume * 100).roundToInt()}%", fontWeight = FontWeight.Bold)
                         }
-                        Slider(
-                            value = delaySeconds.toFloat(),
-                            onValueChange = { delaySeconds = it.roundToInt() },
-                            onValueChangeFinished = {
-                                scope.launch { settingsStore.saveSettings(currentSettings.copy(notificationSoundDelaySeconds = delaySeconds)) }
-                            },
-                            valueRange = 0f..30f,
-                            steps = 29
+                        Slider(value = nightVolume, onValueChange = { nightVolume = it },
+                            onValueChangeFinished = { save(currentSettings.copy(nightNotificationVolume = nightVolume)) },
+                            valueRange = 0f..1f, steps = 99)
+                        Spacer(Modifier.height(16.dp))
+                        NotificationToggle(
+                            title = "Zwykłe powiadomienia telefonu w nocy",
+                            description = "Odtwarzaj alerty telefonu w czasie nocy nawet wtedy, gdy zegarek jest założony na ręku (pomija wyciszanie przez zegarek).",
+                            checked = currentSettings.nightPhoneNotificationsEnabled,
+                            onCheckedChange = { save(currentSettings.copy(nightPhoneNotificationsEnabled = it)) }
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
-                
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Zarządzaj powiadomieniami systemu", style = MaterialTheme.typography.titleMedium)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            "Przejdź do ustawień systemu Android, aby zarządzać uprawnieniami lub ukryć niechciane kanały (np. ciche powiadomienie o synchronizacji).",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = {
-                                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                                    putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-                                }
-                                try {
-                                    context.startActivity(intent)
-                                } catch (e: Exception) {
-                                    val fallbackIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                                        data = Uri.parse("package:${context.packageName}")
-                                    }
-                                    context.startActivity(fallbackIntent)
-                                }
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Otwórz ustawienia powiadomień")
-                        }
+                NotificationSettingsSection.CONNECTION -> {
+                    NotificationToggle(
+                        title = "Rozłączenie / Błędy sieci",
+                        description = "Alerty o braku nowych odczytów (problem z siecią, wygaśnięcie sesji LibreLinkUp).",
+                        checked = currentSettings.notifyDisconnect,
+                        onCheckedChange = { save(currentSettings.copy(notifyDisconnect = it)) }
+                    )
+                    HorizontalDivider(Modifier.padding(vertical = 16.dp))
+                    var staleMinutes by remember(currentSettings.staleDataMinutes) {
+                        mutableFloatStateOf(currentSettings.staleDataMinutes.coerceIn(1, 60).toFloat())
+                    }
+                    Text("Dane przeterminowane po: ${staleMinutes.roundToInt()} min", style = MaterialTheme.typography.titleMedium)
+                    Slider(
+                        value = staleMinutes,
+                        onValueChange = { staleMinutes = it },
+                        onValueChangeFinished = {
+                            save(latestSettings.copy(staleDataMinutes = staleMinutes.roundToInt().coerceIn(1, 60)), true)
+                        },
+                        valueRange = 1f..60f,
+                        steps = 58
+                    )
+                    Text(
+                        "Po tym czasie komplikacje zegarka pokazują - -. Ten sam limit obowiązuje dla aktualności pomiarów i alarmu braku danych.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(Modifier.height(16.dp))
+                    NotificationToggle(
+                        title = "Brak nowych danych na zegarku",
+                        description = "Powiadom na zegarku po upływie wybranego limitu aktualności. Zegarek sprawdza to także bez telefonu.",
+                        checked = currentSettings.notifyStaleDataWatch,
+                        onCheckedChange = { save(currentSettings.copy(notifyStaleDataWatch = it), true) }
+                    )
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedButton(onClick = onOpenDiagnostics, modifier = Modifier.fillMaxWidth()) {
+                        Text("Otwórz diagnostykę")
                     }
                 }
 
-                Spacer(modifier = Modifier.height(32.dp))
+                NotificationSettingsSection.WRIST -> {
+                    NotificationToggle(
+                        title = "Obecność zegarka w powiadomieniu",
+                        description = "Pokazuj informację 'Na ręku' lub 'Zdjęty' w stałym powiadomieniu telefonu.",
+                        checked = currentSettings.showWristStatusInNotification,
+                        onCheckedChange = { save(currentSettings.copy(showWristStatusInNotification = it)) }
+                    )
+                    HorizontalDivider(Modifier.padding(vertical = 16.dp))
+                    val watchWristEnabled = currentSettings.watchWristNotifyMode != "none"
+                    NotificationToggle(
+                        title = "Powiadomienia na zegarku o zdjęciu z ręki",
+                        description = "Wysyłaj powiadomienie na zegarek informujące o zdjęciu zegarka z ręki.",
+                        checked = watchWristEnabled,
+                        onCheckedChange = { save(currentSettings.copy(watchWristNotifyMode = if (it) "both" else "none"), true) }
+                    )
+                    if (watchWristEnabled) {
+                        Spacer(Modifier.height(8.dp))
+                        // Wrap the two choices vertically so long labels fit at larger font sizes.
+                        listOf("both" to "Założenie i zdjęcie", "off_only" to "Tylko zdjęcie").forEach { (mode, label) ->
+                            Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).selectable(
+                                selected = currentSettings.watchWristNotifyMode == mode,
+                                role = Role.RadioButton,
+                                onClick = { save(currentSettings.copy(watchWristNotifyMode = mode), true) }
+                            ), verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(selected = currentSettings.watchWristNotifyMode == mode, onClick = null)
+                                Text(label)
+                            }
+                        }
+                    }
+                    HorizontalDivider(Modifier.padding(vertical = 16.dp))
+                    NotificationToggle(
+                        title = "Wycisz telefon przy obecności zegarka",
+                        description = "Gdy zegarek jest połączony i założony na ręku, telefon nie odtwarza głośnego alarmu. W razie rozłączenia telefon zadzwoni normalnie.",
+                        checked = currentSettings.mutePhoneWhenWatchConnected,
+                        onCheckedChange = { save(currentSettings.copy(mutePhoneWhenWatchConnected = it)) }
+                    )
+                }
             }
         }
     }
+}
+
+@Composable
+private fun NotificationToggle(
+    title: String,
+    description: String? = null,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.bodyLarge)
+            if (description != null) {
+                Text(description, style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+        Spacer(Modifier.width(12.dp))
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
+private fun SoundPickerButton(label: String, onClick: () -> Unit) {
+    OutlinedButton(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
+        Icon(Icons.Filled.MusicNote, null)
+        Spacer(Modifier.width(8.dp))
+        Text(label)
+    }
+}
+
+private fun launchRingtonePicker(launcher: ActivityResultLauncher<Intent>, existingUri: String?) {
+    val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
+        putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION or RingtoneManager.TYPE_ALARM)
+        putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+        putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true)
+        existingUri?.let { putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(it)) }
+    }
+    launcher.launch(intent)
 }

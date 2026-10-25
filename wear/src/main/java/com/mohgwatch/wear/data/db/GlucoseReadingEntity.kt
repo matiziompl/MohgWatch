@@ -1,12 +1,13 @@
 package com.mohgwatch.wear.data.db
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.mohgwatch.core.model.GlucoseReading
 import com.mohgwatch.core.model.MeasurementColor
 import com.mohgwatch.core.model.TrendArrow
 
-@Entity(tableName = "readings")
+@Entity(tableName = "readings", indices = [Index(value = ["timestamp"], unique = true)])
 data class GlucoseReadingEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val value: Float,

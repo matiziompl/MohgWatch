@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.cancel
 
 /**
  * Odbiera dane glukozy z telefonu przez Wearable Data Layer API (Bluetooth).
@@ -27,15 +28,20 @@ class DataLayerListenerService : WearableListenerService() {
 
     companion object {
         private const val TAG = "DataLayerListener"
+        private val glucoseAlertNotifications = LatestGlucoseAlertGate()
     }
 
     override fun onCreate() {
         super.onCreate()
+        glucoseAlertNotifications.restoreLastEventTimestamp(
+            getSharedPreferences("mohgwatch_alert_delivery", MODE_PRIVATE).getLong("last_event_timestamp", 0L))
+        glucoseAlertNotifications.restoreLastMeasurementTimestamp(
+            getSharedPreferences("mohgwatch_alert_delivery", MODE_PRIVATE).getLong("last_measurement_timestamp", 0L))
         WristDetectionManager.start(this)
     }
 
     override fun onDestroy() {
-        WristDetectionManager.stop()
+        scope.cancel()
         super.onDestroy()
     }
 
@@ -57,7 +63,7 @@ class DataLayerListenerService : WearableListenerService() {
                     DataLayerPaths.GLUCOSE_HISTORY -> handleGlucoseHistory(event)
                     DataLayerPaths.SETTINGS -> handleSettings(event)
                     DataLayerPaths.CONNECTION_STATUS -> handleConnectionStatus(event)
-                    DataLayerPaths.STALE_DATA_ALERT -> handleStaleDataAlert(event)
+                    DataLayerPaths.STALE_DATA_ALERT -> handleStaleDataAlert()
                     DataLayerPaths.HAPTIC_ALERT -> handleHapticAlert(event)
                     DataLayerPaths.REQUEST_WRIST_CHECK -> WristDetectionManager.requestStatusUpdate(notify = true)
                 }
@@ -85,7 +91,7 @@ class DataLayerListenerService : WearableListenerService() {
 
         scope.launch {
             repository.insertReading(reading)
-            repository.cleanup()
+            WatchStaleDataMonitor.refresh(this@DataLayerListenerService)
 
             // Aktualizuj komplikacje i Tile
             requestComplicationUpdate()
@@ -100,6 +106,10 @@ class DataLayerListenerService : WearableListenerService() {
         val timestamps = dataMap.getLongArray(DataLayerPaths.Keys.HISTORY_TIMESTAMPS) ?: return
         val trends = dataMap.getIntegerArrayList(DataLayerPaths.Keys.HISTORY_TRENDS) ?: return
         val colors = dataMap.getIntegerArrayList(DataLayerPaths.Keys.HISTORY_COLORS) ?: return
+        if (values.size != timestamps.size) {
+            Log.w(TAG, "Pomijam historię z różną liczbą wartości i znaczników czasu")
+            return
+        }
 
         val readings = values.indices.map { i ->
             GlucoseReading(
@@ -116,7 +126,7 @@ class DataLayerListenerService : WearableListenerService() {
 
         scope.launch {
             repository.insertReadings(readings)
-            repository.cleanup()
+            WatchStaleDataMonitor.refresh(this@DataLayerListenerService)
 
             requestTileUpdate()
         }
@@ -129,24 +139,28 @@ class DataLayerListenerService : WearableListenerService() {
             unit = GlucoseUnit.valueOf(dataMap.getString(DataLayerPaths.Keys.UNIT) ?: GlucoseUnit.MG_DL.name),
             lowThreshold = dataMap.getFloat(DataLayerPaths.Keys.LOW_THRESHOLD),
             highThreshold = dataMap.getFloat(DataLayerPaths.Keys.HIGH_THRESHOLD),
-            preset = WatchFacePreset.valueOf(dataMap.getString(DataLayerPaths.Keys.PRESET) ?: WatchFacePreset.D1_CLASSIC.name),
             pollIntervalMinutes = dataMap.getInt(DataLayerPaths.Keys.POLL_INTERVAL),
-            showDemoButton = dataMap.getBoolean(DataLayerPaths.Keys.SHOW_DEMO_BUTTON),
-            appTheme = try { AppTheme.valueOf(dataMap.getString(DataLayerPaths.Keys.APP_THEME) ?: AppTheme.DEFAULT.name) } catch(e: Exception) { AppTheme.DEFAULT },
-            themeMode = try { ThemeMode.valueOf(dataMap.getString(DataLayerPaths.Keys.THEME_MODE) ?: ThemeMode.SYSTEM.name) } catch(e: Exception) { ThemeMode.SYSTEM },
-            syncThemeWithWatch = dataMap.getBoolean(DataLayerPaths.Keys.SYNC_THEME_WITH_WATCH, true),
-            watchAppTheme = try { AppTheme.valueOf(dataMap.getString(DataLayerPaths.Keys.WATCH_APP_THEME) ?: AppTheme.DEFAULT.name) } catch(e: Exception) { AppTheme.DEFAULT },
             language = dataMap.getString(DataLayerPaths.Keys.LANGUAGE) ?: "system",
             watchWristNotifyMode = dataMap.getString(DataLayerPaths.Keys.WATCH_WRIST_NOTIFY_MODE) ?: "both",
-            staleDataTimeoutMinutes = dataMap.getInt(DataLayerPaths.Keys.STALE_DATA_TIMEOUT_MINUTES, 5),
-            watchNotifyOutOfRange = dataMap.getBoolean(DataLayerPaths.Keys.WATCH_NOTIFY_OUT_OF_RANGE, false)
+            watchNotifyOutOfRange = dataMap.getBoolean(DataLayerPaths.Keys.WATCH_NOTIFY_OUT_OF_RANGE, false),
+            notifyOutOfRange = dataMap.getBoolean(DataLayerPaths.Keys.NOTIFY_OUT_OF_RANGE, true),
+            alertLowHapticEnabled = dataMap.getBoolean(DataLayerPaths.Keys.ALERT_LOW_HAPTIC_ENABLED, true),
+            alertHighHapticEnabled = dataMap.getBoolean(DataLayerPaths.Keys.ALERT_HIGH_HAPTIC_ENABLED, true),
+            notifyStaleDataWatch = dataMap.getBoolean(DataLayerPaths.Keys.NOTIFY_STALE_DATA_WATCH, true),
+            staleDataMinutes = dataMap.getInt(DataLayerPaths.Keys.STALE_DATA_MINUTES, 10).coerceIn(1, 60),
+            trendStableEnabled = dataMap.getBoolean(DataLayerPaths.Keys.TREND_STABLE_ENABLED, false),
+            trendRisingPattern = TrendVibrationPattern.fromName(dataMap.getString(DataLayerPaths.Keys.TREND_RISING_PATTERN)),
+            trendFallingPattern = TrendVibrationPattern.fromName(dataMap.getString(DataLayerPaths.Keys.TREND_FALLING_PATTERN)),
+            trendStablePattern = TrendVibrationPattern.fromName(dataMap.getString(DataLayerPaths.Keys.TREND_STABLE_PATTERN))
         )
 
-        Log.d(TAG, "Odebrano ustawienia: unit=${newSettings.unit}, theme=${newSettings.appTheme}")
+        Log.d(TAG, "Odebrano ustawienia: unit=${newSettings.unit}")
         
         val settingsStore = com.mohgwatch.wear.data.WearSettingsStore(this)
         scope.launch {
             settingsStore.saveSettings(newSettings)
+            requestComplicationUpdate()
+            WatchStaleDataMonitor.refresh(this@DataLayerListenerService)
             requestTileUpdate()
         }
     }
@@ -189,35 +203,8 @@ class DataLayerListenerService : WearableListenerService() {
         }
     }
 
-    private fun handleStaleDataAlert(event: DataEvent) {
-        val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
-        val minutes = dataMap.getLong(DataLayerPaths.Keys.STALE_MINUTES)
-        
-        Log.d(TAG, "Odebrano alert o starych danych: $minutes minut")
-        
-        val manager = getSystemService(android.app.NotificationManager::class.java)
-        
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            val channel = android.app.NotificationChannel(
-                "mohgwatch_stale_data",
-                "Stare Dane Glukozy",
-                android.app.NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                description = "Alarmy o braku nowych odczytów"
-                enableVibration(true)
-            }
-            manager.createNotificationChannel(channel)
-        }
-        
-        val notification = androidx.core.app.NotificationCompat.Builder(this, "mohgwatch_stale_data")
-            .setContentTitle("Brak nowych danych!")
-            .setContentText("Ostatni odczyt glukozy był $minutes minut temu.")
-            .setSmallIcon(android.R.drawable.ic_dialog_alert)
-            .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true)
-            .build()
-            
-        manager.notify(2001, notification)
+    private fun handleStaleDataAlert() {
+        scope.launch { WatchStaleDataMonitor.refresh(this@DataLayerListenerService) }
     }
 
     private fun handleHapticAlert(event: DataEvent) {
@@ -235,42 +222,69 @@ class DataLayerListenerService : WearableListenerService() {
 
         if (!vibrator.hasVibrator()) return
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            val effect = when (type) {
-                "LOW", "FALLING_FAST" -> {
-                    // 3 szybkie, ostre impulsy (ostrzeżenie przed hipoglikemią)
-                    val timings = longArrayOf(0, 160, 90, 160, 90, 220)
-                    val amplitudes = intArrayOf(0, 255, 0, 255, 0, 255)
-                    android.os.VibrationEffect.createWaveform(timings, amplitudes, -1)
-                }
-                "HIGH", "RISING_FAST" -> {
-                    // 1 długa wibracja (hiperglikemia)
-                    val timings = longArrayOf(0, 550)
-                    val amplitudes = intArrayOf(0, 220)
-                    android.os.VibrationEffect.createWaveform(timings, amplitudes, -1)
-                }
-                else -> {
-                    // 2 krótkie stuknięcia (powrót do normy / stabilizacja)
-                    val timings = longArrayOf(0, 90, 100, 90)
-                    val amplitudes = intArrayOf(0, 180, 0, 180)
-                    android.os.VibrationEffect.createWaveform(timings, amplitudes, -1)
+        val preview = dataMap.getBoolean(DataLayerPaths.Keys.HAPTIC_PREVIEW, false)
+        val requestedPattern = dataMap.getString(DataLayerPaths.Keys.HAPTIC_PATTERN)
+        val direction = TrendDirection.entries.firstOrNull {
+            it.hapticType == type || (preview && "TREND_${it.name}" == type)
+        } ?: return
+        if (preview) {
+            val token = watchHapticPriority.optionalToken()
+            scope.launch {
+                val settings = com.mohgwatch.wear.data.WearSettingsStore(this@DataLayerListenerService).getSettings()
+                val selected = requestedPattern?.let { TrendVibrationPattern.fromName(it) }
+                    ?: TrendHaptics.patternFor(settings, direction)
+                val waveform = TrendHaptics.waveformForAlert(settings, direction.hapticType, selected) ?: return@launch
+                watchHapticPriority.playOptional(token, android.os.SystemClock.elapsedRealtime()) {
+                    vibrator.vibrate(android.os.VibrationEffect.createWaveform(waveform.timings, waveform.amplitudes, -1))
                 }
             }
-            vibrator.vibrate(effect)
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(400)
+            return
         }
 
+        val measurementTimestamp = if (dataMap.containsKey(DataLayerPaths.Keys.MEASUREMENT_TIMESTAMP)) {
+            dataMap.getLong(DataLayerPaths.Keys.MEASUREMENT_TIMESTAMP)
+        } else null
+        val notificationToken = synchronized(glucoseAlertNotifications) {
+            val token = glucoseAlertNotifications.begin(type,
+                eventTimestamp = dataMap.getLong(DataLayerPaths.Keys.TIMESTAMP),
+                measurementTimestamp = measurementTimestamp,
+                // Preserve arrival order before settings IO; check the configured limit before playback.
+                nowMillis = System.currentTimeMillis(), measurementTimeoutMillis = 60 * 60_000L) ?: return
+            getSharedPreferences("mohgwatch_alert_delivery", MODE_PRIVATE).edit()
+                .putLong("last_event_timestamp", glucoseAlertNotifications.lastEventTimestamp)
+                .putLong("last_measurement_timestamp", glucoseAlertNotifications.lastMeasurementTimestamp).apply()
+            token
+        }
+        val optionalHapticToken = watchHapticPriority.optionalToken()
         val showNotificationExplicit = dataMap.getBoolean(DataLayerPaths.Keys.SHOW_NOTIFICATION, false)
         val glucoseVal = dataMap.getFloat(DataLayerPaths.Keys.GLUCOSE_VALUE, 0f)
 
         scope.launch {
-            val wearSettings = com.mohgwatch.wear.data.WearSettingsStore(this@DataLayerListenerService).getSettings()
-            val shouldNotify = showNotificationExplicit || wearSettings.watchNotifyOutOfRange
+            val wearSettings = try {
+                com.mohgwatch.wear.data.WearSettingsStore(this@DataLayerListenerService).getSettings()
+            } catch (e: java.io.IOException) {
+                Log.e(TAG, "Błąd odczytu ustawień; alert użyje domyślnych wibracji", e)
+                UserSettings()
+            }
+            if (measurementTimestamp != null &&
+                !WatchStaleDataPolicy.isFresh(measurementTimestamp, System.currentTimeMillis(), wearSettings.staleAfterMillis)) return@launch
+            val waveform = TrendHaptics.waveformForAlert(wearSettings, type,
+                requestedPattern?.let { TrendVibrationPattern.fromName(it) }) ?: return@launch
+            if (TrendHaptics.isAlertEnabled(wearSettings, type)) {
+                val effect = android.os.VibrationEffect.createWaveform(waveform.timings, waveform.amplitudes, -1)
+                glucoseAlertNotifications.applyIfCurrent(notificationToken) {
+                    val now = android.os.SystemClock.elapsedRealtime()
+                    if (type == "LOW" || type == "HIGH") {
+                        watchHapticPriority.playCritical(now, waveform.timings.sum() + 100L) { vibrator.vibrate(effect) }
+                    } else {
+                        watchHapticPriority.playOptional(optionalHapticToken, now) { vibrator.vibrate(effect) }
+                    }
+                }
+            }
+            val shouldNotify = wearSettings.notifyOutOfRange && (showNotificationExplicit || wearSettings.watchNotifyOutOfRange)
             val notificationManager = getSystemService(android.app.NotificationManager::class.java)
 
-            if (shouldNotify && (type == "LOW" || type == "FALLING_FAST" || type == "HIGH" || type == "RISING_FAST")) {
+            if (shouldNotify && (type == "LOW" || type == "HIGH")) {
                 val channelId = "mohgwatch_glucose_alert"
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                     val channel = android.app.NotificationChannel(
@@ -284,9 +298,9 @@ class DataLayerListenerService : WearableListenerService() {
                     notificationManager.createNotificationChannel(channel)
                 }
 
-                val title = if (type == "LOW" || type == "FALLING_FAST") "Niski cukier!" else "Wysoki cukier!"
-                val subtext = if (type == "LOW" || type == "FALLING_FAST") "Poniżej normy" else "Powyżej normy"
-                val content = if (glucoseVal > 0f) "${glucoseVal.toInt()} mg/dL ($subtext)" else subtext
+                val title = if (type == "LOW") "Niski cukier!" else "Wysoki cukier!"
+                val subtext = if (type == "LOW") "Poniżej normy" else "Powyżej normy"
+                val content = if (glucoseVal > 0f) "${com.mohgwatch.core.util.GlucoseFormatter.formatWithUnit(glucoseVal, wearSettings.unit)} ($subtext)" else subtext
 
                 val openIntent = android.content.Intent(this@DataLayerListenerService, com.mohgwatch.wear.ui.WearActivity::class.java)
                 val pendingIntent = android.app.PendingIntent.getActivity(
@@ -303,12 +317,17 @@ class DataLayerListenerService : WearableListenerService() {
                     .setContentIntent(pendingIntent)
                     .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
                     .setCategory(androidx.core.app.NotificationCompat.CATEGORY_ALARM)
+                    .setSilent(true)
                     .setAutoCancel(true)
                     .build()
 
-                notificationManager.notify(2002, notification)
+                glucoseAlertNotifications.applyIfCurrent(notificationToken) {
+                    notificationManager.notify(2002, notification)
+                }
             } else if (type == "STABLE") {
-                notificationManager.cancel(2002)
+                glucoseAlertNotifications.applyIfCurrent(notificationToken) {
+                    notificationManager.cancel(2002)
+                }
             }
         }
     }

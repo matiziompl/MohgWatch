@@ -1,10 +1,9 @@
 package com.mohgwatch.wear.tile
 
 import android.graphics.*
-import com.mohgwatch.core.model.AppTheme
-import com.mohgwatch.core.model.ThemeMode
-import com.mohgwatch.core.model.UserSettings
+import androidx.compose.ui.graphics.toArgb
 import com.mohgwatch.core.util.InjectionSiteHelper
+import com.mohgwatch.wear.ui.theme.Teal400
 
 /**
  * Renderuje kafel (Tile) rotacji miejsc wkłucia dla Wear OS w rozdzielczości 466x466 px (OnePlus Watch 2R).
@@ -20,24 +19,15 @@ object InjectionSiteTileRenderer {
 
     private const val TILE_SIZE = 466
 
-    fun renderTile(settings: UserSettings): Bitmap {
+    fun renderTile(): Bitmap {
         val bitmap = Bitmap.createBitmap(TILE_SIZE, TILE_SIZE, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
-        val isLight = settings.themeMode == ThemeMode.LIGHT
-        val bgColor = if (isLight) Color.parseColor("#F8FAFC") else Color.parseColor("#000000")
-        val inactiveSlotBg = if (isLight) Color.parseColor("#E2E8F0") else Color.parseColor("#18212F")
-        val inactiveSlotBorder = if (isLight) Color.parseColor("#CBD5E1") else Color.parseColor("#334155")
+        val inactiveSlotBg = Color.parseColor("#18212F")
+        val inactiveSlotBorder = Color.parseColor("#334155")
+        val primaryColor = Teal400.toArgb()
 
-        val effectiveTheme = if (!settings.syncThemeWithWatch && settings.watchAppTheme != AppTheme.DEFAULT) {
-            settings.watchAppTheme
-        } else {
-            settings.appTheme
-        }
-
-        val primaryColor = getPrimaryColor(effectiveTheme, isLight)
-
-        canvas.drawColor(bgColor)
+        canvas.drawColor(Color.BLACK)
 
         val todayIndex = InjectionSiteHelper.getTodayCycleIndex()
 
@@ -89,24 +79,6 @@ object InjectionSiteTileRenderer {
         clipCircle(canvas, bitmap)
 
         return bitmap
-    }
-
-    private fun getPrimaryColor(theme: AppTheme, isLight: Boolean): Int {
-        return when (theme) {
-            AppTheme.DEFAULT, AppTheme.TEAL, AppTheme.MATCH_BACKGROUND, AppTheme.MATCH_GLUCOSE -> Color.parseColor(if (isLight) "#0D9488" else "#2DD4BF")
-            AppTheme.BLUE -> Color.parseColor(if (isLight) "#2563EB" else "#60A5FA")
-            AppTheme.RED -> Color.parseColor(if (isLight) "#DC2626" else "#F87171")
-            AppTheme.GREEN -> Color.parseColor(if (isLight) "#16A34A" else "#4ADE80")
-            AppTheme.PURPLE -> Color.parseColor(if (isLight) "#9333EA" else "#C084FC")
-            AppTheme.ORANGE -> Color.parseColor(if (isLight) "#EA580C" else "#FB923C")
-            AppTheme.PINK -> Color.parseColor(if (isLight) "#DB2777" else "#F472B6")
-            AppTheme.AMBER -> Color.parseColor(if (isLight) "#D97706" else "#FBBF24")
-            AppTheme.CYAN -> Color.parseColor(if (isLight) "#0891B2" else "#22D3EE")
-            AppTheme.MONOCHROME -> Color.parseColor(if (isLight) "#525252" else "#A3A3A3")
-            AppTheme.GRAY -> Color.parseColor(if (isLight) "#4B5563" else "#9CA3AF")
-            AppTheme.LIGHT_GRAY -> Color.parseColor(if (isLight) "#64748B" else "#CBD5E1")
-            AppTheme.BLACK -> Color.parseColor(if (isLight) "#171717" else "#E2E8F0")
-        }
     }
 
     private fun clipCircle(canvas: Canvas, bitmap: Bitmap) {

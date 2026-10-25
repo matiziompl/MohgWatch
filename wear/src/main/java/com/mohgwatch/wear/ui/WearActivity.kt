@@ -15,12 +15,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material3.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.mohgwatch.core.util.GlucoseFormatter
+import com.mohgwatch.wear.BuildConfig
 import com.mohgwatch.wear.data.GlucoseRepository
 import com.mohgwatch.wear.service.WristDetectionManager
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
-@AndroidEntryPoint
 class WearActivity : ComponentActivity() {
 
     private val repository by lazy { GlucoseRepository(this) }
@@ -44,11 +48,20 @@ class WearActivity : ComponentActivity() {
 fun WearAppScreen(repository: GlucoseRepository) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val settingsStore = remember { com.mohgwatch.wear.data.WearSettingsStore(context) }
-    val settings by settingsStore.settingsFlow.collectAsState(initial = com.mohgwatch.core.model.UserSettings())
+    val settings by settingsStore.settingsFlow.collectAsStateWithLifecycle(initialValue = com.mohgwatch.core.model.UserSettings())
     
-    val themeToUse = if (settings.syncThemeWithWatch) settings.appTheme else settings.watchAppTheme
-    com.mohgwatch.wear.ui.theme.WearMohgWatchTheme(appTheme = themeToUse, themeMode = settings.themeMode) {
-        val readingState by repository.observeLatest().collectAsState(initial = null)
+    com.mohgwatch.wear.ui.theme.WearMohgWatchTheme {
+        val readingState by remember(repository) { repository.observeLatest() }.collectAsStateWithLifecycle(initialValue = null)
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val now by produceState(System.currentTimeMillis(), readingState?.timestamp, lifecycleOwner, settings.staleAfterMillis) {
+            lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                while (true) {
+                    value = System.currentTimeMillis()
+                    val elapsed = (value - (readingState?.timestamp ?: value)).coerceAtLeast(0L)
+                    delay(60_000L - elapsed % 60_000L)
+                }
+            }
+        }
 
         Box(
             modifier = Modifier
@@ -72,32 +85,36 @@ fun WearAppScreen(repository: GlucoseRepository) {
 
             val reading = readingState
             if (reading != null) {
+                val isFresh = reading.isFreshAt(now, settings.staleAfterMillis)
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${reading.value.toInt()}",
+                        text = if (isFresh) GlucoseFormatter.format(reading.value, settings.unit) else "- -",
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
                     )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = reading.trendArrow.symbol,
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    if (isFresh) {
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = reading.trendArrow.symbol,
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
 
                 Text(
-                    text = "mg/dL • ${GlucoseFormatter.formatMinutesAgo(reading.getMinutesAgo())}",
+                    text = if (isFresh) "${settings.unit.shortLabel} • ${GlucoseFormatter.formatMinutesAgo((now - reading.timestamp) / 60_000L)}"
+                        else "Dane przeterminowane (${settings.staleAfterMillis / 60_000L} min)",
                     fontSize = 11.sp,
                     color = Color(0xFF94A3B8)
                 )
             } else {
                 Text(
-                    text = "---",
+                    text = "- -",
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF64748B)
@@ -112,7 +129,7 @@ fun WearAppScreen(repository: GlucoseRepository) {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            val isWorn by WristDetectionManager.isWornState.collectAsState()
+            val isWorn by WristDetectionManager.isWornState.collectAsStateWithLifecycle()
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -134,6 +151,13 @@ fun WearAppScreen(repository: GlucoseRepository) {
                     textAlign = TextAlign.Center
                 )
             }
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "v${BuildConfig.VERSION_NAME}",
+                fontSize = 11.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

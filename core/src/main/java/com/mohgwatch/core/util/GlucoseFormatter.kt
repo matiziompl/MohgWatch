@@ -9,7 +9,6 @@ object GlucoseFormatter {
     private const val MMOL_CONVERSION_FACTOR = 18.0182f
 
     fun mgDlToMmol(mgDl: Float): Float = mgDl / MMOL_CONVERSION_FACTOR
-    fun mmolToMgDl(mmol: Float): Float = mmol * MMOL_CONVERSION_FACTOR
 
     /** Formatuje wartość bez jednostki */
     fun format(value: Float, unit: GlucoseUnit): String = when (unit) {

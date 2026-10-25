@@ -1,54 +1,47 @@
 package com.mohgwatch.phone.ui.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.mohgwatch.phone.ui.components.SettingsPage
 import com.mohgwatch.phone.data.WatchState
 import com.mohgwatch.phone.service.GlucoseSyncService
+import com.mohgwatch.phone.service.DataLayerSender
+import com.mohgwatch.core.model.TrendDirection
+import com.mohgwatch.core.model.TrendArrow
+import com.mohgwatch.core.model.TrendVibrationPattern
+import kotlinx.coroutines.launch
+
+enum class NotificationTestSection(val title: String) {
+    SOUNDS("Testy dźwięków telefonu"),
+    WATCH("Testy zegarka"),
+    SIMULATION("Symulacja pomiarów i Demo")
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsNotificationTestsScreen(onBack: () -> Unit) {
+fun SettingsNotificationTestsScreen(section: NotificationTestSection, onBack: () -> Unit) {
     val context = LocalContext.current
     val isWorn by WatchState.isWornOnWrist.collectAsState()
-    var testGlucoseInput by remember { mutableStateOf("55") }
+    var testGlucoseInput by rememberSaveable { mutableStateOf("55") }
+    var testTrend by rememberSaveable { mutableStateOf(TrendArrow.STABLE) }
+    var trendMenuExpanded by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val dataLayerSender = remember { DataLayerSender(context) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        TopAppBar(
-            title = { Text("Testy powiadomień") },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Wstecz")
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            // 1. Weryfikacja czujnika nadgarstka (NOWOŚĆ)
+    SettingsPage(title = section.title, onBack = onBack) {
+        if (section == NotificationTestSection.WATCH) {
+            // Informacyjny podgląd czujnika nadgarstka.
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(16.dp),
@@ -81,61 +74,42 @@ fun SettingsNotificationTestsScreen(onBack: () -> Unit) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 2. O-Haptics na zegarku
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("O-Haptics na zegarku (Wibracje kierunkowe)", style = MaterialTheme.typography.titleMedium)
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Text("Podgląd wzorów alarmów progowych", style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "Test unikalnych wzorców wibracji wysyłanych bezpośrednio na nadgarstek:",
+                        "Każdy przycisk odtwarza wskazany wzór na zegarku, także gdy jego alarm jest wyłączony. Podgląd nie przerywa trwającego alarmu. Długie i mocne wzory używają maksymalnej siły silnika.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        OutlinedButton(
-                            onClick = { GlucoseSyncService.testHapticWatch(context, "LOW") },
-                            modifier = Modifier.weight(1f),
-                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
-                        ) {
-                            Text("Hipo", style = MaterialTheme.typography.labelSmall, maxLines = 1)
+                    TrendDirection.entries.forEach { direction ->
+                        Spacer(Modifier.height(12.dp))
+                        Text(direction.label, style = MaterialTheme.typography.titleSmall)
+                        TrendVibrationPattern.entries.forEach { pattern ->
+                            OutlinedButton(
+                                onClick = {
+                                    scope.launch {
+                                        dataLayerSender.sendHapticAlert(direction.hapticType, pattern = pattern, preview = true)
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text("${direction.label}: ${pattern.label}")
+                            }
                         }
-                        OutlinedButton(
-                            onClick = { GlucoseSyncService.testHapticWatch(context, "HIGH") },
-                            modifier = Modifier.weight(1f),
-                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
-                        ) {
-                            Text("Hiper", style = MaterialTheme.typography.labelSmall, maxLines = 1)
-                        }
-                        OutlinedButton(
-                            onClick = { GlucoseSyncService.testHapticWatch(context, "STABLE") },
-                            modifier = Modifier.weight(1f),
-                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
-                        ) {
-                            Text("Norma", style = MaterialTheme.typography.labelSmall, maxLines = 1)
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedButton(
-                        onClick = { GlucoseSyncService.testHapticWatch(context, "LOW", showNotification = true, glucoseValue = 55f) },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Testuj zwykłe powiadomienie zegarka (55 mg/dL)", style = MaterialTheme.typography.labelSmall)
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 3. Testy alertów dźwiękowych (Dzień / Noc)
+        }
+        if (section == NotificationTestSection.SOUNDS) {
+            // Testy alertów dźwiękowych (Dzień / Noc).
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(16.dp),
@@ -155,37 +129,39 @@ fun SettingsNotificationTestsScreen(onBack: () -> Unit) {
                     // Niski
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         Text("Niski cukier", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
-                        Button(onClick = { GlucoseSyncService.testAlertLow(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
-                        Button(onClick = { GlucoseSyncService.testAlertLow(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
+                        Button(onClick = { GlucoseSyncService.testAlertLow(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { Text("Test") }
+                        Button(onClick = { GlucoseSyncService.testAlertLow(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { Text("Test") }
                     }
                     // Wysoki
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         Text("Wysoki cukier", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
-                        Button(onClick = { GlucoseSyncService.testAlertHigh(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
-                        Button(onClick = { GlucoseSyncService.testAlertHigh(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
+                        Button(onClick = { GlucoseSyncService.testAlertHigh(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { Text("Test") }
+                        Button(onClick = { GlucoseSyncService.testAlertHigh(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { Text("Test") }
                     }
                     // Rozłączenie
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         Text("Rozłączenie", modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodySmall)
-                        Button(onClick = { GlucoseSyncService.testAlertDisconnect(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
-                        Button(onClick = { GlucoseSyncService.testAlertDisconnect(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { }
+                        Button(onClick = { GlucoseSyncService.testAlertDisconnect(context, "day") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { Text("Test") }
+                        Button(onClick = { GlucoseSyncService.testAlertDisconnect(context, "night") }, modifier = Modifier.weight(1f).padding(horizontal = 4.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) { Text("Test") }
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 4. Prawdziwy test (Wstrzyknięcie faktycznego odczytu)
+        }
+        if (section == NotificationTestSection.SIMULATION) {
+            // Kontrolowane wstrzyknięcie odczytu korzysta z logiki prawdziwych alarmów.
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Prawdziwy test pomiaru", style = MaterialTheme.typography.titleMedium)
+                    Text("Symulacja pomiaru", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        "Wpisz wartość glukozy, aby zasymulować odebranie nowego odczytu. Sprawdzisz pełny łańcuch: alerty telefonu, wibracje zegarka i widżety.",
+                        "Wpisz wartość glukozy, aby sprawdzić alerty telefonu, wibracje zegarka i widżety. Wyślij kolejno wartość w zakresie, poniżej dolnego progu, powyżej górnego i ponownie w zakresie. Progi pochodzą z Ustawienia → Glukoza i progi.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -202,11 +178,37 @@ fun SettingsNotificationTestsScreen(onBack: () -> Unit) {
 
                     Spacer(modifier = Modifier.height(12.dp))
 
+                    ExposedDropdownMenuBox(
+                        expanded = trendMenuExpanded,
+                        onExpandedChange = { trendMenuExpanded = it }
+                    ) {
+                        OutlinedTextField(
+                            value = "${testTrend.symbol} ${testTrend.description}",
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text("Strzałka trendu") },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(trendMenuExpanded) },
+                            modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                        )
+                        ExposedDropdownMenu(
+                            expanded = trendMenuExpanded,
+                            onDismissRequest = { trendMenuExpanded = false }
+                        ) {
+                            TrendArrow.entries.forEach { trend ->
+                                DropdownMenuItem(
+                                    text = { Text("${trend.symbol} ${trend.description}") },
+                                    onClick = { testTrend = trend; trendMenuExpanded = false }
+                                )
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+
                     Button(
                         onClick = {
                             val v = testGlucoseInput.trim().toFloatOrNull()
-                            if (v != null && v > 0f) {
-                                GlucoseSyncService.injectReading(context, v)
+                            if (v != null && v.isFinite() && v > 0f) {
+                                GlucoseSyncService.injectReading(context, v, testTrend)
                                 Toast.makeText(context, "Wstrzyknięto pomiar: ${v.toInt()} mg/dL", Toast.LENGTH_SHORT).show()
                             } else {
                                 Toast.makeText(context, "Podaj poprawną liczbę glukozy", Toast.LENGTH_SHORT).show()
@@ -220,7 +222,9 @@ fun SettingsNotificationTestsScreen(onBack: () -> Unit) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+            DemoReadingTest()
         }
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }

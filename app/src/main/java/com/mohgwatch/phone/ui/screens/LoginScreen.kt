@@ -1,5 +1,6 @@
 package com.mohgwatch.phone.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -13,8 +14,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -22,11 +23,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mohgwatch.core.api.ApiHeaders
 import com.mohgwatch.core.api.LibreLinkUpClient
+import com.mohgwatch.phone.R
 import com.mohgwatch.phone.data.CredentialStore
+import com.mohgwatch.phone.data.Diagnostics
 import com.mohgwatch.phone.service.GlucoseSyncService
-import com.mohgwatch.phone.ui.theme.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,12 +46,11 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var regionExpanded by remember { mutableStateOf(false) }
 
-    // Sprawdź czy już zalogowany (opcjonalnie można po prostu wrócić)
     LaunchedEffect(Unit) {
         val creds = credentialStore.getCredentials()
         if (creds != null) {
-            GlucoseSyncService.start(context)
-            onLoginSuccess()
+            email = creds.email.orEmpty()
+            selectedRegion = creds.region
         }
     }
 
@@ -76,23 +77,18 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
     ) {
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Logo / Title
-        Box(
+        Image(
+            painter = painterResource(R.drawable.ic_launcher_foreground),
+            contentDescription = null,
             modifier = Modifier
-                .size(80.dp)
+                .size(128.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(
-                    Brush.linearGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary))
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("M", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
-        }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            "MoghWatch",
+            "MohgWatch",
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
@@ -217,38 +213,49 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                         }
                         isLoading = true
                         errorMessage = null
+                        val loginEmail = email.trim()
+                        val loginPassword = password
+                        val region = if (selectedRegion == "global") null else selectedRegion
 
                         scope.launch {
-                            val client = LibreLinkUpClient()
-                            val region = if (selectedRegion == "global") null else selectedRegion
-
-                            when (val result = client.login(email, password, region)) {
-                                is LibreLinkUpClient.ApiResult.Success -> {
-                                    val session = result.data
-                                    credentialStore.saveCredentials(
-                                        token = session.token,
-                                        userId = session.userId,
-                                        region = session.region,
-                                        expires = session.expires,
-                                        email = email,
-                                        password = password
-                                    )
-                                    GlucoseSyncService.start(context)
-                                    isLoading = false
-                                    onLoginSuccess()
+                            try {
+                                Diagnostics.record(context, "LOGIN_START", "region=${region ?: "automatic"}; ${Diagnostics.snapshot(context)}")
+                                val client = LibreLinkUpClient { event, details -> Diagnostics.record(context, event, details) }
+                                when (val result = client.login(loginEmail, loginPassword, region)) {
+                                    is LibreLinkUpClient.ApiResult.Success -> {
+                                        val session = result.data
+                                        credentialStore.saveCredentials(
+                                            token = session.token,
+                                            userId = session.userId,
+                                            region = session.region,
+                                            expires = session.expires,
+                                            email = loginEmail,
+                                            password = loginPassword
+                                        )
+                                        Diagnostics.record(context, "LOGIN_SUCCESS")
+                                        GlucoseSyncService.start(context)
+                                        onLoginSuccess()
+                                    }
+                                    is LibreLinkUpClient.ApiResult.Error -> {
+                                        Diagnostics.record(context, "LOGIN_ERROR", "type=api code=${result.code}")
+                                        errorMessage = result.message
+                                    }
+                                    is LibreLinkUpClient.ApiResult.NetworkError -> {
+                                        Diagnostics.record(context, "LOGIN_ERROR", "type=network kind=${result.kind}")
+                                        errorMessage = result.message
+                                    }
+                                    is LibreLinkUpClient.ApiResult.LoginRequired -> {
+                                        Diagnostics.record(context, "LOGIN_ERROR", "type=credentials_rejected")
+                                        errorMessage = "LibreLinkUp odrzucił logowanie. Sprawdź email, hasło i możliwość logowania w oficjalnej aplikacji LibreLinkUp."
+                                    }
                                 }
-                                is LibreLinkUpClient.ApiResult.Error -> {
-                                    errorMessage = result.message
-                                    isLoading = false
-                                }
-                                is LibreLinkUpClient.ApiResult.NetworkError -> {
-                                    errorMessage = "Brak połączenia z internetem"
-                                    isLoading = false
-                                }
-                                is LibreLinkUpClient.ApiResult.LoginRequired -> {
-                                    errorMessage = "Nieprawidłowy email lub hasło"
-                                    isLoading = false
-                                }
+                            } catch (cancelled: CancellationException) {
+                                throw cancelled
+                            } catch (failure: Exception) {
+                                Diagnostics.record(context, "LOGIN_LOCAL_ERROR", Diagnostics.error(failure))
+                                errorMessage = "Nie udało się zakończyć logowania w aplikacji. Skopiuj raport diagnostyczny z ustawień."
+                            } finally {
+                                isLoading = false
                             }
                         }
                     },

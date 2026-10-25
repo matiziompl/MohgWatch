@@ -73,7 +73,6 @@ fun MohgWatchTheme(
     logBackgroundColor: LogBgColor = LogBgColor.DEFAULT,
     content: @Composable () -> Unit
 ) {
-    val context = androidx.compose.ui.platform.LocalContext.current
     val darkTheme = when (themeMode) {
         ThemeMode.SYSTEM -> isSystemInDarkTheme()
         ThemeMode.LIGHT -> false

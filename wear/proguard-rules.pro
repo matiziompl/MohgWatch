@@ -1,10 +1,6 @@
 # MoghWatch Wear App ProGuard Rules
 -keepattributes *Annotation*
 
-# Hilt
--keep class dagger.** { *; }
--keep class javax.inject.** { *; }
-
 # Room
 -keep class com.mohgwatch.wear.data.db.** { *; }
 
