@@ -72,12 +72,19 @@ class LibreLinkUpClient(private val diagnostic: (String, String) -> Unit = { _, 
         .addInterceptor(headersInterceptor)
         .addInterceptor { chain ->
             val started = System.nanoTime()
+            val path = chain.request().url.encodedPath
+            val endpoint = when {
+                path == "/llu/auth/login" -> "login"
+                path == "/llu/connections" -> "latest"
+                path.startsWith("/llu/connections/") && path.endsWith("/graph") -> "history"
+                else -> "other"
+            }
             try {
                 chain.proceed(chain.request()).also {
-                    diagnostic("HTTP_RESULT", "code=${it.code} durationMs=${(System.nanoTime() - started) / 1_000_000L}")
+                    diagnostic("HTTP_RESULT", "endpoint=$endpoint code=${it.code} durationMs=${(System.nanoTime() - started) / 1_000_000L}")
                 }
             } catch (error: Exception) {
-                diagnostic("HTTP_ERROR", "causes=${generateSequence(error as Throwable) { it.cause }.take(6).joinToString(" <- ") { it.javaClass.simpleName }} durationMs=${(System.nanoTime() - started) / 1_000_000L}")
+                diagnostic("HTTP_ERROR", "endpoint=$endpoint causes=${generateSequence(error as Throwable) { it.cause }.take(6).joinToString(" <- ") { it.javaClass.simpleName }} durationMs=${(System.nanoTime() - started) / 1_000_000L}")
                 throw error
             }
         }

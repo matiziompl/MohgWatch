@@ -144,16 +144,16 @@ object SyncScheduler {
         true
     }
 
-    fun resumeService(context: Context, expectedEpoch: Long? = null) = synchronized(lock) {
+    fun resumeService(context: Context, expectedEpoch: Long? = null, trigger: String = "recovery") = synchronized(lock) {
         val current = state(context)
         if (!RecoveryAlarmPolicy.isCurrent(current, expectedEpoch)) {
             Diagnostics.record(context, "SYNC_WAKE_SKIPPED", "enabled=${current.enabled} epoch=${current.epoch} expectedEpoch=$expectedEpoch")
             return@synchronized
         }
-        Diagnostics.record(context, "SYNC_WAKE_REQUESTED", "epoch=${current.epoch}")
+        Diagnostics.record(context, "SYNC_WAKE_REQUESTED", "epoch=${current.epoch} trigger=$trigger")
         try {
             context.startForegroundService(Intent(context, GlucoseSyncService::class.java)
-                .setAction(GlucoseSyncService.ACTION_ALARM_WAKEUP))
+                .setAction(GlucoseSyncService.ACTION_ALARM_WAKEUP).putExtra("sync_trigger", trigger))
         } catch (error: IllegalStateException) {
             Diagnostics.record(context, "SYNC_WAKE_REJECTED", Diagnostics.error(error))
         } catch (error: SecurityException) {

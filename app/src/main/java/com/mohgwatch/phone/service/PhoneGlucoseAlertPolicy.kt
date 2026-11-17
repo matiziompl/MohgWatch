@@ -13,4 +13,13 @@ internal object PhoneGlucoseAlertPolicy {
 
     fun shouldMute(settings: UserSettings, connected: Boolean, worn: Boolean, wristTimestamp: Long, now: Long): Boolean =
         settings.shouldMutePhoneAlert(connected, worn && GlucoseAlertPolicy.hasRecentWristStatus(wristTimestamp, now))
+
+    fun shouldPlaySound(
+        settings: UserSettings, reading: GlucoseReading?, expectedRange: GlucoseRange?,
+        connected: Boolean, worn: Boolean, wristTimestamp: Long, now: Long
+    ): Boolean {
+        if (expectedRange != null &&
+            hazard(reading, now, settings.lowThreshold, settings.highThreshold, settings.staleAfterMillis) != expectedRange) return false
+        return !shouldMute(settings, connected, worn, wristTimestamp, now)
+    }
 }

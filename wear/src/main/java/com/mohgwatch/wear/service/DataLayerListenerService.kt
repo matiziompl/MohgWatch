@@ -88,6 +88,7 @@ class DataLayerListenerService : WearableListenerService() {
         )
 
         Log.d(TAG, "Odebrano odczyt: ${reading.value} ${reading.trendArrow.symbol}")
+        WatchGlucoseNotifications.observeReading(reading)
 
         scope.launch {
             repository.insertReading(reading)
@@ -218,9 +219,7 @@ class DataLayerListenerService : WearableListenerService() {
         } else {
             @Suppress("DEPRECATION")
             getSystemService(android.os.Vibrator::class.java)
-        } ?: return
-
-        if (!vibrator.hasVibrator()) return
+        }
 
         val preview = dataMap.getBoolean(DataLayerPaths.Keys.HAPTIC_PREVIEW, false)
         val requestedPattern = dataMap.getString(DataLayerPaths.Keys.HAPTIC_PATTERN)
@@ -228,6 +227,7 @@ class DataLayerListenerService : WearableListenerService() {
             it.hapticType == type || (preview && "TREND_${it.name}" == type)
         } ?: return
         if (preview) {
+            if (vibrator == null || !vibrator.hasVibrator()) return
             val token = watchHapticPriority.optionalToken()
             scope.launch {
                 val settings = com.mohgwatch.wear.data.WearSettingsStore(this@DataLayerListenerService).getSettings()
@@ -260,6 +260,12 @@ class DataLayerListenerService : WearableListenerService() {
         val glucoseVal = dataMap.getFloat(DataLayerPaths.Keys.GLUCOSE_VALUE, 0f)
 
         scope.launch {
+            WatchGlucoseNotifications.postAlert(this@DataLayerListenerService, type, glucoseVal,
+                measurementTimestamp, showNotificationExplicit, glucoseAlertNotifications, notificationToken)
+        }
+        if (vibrator == null || !vibrator.hasVibrator()) return
+
+        scope.launch {
             val wearSettings = try {
                 com.mohgwatch.wear.data.WearSettingsStore(this@DataLayerListenerService).getSettings()
             } catch (e: java.io.IOException) {
@@ -279,54 +285,6 @@ class DataLayerListenerService : WearableListenerService() {
                     } else {
                         watchHapticPriority.playOptional(optionalHapticToken, now) { vibrator.vibrate(effect) }
                     }
-                }
-            }
-            val shouldNotify = wearSettings.notifyOutOfRange && (showNotificationExplicit || wearSettings.watchNotifyOutOfRange)
-            val notificationManager = getSystemService(android.app.NotificationManager::class.java)
-
-            if (shouldNotify && (type == "LOW" || type == "HIGH")) {
-                val channelId = "mohgwatch_glucose_alert"
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    val channel = android.app.NotificationChannel(
-                        channelId,
-                        "Alerty Glukozy",
-                        android.app.NotificationManager.IMPORTANCE_HIGH
-                    ).apply {
-                        description = "Standardowe powiadomienia o stężeniu glukozy poza normą"
-                        enableVibration(true)
-                    }
-                    notificationManager.createNotificationChannel(channel)
-                }
-
-                val title = if (type == "LOW") "Niski cukier!" else "Wysoki cukier!"
-                val subtext = if (type == "LOW") "Poniżej normy" else "Powyżej normy"
-                val content = if (glucoseVal > 0f) "${com.mohgwatch.core.util.GlucoseFormatter.formatWithUnit(glucoseVal, wearSettings.unit)} ($subtext)" else subtext
-
-                val openIntent = android.content.Intent(this@DataLayerListenerService, com.mohgwatch.wear.ui.WearActivity::class.java)
-                val pendingIntent = android.app.PendingIntent.getActivity(
-                    this@DataLayerListenerService,
-                    2002,
-                    openIntent,
-                    android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
-                )
-
-                val notification = androidx.core.app.NotificationCompat.Builder(this@DataLayerListenerService, channelId)
-                    .setContentTitle(title)
-                    .setContentText(content)
-                    .setSmallIcon(android.R.drawable.ic_dialog_alert)
-                    .setContentIntent(pendingIntent)
-                    .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
-                    .setCategory(androidx.core.app.NotificationCompat.CATEGORY_ALARM)
-                    .setSilent(true)
-                    .setAutoCancel(true)
-                    .build()
-
-                glucoseAlertNotifications.applyIfCurrent(notificationToken) {
-                    notificationManager.notify(2002, notification)
-                }
-            } else if (type == "STABLE") {
-                glucoseAlertNotifications.applyIfCurrent(notificationToken) {
-                    notificationManager.cancel(2002)
                 }
             }
         }

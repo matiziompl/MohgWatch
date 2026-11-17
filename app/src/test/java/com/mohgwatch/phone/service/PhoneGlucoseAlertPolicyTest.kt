@@ -37,4 +37,26 @@ class PhoneGlucoseAlertPolicyTest {
         assertFalse(PhoneGlucoseAlertPolicy.shouldMute(settings, false, true, now - 1L, now))
         assertFalse(PhoneGlucoseAlertPolicy.shouldMute(settings, true, false, now - 1L, now))
     }
+
+    @Test fun `connection failure respects watch muting even without a glucose reading`() {
+        val settings = UserSettings(nightModeEnabled = false)
+        assertFalse(PhoneGlucoseAlertPolicy.shouldPlaySound(settings, null, null, true, true, now - 1L, now))
+        assertTrue(PhoneGlucoseAlertPolicy.shouldPlaySound(settings, null, null, false, true, now - 1L, now))
+        assertTrue(PhoneGlucoseAlertPolicy.shouldPlaySound(settings, null, null, true, false, now - 1L, now))
+        assertTrue(PhoneGlucoseAlertPolicy.shouldPlaySound(settings, null, null, true, true, 0L, now))
+    }
+
+    @Test fun `connection failure obeys the explicit phone sound preference`() {
+        val settings = UserSettings(mutePhoneWhenWatchConnected = false)
+        assertTrue(PhoneGlucoseAlertPolicy.shouldPlaySound(settings, null, null, true, true, now - 1L, now))
+    }
+
+    @Test fun `sound requires the matching current glucose hazard`() {
+        val settings = UserSettings(nightModeEnabled = false)
+        assertTrue(PhoneGlucoseAlertPolicy.shouldPlaySound(settings, reading(), GlucoseRange.LOW, false, false, 0L, now))
+        assertFalse(PhoneGlucoseAlertPolicy.shouldPlaySound(settings, reading(), GlucoseRange.HIGH, false, false, 0L, now))
+        assertFalse(PhoneGlucoseAlertPolicy.shouldPlaySound(settings, null, GlucoseRange.LOW, false, false, 0L, now))
+        assertFalse(PhoneGlucoseAlertPolicy.shouldPlaySound(settings, reading(timestamp = now - settings.staleAfterMillis),
+            GlucoseRange.LOW, false, false, 0L, now))
+    }
 }

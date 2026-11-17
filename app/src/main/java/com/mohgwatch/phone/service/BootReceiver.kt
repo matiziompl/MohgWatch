@@ -25,7 +25,7 @@ class BootReceiver : BroadcastReceiver() {
                     SyncScheduler.schedule(context, settings.pollIntervalMinutes.coerceIn(1, 5) * 60_000L, epoch)
                     if (CredentialStore(context).hasCredentials()) {
                         SyncWatchdogWorker.schedule(context)
-                        SyncScheduler.resumeService(context, epoch)
+                        SyncScheduler.resumeService(context, epoch, trigger = "boot")
                     }
                 }
             } catch (error: TimeoutCancellationException) {

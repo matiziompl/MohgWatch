@@ -20,6 +20,8 @@ import com.mohgwatch.phone.data.SettingsStore
 import com.mohgwatch.phone.data.GlucoseHistoryStore
 import com.mohgwatch.phone.data.WatchState
 import com.mohgwatch.phone.data.Diagnostics
+import com.mohgwatch.phone.data.NetworkObservationPolicy
+import com.mohgwatch.phone.companion.CompanionIntegrationManager
 import android.os.SystemClock
 import com.mohgwatch.phone.service.DataLayerSender
 import com.mohgwatch.phone.util.trStr
@@ -134,7 +136,10 @@ class GlucoseSyncService : Service() {
     }
 
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private val apiClient = LibreLinkUpClient { event, details -> Diagnostics.record(this, event, details, activeCycleId) }
+    @Volatile private var activeApiStage = "latest"
+    private val apiClient = LibreLinkUpClient { event, details ->
+        Diagnostics.record(this, event, "stage=$activeApiStage $details", activeCycleId)
+    }
     private lateinit var dataLayerSender: DataLayerSender
     private lateinit var credentialStore: CredentialStore
     private lateinit var settingsStore: SettingsStore
@@ -189,6 +194,7 @@ class GlucoseSyncService : Service() {
     }
 
     private var networkCallback: android.net.ConnectivityManager.NetworkCallback? = null
+    private val networkObservations = NetworkObservationPolicy()
 
     override fun onCreate() {
         super.onCreate()
@@ -259,29 +265,44 @@ class GlucoseSyncService : Service() {
                 blockedNetwork = network
                 networkBlocked = blocked
                 Diagnostics.record(this@GlucoseSyncService, if (blocked) "NETWORK_BLOCKED" else "NETWORK_UNBLOCKED",
-                    "network=$network blocked=$blocked; ${Diagnostics.snapshot(this@GlucoseSyncService)}", activeCycleId)
+                    "network=$network blocked=$blocked", activeCycleId)
                 val pm = getSystemService(android.os.PowerManager::class.java)
                 Log.w(TAG, "Android network blocked=$blocked, idle=${pm.isDeviceIdleMode}, batteryExempt=${pm.isIgnoringBatteryOptimizations(packageName)}")
                 if (blocked) {
                     GlucoseSyncState.lastError.value = "Android zgłosił blokadę sieci aplikacji (przyczyna nieznana)"
                 } else if (GlucoseSyncState.isSyncing.value) {
-                    doSyncAndScheduleNext()
+                    doSyncAndScheduleNext("network_unblocked")
                 }
             }
 
             override fun onLost(network: android.net.Network) {
                 if (network == blockedNetwork) { networkBlocked = null; blockedNetwork = null }
-                Diagnostics.record(this@GlucoseSyncService, "NETWORK_LOST", "network=$network; ${Diagnostics.snapshot(this@GlucoseSyncService)}", activeCycleId)
+                networkObservations.lost(network.toString())
+                Diagnostics.record(this@GlucoseSyncService, "NETWORK_LOST", "network=$network", activeCycleId)
             }
 
             override fun onCapabilitiesChanged(network: android.net.Network, capabilities: android.net.NetworkCapabilities) {
-                Diagnostics.record(this@GlucoseSyncService, "NETWORK_CAPABILITIES", "network=$network; ${Diagnostics.snapshot(this@GlucoseSyncService)}", activeCycleId)
+                val transports = listOf(
+                    android.net.NetworkCapabilities.TRANSPORT_WIFI to "wifi",
+                    android.net.NetworkCapabilities.TRANSPORT_CELLULAR to "cellular",
+                    android.net.NetworkCapabilities.TRANSPORT_ETHERNET to "ethernet",
+                    android.net.NetworkCapabilities.TRANSPORT_VPN to "vpn",
+                    android.net.NetworkCapabilities.TRANSPORT_BLUETOOTH to "bluetooth"
+                ).filter { capabilities.hasTransport(it.first) }.joinToString("+") { it.second }.ifEmpty { "other" }
+                val observed = "transport=$transports validated=${capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED)} " +
+                    "internet=${capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)} " +
+                    "notRestricted=${capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)} " +
+                    "notMetered=${capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_NOT_METERED)} " +
+                    "notSuspended=${capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_NOT_SUSPENDED)}"
+                if (networkObservations.shouldRecord(network.toString(), observed)) {
+                    Diagnostics.record(this@GlucoseSyncService, "NETWORK_CAPABILITIES", "network=$network $observed", activeCycleId)
+                }
             }
 
             override fun onAvailable(network: android.net.Network) {
                 networkBlocked = null
                 blockedNetwork = network
-                Diagnostics.record(this@GlucoseSyncService, "NETWORK_AVAILABLE", "network=$network; ${Diagnostics.snapshot(this@GlucoseSyncService)}", activeCycleId)
+                Diagnostics.record(this@GlucoseSyncService, "NETWORK_AVAILABLE", "network=$network", activeCycleId)
                 serviceScope.launch {
                     val settings = settingsStore.getSettings()
                     if (settings.isSyncEnabled) {
@@ -289,7 +310,7 @@ class GlucoseSyncService : Service() {
                         val intervalMs = settings.pollIntervalMinutes * 60_000L
                         if (System.currentTimeMillis() - lastSync >= intervalMs || isCurrentlyDisconnected) {
                             Log.d(TAG, "Połączenie sieciowe przywrócone — wznawiam synchronizację")
-                            doSyncAndScheduleNext()
+                            doSyncAndScheduleNext("network_available")
                         }
                     }
                 }
@@ -413,17 +434,17 @@ class GlucoseSyncService : Service() {
             }
             ACTION_FORCE_SYNC -> {
                 startForegroundWithNotification()
-                resumeIfEnabled()
+                resumeIfEnabled("user")
                 return START_STICKY
             }
             ACTION_ALARM_WAKEUP -> {
                 startForegroundWithNotification()
-                resumeIfEnabled()
+                resumeIfEnabled(intent.getStringExtra("sync_trigger") ?: "alarm")
                 return START_STICKY
             }
             else -> {
                 startForegroundWithNotification()
-                resumeIfEnabled()
+                resumeIfEnabled("sticky_restart")
             }
         }
         return START_STICKY
@@ -431,7 +452,7 @@ class GlucoseSyncService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    private fun resumeIfEnabled() {
+    private fun resumeIfEnabled(trigger: String) {
         serviceScope.launch {
             if (stopping || !settingsStore.getSettings().isSyncEnabled) {
                 stopSync()
@@ -439,7 +460,7 @@ class GlucoseSyncService : Service() {
                 return@launch
             }
             GlucoseSyncState.isSyncing.value = true
-            doSyncAndScheduleNext()
+            doSyncAndScheduleNext(trigger)
         }
     }
 
@@ -483,10 +504,10 @@ class GlucoseSyncService : Service() {
         }
     }
 
-    @Synchronized private fun doSyncAndScheduleNext() {
+    @Synchronized private fun doSyncAndScheduleNext(trigger: String = "unknown") {
         if (stopping || destroyed || !GlucoseSyncState.isSyncing.value) return
         if (syncJob?.isActive == true) {
-            Diagnostics.record(this, "SYNC_SKIPPED_ACTIVE", "cycle still active", activeCycleId)
+            Diagnostics.record(this, "SYNC_SKIPPED_ACTIVE", "trigger=$trigger cycle still active", activeCycleId)
             return
         }
         pollTimerJob?.cancel()
@@ -498,13 +519,15 @@ class GlucoseSyncService : Service() {
             val wakeLock = pm.newWakeLock(android.os.PowerManager.PARTIAL_WAKE_LOCK, "MohgWatch::SyncWakeLock")
             var nextPoll = started + 5 * 60_000L
             var outcome = "cancelled"
-            Diagnostics.record(this@GlucoseSyncService, "SYNC_START", Diagnostics.snapshot(this@GlucoseSyncService), cycle)
+            Diagnostics.record(this@GlucoseSyncService, "SYNC_START", "trigger=$trigger uid=${android.os.Process.myUid()} " +
+                "fgsType=${if (Build.VERSION.SDK_INT >= 29) foregroundServiceType else 0} ${Diagnostics.snapshot(this@GlucoseSyncService)}", cycle)
             try {
                 wakeLock.acquire(3 * 60_000L)
                 Diagnostics.record(this@GlucoseSyncService, "WAKELOCK_ACQUIRED", "type=sync timeoutMs=180000 held=${wakeLock.isHeld}", cycle)
                 withTimeout(150_000L) {
                     val settings = settingsStore.getSettings()
                     if (!settings.isSyncEnabled || stopping) { outcome = "disabled"; return@withTimeout }
+                    CompanionIntegrationManager.get(this@GlucoseSyncService).refresh()
                     val interval = settings.pollIntervalMinutes.coerceIn(1, 5) * 60_000L
                     nextPoll = started + interval
                     SyncScheduler.schedule(this@GlucoseSyncService, interval)
@@ -558,12 +581,13 @@ class GlucoseSyncService : Service() {
                 Diagnostics.record(this@GlucoseSyncService, "WAKELOCK_RELEASED", "type=sync wasHeld=$held held=${wakeLock.isHeld}", cycle)
                 Diagnostics.record(this@GlucoseSyncService, "SYNC_END", "result=$outcome durationMs=${SystemClock.elapsedRealtime() - started} lastSuccess=${GlucoseSyncState.lastSyncTimestamp.value} measurementAgeMs=${GlucoseSyncState.latestReading.value?.let { System.currentTimeMillis() - it.timestamp } ?: "nieznane"}", cycle)
                 activeCycleId = null
+                activeApiStage = "latest"
                 if (!destroyed && !stopping && GlucoseSyncState.isSyncing.value) {
                     Diagnostics.record(this@GlucoseSyncService, "TIMER_PLANNED", "dueElapsed=$nextPoll", cycle)
                     pollTimerJob = serviceScope.launch {
                         delay((nextPoll - SystemClock.elapsedRealtime()).coerceAtLeast(1_000L))
                         Diagnostics.record(this@GlucoseSyncService, "TIMER_DELIVERED", "dueElapsed=$nextPoll lateMs=${SystemClock.elapsedRealtime() - nextPoll}")
-                        doSyncAndScheduleNext()
+                        doSyncAndScheduleNext("timer")
                     }
                 }
             }
@@ -588,13 +612,14 @@ class GlucoseSyncService : Service() {
         val settings = settingsStore.getSettings()
         Diagnostics.record(this, "SYNC_STAGE", "latest_reading", activeCycleId)
         val result = fetchWithSessionRecovery(
-            fetch = { apiClient.getLatestReading() },
+            fetch = { activeApiStage = "latest"; apiClient.getLatestReading() },
             recoverSession = {
                 Diagnostics.record(this, "SYNC_STAGE", "automatic_session_recovery", activeCycleId)
                 val creds = credentialStore.getCredentials()
                 if (creds?.email.isNullOrBlank() || creds?.password.isNullOrBlank()) {
                     LibreLinkUpClient.ApiResult.LoginRequired
                 } else {
+                    activeApiStage = "login"
                     val login = apiClient.login(creds!!.email!!, creds.password!!, creds.region)
                     if (login is LibreLinkUpClient.ApiResult.Success) {
                         val session = login.data
@@ -622,6 +647,7 @@ class GlucoseSyncService : Service() {
                     now - previousSync > settings.pollIntervalMinutes.coerceIn(1, 5) * 2 * 60_000L
                 if (needsGraph) {
                     Diagnostics.record(this, "SYNC_STAGE", "history_download", activeCycleId)
+                    activeApiStage = "history"
                     when (val graph = withTimeoutOrNull(30_000L) { apiClient.getGraphData() }) {
                         is LibreLinkUpClient.ApiResult.Success -> {
                             GlucoseSyncState.history.value = GlucoseHistoryPolicy.merge(
@@ -629,8 +655,12 @@ class GlucoseSyncService : Service() {
                             lastGraphFetch = System.currentTimeMillis()
                             activeAccountId?.let { historyStore.save(it, GlucoseSyncState.history.value) }
                         }
-                        else -> Log.w(TAG, "Historia niedostępna; bieżący odczyt i alarm zostały już obsłużone")
+                        else -> {
+                            Diagnostics.record(this, "HISTORY_ERROR", "stage=history outcome=${if (graph == null) "timeout" else "unavailable"}", activeCycleId)
+                            Log.w(TAG, "Historia niedostępna; bieżący odczyt i alarm zostały już obsłużone")
+                        }
                     }
+                    activeApiStage = "latest"
                 }
                 dataLayerSender.sendGlucoseHistory(GlucoseSyncState.history.value)
                 dataLayerSender.sendSettings(settings)
@@ -660,12 +690,18 @@ class GlucoseSyncService : Service() {
         val shouldNotify = !isCurrentlyDisconnected
         isCurrentlyDisconnected = true
         handleDisconnect(reason)
-        GlucoseSyncState.syncStatusText.value = message
+        val notificationText = when (reason) {
+            DisconnectReason.NETWORK_ERROR, DisconnectReason.ANDROID_NETWORK_BLOCKED ->
+                "Brak połączenia z internetem. Aplikacja ponawia pobieranie."
+            DisconnectReason.AUTH_ERROR -> "Nie można odnowić połączenia z kontem. Sprawdź konto w ustawieniach."
+            else -> "Brak nowych danych glukozy. Aplikacja ponawia pobieranie."
+        }
+        GlucoseSyncState.syncStatusText.value = notificationText
         GlucoseSyncState.lastError.value = message
-        updateNotification(message, null)
+        updateNotification(notificationText, null)
         val settings = settingsStore.getSettings()
         if (shouldNotify && settings.notifyDisconnect) {
-            sendAlertNotification("Brak monitorowania glukozy", message,
+            sendAlertNotification("Brak nowych danych glukozy", notificationText,
                 settings.disconnectSoundUri, ALERT_DISCONNECT_CHANNEL_ID)
         }
     }
@@ -688,7 +724,10 @@ class GlucoseSyncService : Service() {
                 GlucoseSyncState.lastError.value = null
                 isCurrentlyDisconnected = false
                 cancelAlert(ALERT_DISCONNECT_CHANNEL_ID)
-                if (persistReading) activeAccountId?.let { historyStore.save(it, GlucoseSyncState.history.value) }
+                if (persistReading) activeAccountId?.let {
+                    historyStore.save(it, GlucoseSyncState.history.value)
+                    Diagnostics.record(this, "MEASUREMENT_SAVED", "duplicate=true timestamp=${rawReading.timestamp}", activeCycleId)
+                }
                 handleConnect()
             }
             Diagnostics.record(this, "MEASUREMENT_IGNORED", "duplicateOrOlder=true timestamp=${rawReading.timestamp} ageMs=${now - rawReading.timestamp}", activeCycleId)
@@ -704,7 +743,10 @@ class GlucoseSyncService : Service() {
         val fresh = reading.isFreshAt(now, settings.staleAfterMillis)
         GlucoseSyncState.latestReading.value = reading
         if (persistReading) {
-            activeAccountId?.let { historyStore.save(it, GlucoseSyncState.history.value, recordSuccessfulSync = fresh) }
+            activeAccountId?.let {
+                historyStore.save(it, GlucoseSyncState.history.value, recordSuccessfulSync = fresh)
+                Diagnostics.record(this, "MEASUREMENT_SAVED", "duplicate=false timestamp=${reading.timestamp} fresh=$fresh", activeCycleId)
+            }
         }
         GlucoseSyncState.syncStatusText.value = statusMsg ?: trStr(lang, "Pobrano z LibreLinkUp", "Fetched from LibreLinkUp")
         if (!fromCache && fresh) {
@@ -923,6 +965,7 @@ class GlucoseSyncService : Service() {
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSilent(true)
             .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Pomiń (Wycisz)", mutePendingIntent)
             .setDeleteIntent(mutePendingIntent)
             .build()
@@ -942,17 +985,18 @@ class GlucoseSyncService : Service() {
                     val initial = settingsStore.getSettings()
                     if (forceMode == null) delay(initial.notificationSoundDelaySeconds.coerceIn(0, 30) * 1000L)
                     val settings = settingsStore.getSettings()
-                    if (forceMode == null && channelId != ALERT_DISCONNECT_CHANNEL_ID) {
-                        val reading = GlucoseSyncState.latestReading.value
-                        val now = System.currentTimeMillis()
-                        val expected = if (channelId == ALERT_LOW_CHANNEL_ID) GlucoseRange.LOW else GlucoseRange.HIGH
-                        if (PhoneGlucoseAlertPolicy.hazard(reading, now, settings.lowThreshold, settings.highThreshold, settings.staleAfterMillis) != expected) {
-                            return@withLock
+                    if (forceMode == null) {
+                        val expected = when (channelId) {
+                            ALERT_LOW_CHANNEL_ID -> GlucoseRange.LOW
+                            ALERT_HIGH_CHANNEL_ID -> GlucoseRange.HIGH
+                            else -> null
                         }
                         val connected = withTimeoutOrNull(2_000L) { dataLayerSender.isWatchConnected() } ?: false
-                        if (PhoneGlucoseAlertPolicy.shouldMute(settings, connected, WatchState.isWornOnWrist.value,
+                        val now = System.currentTimeMillis()
+                        val reading = GlucoseSyncState.latestReading.value
+                        if (!PhoneGlucoseAlertPolicy.shouldPlaySound(settings, reading, expected, connected, WatchState.isWornOnWrist.value,
                                 WatchState.lastUpdateTimestamp.value, now)) {
-                            Log.d(TAG, "Aktualny status zegarka pozwala wyciszyć alarm glukozy na telefonie")
+                            Diagnostics.record(this@GlucoseSyncService, "PHONE_ALERT_SOUND_SKIPPED", "channel=$channelId")
                             return@withLock
                         }
                     }

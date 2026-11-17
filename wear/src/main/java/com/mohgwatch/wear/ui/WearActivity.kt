@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material3.*
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -53,6 +56,24 @@ fun WearAppScreen(repository: GlucoseRepository) {
     com.mohgwatch.wear.ui.theme.WearMohgWatchTheme {
         val readingState by remember(repository) { repository.observeLatest() }.collectAsStateWithLifecycle(initialValue = null)
         val lifecycleOwner = LocalLifecycleOwner.current
+        fun notificationsEnabled(): Boolean {
+            val manager = androidx.core.app.NotificationManagerCompat.from(context)
+            return manager.areNotificationsEnabled() &&
+                manager.getNotificationChannel(com.mohgwatch.wear.service.GLUCOSE_ALERT_CHANNEL_ID)?.importance !=
+                    android.app.NotificationManager.IMPORTANCE_NONE
+        }
+        var notificationsAllowed by remember(context) {
+            mutableStateOf(notificationsEnabled())
+        }
+        DisposableEffect(lifecycleOwner, context) {
+            val observer = LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    notificationsAllowed = notificationsEnabled()
+                }
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+            onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+        }
         val now by produceState(System.currentTimeMillis(), readingState?.timestamp, lifecycleOwner, settings.staleAfterMillis) {
             lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 while (true) {
@@ -71,6 +92,7 @@ fun WearAppScreen(repository: GlucoseRepository) {
             contentAlignment = Alignment.Center
         ) {
         Column(
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -158,6 +180,30 @@ fun WearAppScreen(repository: GlucoseRepository) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
+            if (!notificationsAllowed) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Powiadomienia glukozy są wyłączone",
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                OutlinedButton(
+                    onClick = {
+                        try {
+                            context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                                .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName))
+                        } catch (_: android.content.ActivityNotFoundException) {
+                            context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                .setData(android.net.Uri.parse("package:${context.packageName}")))
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Ustawienia powiadomień", fontSize = 11.sp, textAlign = TextAlign.Center)
+                }
+            }
         }
     }
 }

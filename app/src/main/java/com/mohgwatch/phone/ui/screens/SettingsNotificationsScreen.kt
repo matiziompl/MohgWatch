@@ -269,7 +269,7 @@ fun SettingsNotificationsScreen(
                 NotificationSettingsSection.CONNECTION -> {
                     NotificationToggle(
                         title = "Rozłączenie / Błędy sieci",
-                        description = "Alerty o braku nowych odczytów (problem z siecią, wygaśnięcie sesji LibreLinkUp).",
+                        description = "Informacja o braku nowych odczytów. Dźwięk respektuje ustawienia „Nadgarstek i wyciszanie”, tak jak alarmy glukozy. Szczegóły błędów pozostają w diagnostyce.",
                         checked = currentSettings.notifyDisconnect,
                         onCheckedChange = { save(currentSettings.copy(notifyDisconnect = it)) }
                     )

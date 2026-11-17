@@ -35,6 +35,7 @@ object WatchStaleDataMonitor {
 
     suspend fun refresh(context: Context) = mutex.withLock {
         val app = context.applicationContext
+        WatchGlucoseNotifications.refresh(app)
         val timestamp = GlucoseRepository(app).getLatest()?.timestamp
         val settings = WearSettingsStore(app).getSettings()
         val timeoutMillis = settings.staleAfterMillis

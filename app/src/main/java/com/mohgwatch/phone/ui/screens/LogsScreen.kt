@@ -9,6 +9,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.core.content.FileProvider
@@ -31,11 +33,20 @@ import com.mohgwatch.core.model.ThemeMode
 import com.mohgwatch.phone.data.LogsStore
 import com.mohgwatch.phone.data.SettingsStore
 import com.mohgwatch.phone.data.Diagnostics
+import com.mohgwatch.phone.data.DiagnosticCategory
+import com.mohgwatch.phone.data.DiagnosticFilter
+import com.mohgwatch.phone.util.tr
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.ResolverStyle
 import java.util.Date
 import java.util.Locale
 
@@ -49,18 +60,55 @@ fun LogsScreen(onBack: () -> Unit = {}) {
     val settings by settingsStore.settingsFlow.collectAsState(initial = null)
     val scope = rememberCoroutineScope()
     var reportHours by rememberSaveable { mutableIntStateOf(24) }
+    var reportCategory by rememberSaveable { mutableStateOf(DiagnosticCategory.ALL) }
+    var reportErrorsOnly by rememberSaveable { mutableStateOf(false) }
+    var reportCycleId by rememberSaveable { mutableStateOf("") }
+    var reportRunId by rememberSaveable { mutableStateOf("") }
+    var reportFrom by rememberSaveable { mutableStateOf("") }
+    var reportTo by rememberSaveable { mutableStateOf("") }
+    var advancedFiltersExpanded by rememberSaveable { mutableStateOf(false) }
+    var categoryMenuExpanded by remember { mutableStateOf(false) }
     var preparingReport by remember { mutableStateOf(false) }
     var reportStatus by remember { mutableStateOf<String?>(null) }
+    val categoryLabels = mapOf(
+        DiagnosticCategory.ALL to tr("Wszystkie", "All"),
+        DiagnosticCategory.SYNC to tr("Synchronizacja", "Synchronization"),
+        DiagnosticCategory.NETWORK to tr("Sieć", "Network"),
+        DiagnosticCategory.API to "API",
+        DiagnosticCategory.CDM to "CDM"
+    )
+    val invalidRange = tr("Nieprawidłowy zakres dat. Użyj ISO z przesunięciem strefy lub yyyy-MM-dd HH:mm. Początek nie może być późniejszy niż koniec.",
+        "Invalid date range. Use ISO with a time zone offset or yyyy-MM-dd HH:mm. The start must not be later than the end.")
+    val preparingExport = tr("Przygotowuję pełne logi…", "Preparing full logs…")
+    val preparingSummary = tr("Przygotowuję raport…", "Preparing report…")
+    val exportTitle = tr("Eksportuj pełne logi", "Export full logs")
+    val exportReady = tr("Przygotowano logi dla wybranego zakresu i filtrów. Faktyczny zakres i ewentualne braki opisano w pliku.",
+        "Logs are ready for the selected range and filters. The file describes actual coverage and any gaps.")
+    val reportReady = tr("Skopiowano raport dla wybranego zakresu i filtrów. Wklej go do rozmowy.",
+        "The report for the selected range and filters was copied. Paste it into the conversation.")
+    val reportFailed = tr("Nie udało się przygotować lub udostępnić raportu. Spróbuj ponownie; możesz też wybrać krótszy okres.",
+        "The report could not be prepared or shared. Try again or select a shorter period.")
 
     fun prepareReport(exportFull: Boolean) {
         if (preparingReport) return
+        val range = parseDiagnosticReportRange(reportFrom, reportTo, reportHours, System.currentTimeMillis())
+        if (range == null) {
+            reportStatus = invalidRange
+            return
+        }
+        val filter = DiagnosticFilter(
+            category = reportCategory,
+            cycleId = reportCycleId.trim().takeIf(String::isNotEmpty),
+            runId = reportRunId.trim().takeIf(String::isNotEmpty),
+            errorsOnly = reportErrorsOnly
+        )
+        val (fromMillis, toMillis) = range
         preparingReport = true
-        reportStatus = if (exportFull) "Przygotowuję pełne logi…" else "Przygotowuję raport…"
-        val hours = reportHours
+        reportStatus = if (exportFull) preparingExport else preparingSummary
         scope.launch {
             try {
                 if (exportFull) {
-                    val file = withContext(Dispatchers.IO) { Diagnostics.export(context, hours) }
+                    val file = withContext(Dispatchers.IO) { Diagnostics.export(context, fromMillis, toMillis, filter) }
                     val uri = FileProvider.getUriForFile(context, "${context.packageName}.diagnostics.files", file)
                     val share = Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
@@ -68,18 +116,18 @@ fun LogsScreen(onBack: () -> Unit = {}) {
                         clipData = ClipData.newRawUri("Logi MohgWatch", uri)
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     }
-                    context.startActivity(Intent.createChooser(share, "Eksportuj pełne logi"))
-                    reportStatus = "Przygotowano logi z ostatnich $hours godz. Faktyczny zakres i ewentualne braki opisano w pliku."
+                    context.startActivity(Intent.createChooser(share, exportTitle))
+                    reportStatus = exportReady
                 } else {
-                    val report = withContext(Dispatchers.IO) { Diagnostics.report(context, hours) }
+                    val report = withContext(Dispatchers.IO) { Diagnostics.report(context, fromMillis, toMillis, filter) }
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     clipboard.setPrimaryClip(ClipData.newPlainText("Raport diagnostyczny MohgWatch", report))
-                    reportStatus = "Skopiowano raport z ostatnich $hours godz. Wklej go do rozmowy."
+                    reportStatus = reportReady
                 }
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (_: Exception) {
-                reportStatus = "Nie udało się przygotować lub udostępnić raportu. Spróbuj ponownie; możesz też wybrać krótszy okres."
+                reportStatus = reportFailed
             } finally {
                 preparingReport = false
             }
@@ -123,37 +171,98 @@ fun LogsScreen(onBack: () -> Unit = {}) {
             colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
         )
         
-        LazyColumn(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+        LazyColumn(modifier = Modifier.fillMaxSize().imePadding().padding(horizontal = 16.dp)) {
             item {
-                Text("Raport diagnostyczny", style = MaterialTheme.typography.titleMedium)
+                Text(tr("Raport diagnostyczny", "Diagnostic report"), style = MaterialTheme.typography.titleMedium)
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "Krótki raport zawiera konfigurację, ostatnią awarię i oś zdarzeń. Pełne logi zachowują szczegóły. Wybierz okres obejmujący nocną przerwę.",
+                    tr("Krótki raport zawiera konfigurację, ostatnią awarię i oś zdarzeń. Pełne logi zachowują szczegóły. Wybierz okres obejmujący nocną przerwę.",
+                        "The short report includes configuration, the latest failure and an event timeline. Full logs retain details. Choose a period covering the overnight gap."),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     listOf(24, 72, 168).forEach { hours ->
                         FilterChip(
-                            selected = reportHours == hours,
-                            onClick = { reportHours = hours; reportStatus = null },
+                            selected = reportHours == hours && reportFrom.isBlank() && reportTo.isBlank(),
+                            onClick = {
+                                reportHours = hours
+                                reportFrom = ""
+                                reportTo = ""
+                                reportStatus = null
+                            },
                             enabled = !preparingReport,
-                            label = { Text(if (hours == 168) "7 dni" else "$hours godz.") }
+                            label = { Text(if (hours == 168) tr("7 dni", "7 days") else tr("$hours godz.", "$hours hours")) }
                         )
+                    }
+                }
+                Box {
+                    OutlinedButton(onClick = { categoryMenuExpanded = true }, enabled = !preparingReport,
+                        modifier = Modifier.fillMaxWidth()) {
+                        val label = categoryLabels.getValue(reportCategory)
+                        Text(tr("Kategoria: $label", "Category: $label"))
+                    }
+                    DropdownMenu(expanded = categoryMenuExpanded, onDismissRequest = { categoryMenuExpanded = false }) {
+                        DiagnosticCategory.entries.forEach { category ->
+                            DropdownMenuItem(text = { Text(categoryLabels.getValue(category)) }, onClick = {
+                                reportCategory = category
+                                categoryMenuExpanded = false
+                                reportStatus = null
+                            })
+                        }
+                    }
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(
+                        value = reportErrorsOnly, enabled = !preparingReport, role = Role.Switch,
+                        onValueChange = { reportErrorsOnly = it; reportStatus = null }
+                    ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(tr("Tylko błędy", "Errors only"), modifier = Modifier.weight(1f))
+                    Switch(checked = reportErrorsOnly, onCheckedChange = null, enabled = !preparingReport)
+                }
+                TextButton(onClick = { advancedFiltersExpanded = !advancedFiltersExpanded },
+                    enabled = !preparingReport, modifier = Modifier.fillMaxWidth()) {
+                    Text(if (advancedFiltersExpanded) tr("Ukryj dodatkowe filtry", "Hide additional filters")
+                        else tr("Dodatkowe filtry i zakres dat", "Additional filters and date range"))
+                }
+                if (!advancedFiltersExpanded && listOf(reportCycleId, reportRunId, reportFrom, reportTo).any(String::isNotBlank)) {
+                    Text(tr("Dodatkowe filtry są aktywne.", "Additional filters are active."),
+                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                if (advancedFiltersExpanded) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(value = reportCycleId, onValueChange = { reportCycleId = it; reportStatus = null },
+                            label = { Text(tr("Identyfikator cyklu (opcjonalnie)", "Cycle ID (optional)")) },
+                            enabled = !preparingReport, singleLine = true, modifier = Modifier.fillMaxWidth())
+                        OutlinedTextField(value = reportRunId, onValueChange = { reportRunId = it; reportStatus = null },
+                            label = { Text(tr("Identyfikator pomiaru (opcjonalnie)", "Run ID (optional)")) },
+                            enabled = !preparingReport, singleLine = true, modifier = Modifier.fillMaxWidth())
+                        Text(tr("Daty: ISO z przesunięciem strefy (np. 2026-10-25T08:00+01:00) lub yyyy-MM-dd HH:mm w bieżącej strefie. Puste pola korzystają z wybranego okresu do chwili naciśnięcia przycisku.",
+                            "Dates: ISO with a time zone offset (e.g. 2026-10-25T08:00+01:00) or yyyy-MM-dd HH:mm in the current zone. Blank fields use the selected period ending when you tap the button."),
+                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        OutlinedTextField(value = reportFrom, onValueChange = { reportFrom = it; reportStatus = null },
+                            label = { Text(tr("Od (opcjonalnie)", "From (optional)")) },
+                            enabled = !preparingReport, singleLine = true, modifier = Modifier.fillMaxWidth())
+                        OutlinedTextField(value = reportTo, onValueChange = { reportTo = it; reportStatus = null },
+                            label = { Text(tr("Do (opcjonalnie)", "To (optional)")) },
+                            enabled = !preparingReport, singleLine = true, modifier = Modifier.fillMaxWidth())
                     }
                 }
                 Button(
                     onClick = { prepareReport(exportFull = false) },
                     enabled = !preparingReport,
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Kopiuj raport diagnostyczny") }
+                ) { Text(tr("Kopiuj raport diagnostyczny", "Copy diagnostic report")) }
                 OutlinedButton(
                     onClick = { prepareReport(exportFull = true) },
                     enabled = !preparingReport,
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Eksportuj pełne logi") }
+                ) { Text(exportTitle) }
                 Text(
-                    "Logi przetrwają restart procesu. Retencja: do 7 dni i 8 MiB. Raport podaje faktyczny zakres i ewentualne obcięcie; luka w logach sama nie dowodzi zabicia procesu.",
+                    tr("Logi przetrwają restart procesu. Retencja: do 7 dni i 8 MiB. Raport podaje faktyczny zakres i ewentualne obcięcie; luka w logach sama nie dowodzi zabicia procesu.",
+                        "Logs survive process restarts. Retention: up to 7 days and 8 MiB. The report states actual coverage and any truncation; a log gap alone does not prove the process was killed."),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -209,6 +318,29 @@ fun LogsScreen(onBack: () -> Unit = {}) {
             }
         }
     }
+}
+
+internal fun parseDiagnosticReportRange(
+    fromText: String,
+    toText: String,
+    hours: Int,
+    nowMillis: Long,
+    zoneId: ZoneId = ZoneId.systemDefault()
+): Pair<Long, Long>? {
+    fun parse(text: String): Long? {
+        val value = text.trim()
+        val instant = runCatching { Instant.parse(value) }.getOrNull()
+            ?: runCatching { OffsetDateTime.parse(value).toInstant() }.getOrNull()
+            ?: runCatching {
+                LocalDateTime.parse(value, DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm", Locale.ROOT)
+                    .withResolverStyle(ResolverStyle.STRICT)).atZone(zoneId).toInstant()
+            }.getOrNull()
+        return instant?.let { runCatching { it.toEpochMilli() }.getOrNull() }
+    }
+    val from = if (fromText.isBlank()) nowMillis - hours.coerceIn(1, 168) * 3_600_000L
+        else parse(fromText) ?: return null
+    val to = if (toText.isBlank()) nowMillis else parse(toText) ?: return null
+    return if (from <= to) Pair(from, to) else null
 }
 
 @Composable

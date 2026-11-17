@@ -19,6 +19,7 @@ sealed class Screen(val route: String, val tab: NavigationTab? = NavigationTab.S
     data object SettingsDiabetes : Screen("settings/diabetes")
     data object SettingsDoses : Screen("settings/doses")
     data object SettingsSync : Screen("settings/sync")
+    data object SettingsCompanion : Screen("settings/sync/companion")
     data object SettingsGeneral : Screen("settings/general")
     data object SettingsTheme : Screen("settings/theme")
     data object SettingsWidgets : Screen("settings/widgets")
@@ -32,7 +33,7 @@ sealed class Screen(val route: String, val tab: NavigationTab? = NavigationTab.S
     companion object {
         val notificationPages: List<Screen> get() = listOf(NotificationGlucose, NotificationHaptics,
             NotificationSounds, NotificationNight, NotificationConnection, NotificationWrist)
-        val settingsPages: List<Screen> get() = listOf(SettingsDiabetes, SettingsDoses, SettingsSync,
+        val settingsPages: List<Screen> get() = listOf(SettingsDiabetes, SettingsDoses, SettingsSync, SettingsCompanion,
             SettingsGeneral, SettingsTheme, SettingsWidgets, SettingsAccount,
             Logs, SettingsNotificationTests)
         val testPages: List<Screen> get() = listOf(SettingsTestSounds, SettingsTestWatch, SettingsTestSimulation)

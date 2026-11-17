@@ -24,7 +24,10 @@ internal data class DiagnosticWindow(
     val discardedEvents: Long = 0,
     val unreadableLines: Int = 0,
     val retainedFromMillis: Long? = null,
-    val retainedToMillis: Long? = null
+    val retainedToMillis: Long? = null,
+    val queueFlushed: Boolean = true,
+    val droppedEvents: Long = 0,
+    val writeFailures: Long = 0
 )
 
 internal class DiagnosticJournal(
@@ -56,14 +59,15 @@ internal class DiagnosticJournal(
     }
 
     @Synchronized
-    fun read(fromMillis: Long, toMillis: Long): DiagnosticWindow {
+    fun read(fromMillis: Long, toMillis: Long, filter: DiagnosticFilter = DiagnosticFilter()): DiagnosticWindow {
         if (!eventsFile.exists()) return DiagnosticWindow(emptyList())
         var unreadable = 0
         val retained = eventsFile.readLines(Charsets.UTF_8).mapNotNull {
             decode(it).also { event -> if (event == null) unreadable++ }
         }
         return DiagnosticWindow(
-            events = retained.filter { it.wallMillis in fromMillis..toMillis },
+            events = retained.filter { it.wallMillis in fromMillis..toMillis && filter.matches(it) }
+                .sortedWith(compareBy<DiagnosticEvent> { it.wallMillis }.thenBy { it.elapsedMillis }),
             discardedEvents = discardedFile.takeIf { it.exists() }?.readText()?.trim()?.toLongOrNull() ?: 0,
             unreadableLines = unreadable,
             retainedFromMillis = retained.minOfOrNull { it.wallMillis },
@@ -71,11 +75,10 @@ internal class DiagnosticJournal(
         )
     }
 
-    fun report(fromMillis: Long, toMillis: Long, configuration: String, maxChars: Int = 12_000): String {
-        val window = read(fromMillis, toMillis)
-        val failure = window.events.lastOrNull {
-            it.name == "NETWORK_BLOCKED" || listOf("ERROR", "FAIL", "TIMEOUT").any { marker -> marker in it.name }
-        }
+    fun report(fromMillis: Long, toMillis: Long, configuration: String, maxChars: Int = 12_000,
+               filter: DiagnosticFilter = DiagnosticFilter()): String {
+        val window = read(fromMillis, toMillis, filter)
+        val failure = window.events.lastOrNull { it.isFailure() }
         val previousExit = window.events.lastOrNull { it.name == "PROCESS_PREVIOUS_EXIT" }
         val heading = buildString {
             appendLine("MohgWatch — raport diagnostyczny")
@@ -86,6 +89,18 @@ internal class DiagnosticJournal(
             appendLine(DiagnosticSanitizer.clean(configuration, 4_000))
             appendLine("Ostatnia awaria (obserwacja): ${failure?.let(::readable) ?: "brak zarejestrowanego błędu w wybranym okresie"}")
             appendLine("poprzednie zakończenie: ${previousExit?.details ?: "nieznane"}")
+            val starts = window.events.filter { it.name == "SYNC_START" }
+                .distinctBy { it.cycleId ?: "${it.sessionId}:${it.elapsedMillis}" }
+            appendLine("Podsumowanie całego wybranego okresu:")
+            appendLine("Cykle rozpoczęte: ${starts.size}")
+            appendLine("Zdarzenia błędów: ${window.events.count { it.isFailure() }}")
+            val gaps = starts.groupBy { it.sessionId }.values.flatMap { session ->
+                session.sortedBy { it.elapsedMillis }.zipWithNext { first, second ->
+                    Triple(second.elapsedMillis - first.elapsedMillis, first.wallMillis, second.wallMillis)
+                }
+            }.sortedByDescending { it.first }.take(5)
+            gaps.forEach { appendLine("Przerwa między cyklami w tej samej sesji procesu: ${it.first / 1000} s (${formatTime(it.second)} — ${formatTime(it.third)})") }
+            appendLine(DiagnosticSanitizer.clean("Filtr: ${filter.category}; cycle=${filter.cycleId ?: "wszystkie"}; run=${filter.runId ?: "wszystkie"}; tylkoBłędy=${filter.errorsOnly}", 400))
             appendLine("Luka w logach nie dowodzi zakończenia procesu ani jego przyczyny. Stan bieżący nie odtwarza stanu nocnego. Brak automatycznych hipotez.")
         }
         val timeline = mutableListOf<String>()
@@ -154,6 +169,8 @@ internal object DiagnosticSanitizer {
     private val bearer = Regex("(?i)\\bbearer\\s+[^\\s,;]+")
     private val email = Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
     private val urlCredentials = Regex("(?i)(https?://)[^/\\s@]+@")
+    private val mac = Regex("(?i)\\b(?:[0-9a-f]{2}:){5}[0-9a-f]{2}\\b")
+    private val url = Regex("(?i)https?://[^\\s<>\"']+")
 
     fun clean(value: String, maxChars: Int = 1_600): String {
         var safe = structuredBody.replace(value, "[pominięto treść strukturalną]")
@@ -163,6 +180,8 @@ internal object DiagnosticSanitizer {
         safe = bearer.replace(safe, "Bearer [ukryto]")
         safe = email.replace(safe, "[ukryto adres]")
         safe = urlCredentials.replace(safe) { "${it.groupValues[1]}[ukryto]@" }
+        safe = mac.replace(safe, "[ukryto MAC]")
+        safe = url.replace(safe, "[ukryto URL]")
         safe = safe.replace('\t', ' ').replace("\r", "").replace("\n", " ↵ ")
         return if (safe.length <= maxChars) safe else safe.take((maxChars - 24).coerceAtLeast(0)) + " [szczegóły obcięte]"
     }

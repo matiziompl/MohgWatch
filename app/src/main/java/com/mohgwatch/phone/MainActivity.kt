@@ -146,7 +146,15 @@ fun MohgWatchNavigation() {
             composable(Screen.SettingsTheme.route) { SettingsThemeScreen(AppearanceSettingsSection.PHONE, onBack) }
             composable(Screen.SettingsWidgets.route) { SettingsThemeScreen(AppearanceSettingsSection.WIDGETS, onBack) }
             composable(Screen.SettingsGeneral.route) { SettingsGeneralScreen(onBack, GeneralSettingsSection.BACKGROUND) }
-            composable(Screen.SettingsSync.route) { SettingsGeneralScreen(onBack, GeneralSettingsSection.SYNC) }
+            composable(Screen.SettingsSync.route) {
+                SettingsGeneralScreen(onBack, GeneralSettingsSection.SYNC,
+                    onNavigateToCompanion = { onNavigate(Screen.SettingsCompanion) })
+            }
+            composable(Screen.SettingsCompanion.route) {
+                SettingsCompanionScreen(onBack = onBack,
+                    onOpenLogs = { onNavigate(Screen.Logs) },
+                    onOpenBatterySettings = { onNavigate(Screen.SettingsGeneral) })
+            }
             composable(Screen.SettingsNotificationTests.route) { NotificationTestsMenuScreen(onBack, onNavigate) }
             listOf(
                 Screen.SettingsTestSounds to NotificationTestSection.SOUNDS,

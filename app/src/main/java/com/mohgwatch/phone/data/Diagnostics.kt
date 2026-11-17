@@ -35,6 +35,9 @@ object Diagnostics {
     @Volatile private var writer: Writer? = null
     private val droppedEvents = AtomicLong()
     private val writeFailures = AtomicLong()
+    @Volatile private var activeRunId: String? = null
+
+    internal fun setActiveRun(id: String?) { activeRunId = id }
 
     private sealed interface Command {
         data class Event(val event: DiagnosticEvent) : Command
@@ -93,7 +96,7 @@ object Diagnostics {
 
     private fun event(name: String, details: String, cycleId: String? = null) = DiagnosticEvent(
         System.currentTimeMillis(), SystemClock.elapsedRealtime(), sessionId, Process.myPid(), cycleId,
-        name, DiagnosticSanitizer.clean(details)
+        name, DiagnosticSanitizer.clean(activeRunId?.let { "runId=$it; $details" } ?: details)
     )
 
     fun record(context: Context, event: String, details: String = "", cycleId: String? = null) {
@@ -151,13 +154,24 @@ object Diagnostics {
     }
 
     suspend fun report(context: Context, hours: Int = 24): String = withContext(Dispatchers.IO) {
+        val now = System.currentTimeMillis()
+        report(context, now - hours.coerceIn(1, 168) * 3_600_000L, now)
+    }
+
+    internal suspend fun report(context: Context, fromMillis: Long, toMillis: Long,
+                                filter: DiagnosticFilter = DiagnosticFilter()): String = withContext(Dispatchers.IO) {
         val writer = writer(context)
         val flushed = writer.flush()
-        val now = System.currentTimeMillis()
-        writer.journal.report(now - hours.coerceIn(1, 168) * 3_600_000L, now, configuration(context, flushed))
+        writer.journal.report(fromMillis, toMillis, configuration(context, flushed), filter = filter)
     }
 
     suspend fun export(context: Context, hours: Int = 24): File = withContext(Dispatchers.IO) {
+        val now = System.currentTimeMillis()
+        export(context, now - hours.coerceIn(1, 168) * 3_600_000L, now)
+    }
+
+    internal suspend fun export(context: Context, fromMillis: Long, toMillis: Long,
+                                filter: DiagnosticFilter = DiagnosticFilter()): File = withContext(Dispatchers.IO) {
         val writer = writer(context)
         val flushed = writer.flush()
         val now = System.currentTimeMillis()
@@ -165,12 +179,20 @@ object Diagnostics {
         val stamp = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss-SSS").withZone(ZoneId.systemDefault()).format(Instant.ofEpochMilli(now))
         val file = File(directory, "mohgwatch-logi-$stamp.txt")
         file.writeText(writer.journal.report(
-            now - hours.coerceIn(1, 168) * 3_600_000L, now, configuration(context, flushed), Int.MAX_VALUE
+            fromMillis, toMillis, configuration(context, flushed), Int.MAX_VALUE, filter
         ), Charsets.UTF_8)
         directory.listFiles()?.filter { it.name.startsWith("mohgwatch-logi-") && it != file }
             ?.sortedByDescending { it.lastModified() }?.drop(2)?.forEach { it.delete() }
         file
     }
+
+    internal suspend fun window(context: Context, filter: DiagnosticFilter = DiagnosticFilter()): DiagnosticWindow =
+        withContext(Dispatchers.IO) {
+            val writer = writer(context)
+            val flushed = writer.flush()
+            writer.journal.read(0L, Long.MAX_VALUE, filter).copy(queueFlushed = flushed,
+                droppedEvents = droppedEvents.get(), writeFailures = writeFailures.get())
+        }
 
     private suspend fun configuration(context: Context, flushed: Boolean): String = buildString {
         appendLine(snapshot(context))

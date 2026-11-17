@@ -82,7 +82,7 @@ fun SettingsNotificationTestsScreen(section: NotificationTestSection, onBack: ()
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text("Podgląd wzorów alarmów progowych", style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "Każdy przycisk odtwarza wskazany wzór na zegarku, także gdy jego alarm jest wyłączony. Podgląd nie przerywa trwającego alarmu. Długie i mocne wzory używają maksymalnej siły silnika.",
+                        "Każdy przycisk odtwarza wskazany wzór na zegarku, także gdy jego alarm jest wyłączony. Podgląd testuje tylko wibracje i nie wyświetla karty z wynikiem — ją sprawdzisz w symulacji pomiarów. Podgląd nie przerywa trwającego alarmu. Długie i mocne wzory używają maksymalnej siły silnika.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

@@ -12,7 +12,7 @@ class ScreenTest {
     }
 
     @Test fun settingsDetailsAndCrossLinksSelectSettingsInsteadOfNotifications() {
-        for (route in listOf("settings/diabetes", "settings/doses", "settings/sync", "settings/general",
+        for (route in listOf("settings/diabetes", "settings/doses", "settings/sync", "settings/sync/companion", "settings/general",
             "settings/theme", "settings/widgets", "settings/account", "settings/logs",
             "settings/notification_tests", "settings/tests/sounds", "settings/tests/watch", "settings/tests/simulation")) {
             assertEquals(NavigationTab.SETTINGS, Screen.tabForRoute(route))

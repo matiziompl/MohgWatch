@@ -24,7 +24,11 @@ enum class GeneralSettingsSection { SYNC, BACKGROUND }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsGeneralScreen(onBack: () -> Unit, section: GeneralSettingsSection = GeneralSettingsSection.BACKGROUND) {
+fun SettingsGeneralScreen(
+    onBack: () -> Unit,
+    section: GeneralSettingsSection = GeneralSettingsSection.BACKGROUND,
+    onNavigateToCompanion: (() -> Unit)? = null
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val settingsStore = remember { SettingsStore(context) }
@@ -114,6 +118,12 @@ fun SettingsGeneralScreen(onBack: () -> Unit, section: GeneralSettingsSection = 
             }, modifier = Modifier.fillMaxWidth()) {
                 Text(tr("Wyłącz aplikację", "Turn off application"))
             }
+            if (onNavigateToCompanion != null) {
+                Text(tr("Zaawansowane", "Advanced"), style = MaterialTheme.typography.titleMedium)
+                OutlinedButton(onClick = onNavigateToCompanion, modifier = Modifier.fillMaxWidth()) {
+                    Text(tr("CDM TEST — obecność zegarka", "CDM TEST — watch presence"))
+                }
+            }
         } else {
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -131,10 +141,16 @@ fun SettingsGeneralScreen(onBack: () -> Unit, section: GeneralSettingsSection = 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        if (isIgnoring) tr("Optymalizacja baterii: wyłączona", "Battery optimization: disabled")
-                        else tr("Optymalizacja baterii: włączona — możliwe odcięcie internetu", "Battery optimization: enabled — internet may be blocked"),
+                        if (isIgnoring) tr("Wyjątek baterii: obecnie aktywny", "Battery exemption: currently active")
+                        else tr("Wyjątek baterii: nieaktywny — możliwe odcięcie internetu", "Battery exemption: inactive — internet may be blocked"),
                         color = if (isIgnoring) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        tr("Status dotyczy tej chwili i nie potwierdza trwałego wyjątku. Sprawdź go ponownie po rozłączeniu zegarka i powrocie na ten ekran.",
+                           "This is the current status and does not confirm a permanent exemption. Check it again after disconnecting the watch and returning to this screen."),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         if (settings.persistentWakeLockEnabled) tr("Stałe wybudzenie: włączone", "Persistent wake lock: enabled")
@@ -178,6 +194,19 @@ fun SettingsGeneralScreen(onBack: () -> Unit, section: GeneralSettingsSection = 
                         }
                     }
                     Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedButton(
+                        onClick = {
+                            try {
+                                context.startActivity(android.content.Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+                            } catch (_: android.content.ActivityNotFoundException) {
+                                context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    .setData(android.net.Uri.parse("package:${context.packageName}")))
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(tr("Otwórz optymalizację baterii", "Open battery optimization"))
+                    }
                     if (!exactAlarmsAllowed && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
                         OutlinedButton(
                             onClick = {

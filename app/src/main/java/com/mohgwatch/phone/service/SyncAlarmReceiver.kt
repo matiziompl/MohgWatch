@@ -22,7 +22,7 @@ class SyncAlarmReceiver : BroadcastReceiver() {
                         return@withTimeout
                     }
                     SyncScheduler.schedule(context, settings.pollIntervalMinutes.coerceIn(1, 5) * 60_000L, epoch)
-                    if (CredentialStore(context).hasCredentials()) SyncScheduler.resumeService(context, epoch)
+                    if (CredentialStore(context).hasCredentials()) SyncScheduler.resumeService(context, epoch, trigger = "alarm")
                 }
             } catch (error: TimeoutCancellationException) {
                 Diagnostics.record(context, "SYNC_ALARM_HANDLER_TIMEOUT", "limitMs=8000 epoch=$epoch; alarm awaryjny zaplanowany przed odczytem ustawień")

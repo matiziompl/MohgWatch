@@ -1,0 +1,3 @@
+<resources>
+    <bool name="cdm_presence_service_enabled">false</bool>
+</resources>
