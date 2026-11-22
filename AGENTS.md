@@ -4,13 +4,7 @@
 - Nie wykonuj commitów, publikacji ani instalacji na urządzeniach bez osobnego polecenia użytkownika. Nie używaj ADB do urządzeń.
 - Nie uruchamiaj przeglądarek ani Playwright. Plany prowadź w rozmowie, bez plików planów/specyfikacji.
 - Kompilacje Gradle uruchamiaj kolejno; przed zakończeniem wykonaj odpowiednie testy i build obu aplikacji debug.
-
-## Katalog pakowany przez użytkownika
-
-- Użytkownik przesyła projekt poleceniem `~/scripts/localsend.sh MohgWatch`, które pakuje `~/workspace/MohgWatch` — w środowisku agenta jest to `/workspace/MohgWatch`.
-- Przed zakończeniem pracy aktualne źródła, nowe pliki i uzgodnione usunięcia muszą znaleźć się w tym katalogu. Same niezacommitowane zmiany w osobnym worktree nie są przekazywane przez ten skrypt.
-- Przy przenoszeniu zmian zachowaj inne zmiany użytkownika, metadane Git i lokalną konfigurację. Nie zastępuj katalogu projektu ani jego `.git`; nie wymagaj commita do przekazania zmian.
-- Końcowe testy i build wykonuj w katalogu pakowanym przez użytkownika. Nie uruchamiaj LocalSend ani wysyłania bez osobnego polecenia.
+- Po każdym zestawie zmian podaj użytkownikowi gotowe komendy Git (`git add`, `git commit`, `git push`) do wykonania na Windows w `C:\Containers\ai-workspace\workspace\MohgWatch`. Nie wykonuj commitów ani pushy z kontenera.
 
 ## Wersjonowanie
 
