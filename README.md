@@ -1,39 +1,39 @@
 # MohgWatch 🩸⌚
 
-MohgWatch is a comprehensive, modern companion app and Wear OS watch face for FreeStyle Libre users via the LibreLinkUp API.
+MohgWatch to rozbudowana, nowoczesna aplikacja towarzysząca i tarcza Wear OS dla użytkowników FreeStyle Libre, korzystająca z API LibreLinkUp.
 
-## Features ✨
-- **Wear OS Integration**: AMOLED-friendly watch tile displaying recent glucose history, custom thresholds, and current glucose values. Local history is bounded to 24 hours.
-- **Customizable Phone UI**: Choose from multiple colorful themes including Monochrome, AMOLED Black, Teal, and more. The Wear application and injection-site tile use a fixed dark appearance.
-- **Live Settings**: Glucose thresholds, alert preferences and language sync from the phone to the watch. Appearance settings apply only to the phone.
-- **Glucose Alerts**: Alarm audio for glucose outside your thresholds, subject to Android notification and Do Not Disturb settings.
-- **Threshold Vibrations**: Low and high glucose alarms use the thresholds in Glucose and thresholds settings. Optional recovery vibration follows the return to range; arrow changes do not vibrate. Existing pattern choices are preserved.
-- **Diagnostics**: Settings → Logs and diagnostics provides a short copyable report and full logs shared through Android. Filter by time, event category, errors, cycle or night-test ID. Local diagnostics survive process restart with a 7-day / 8 MiB limit.
-- **Experimental CDM**: Android 16 can associate MohgWatch with an already paired watch and request device-presence observation. This is optional, uses no root or Shizuku, and does not guarantee five-minute synchronization.
-- **Freshness**: The measurement age limit defaults to 10 minutes and is configurable from 1 to 60 minutes under Notifications → Missing data and disconnections. Expired complications display `- -`; a local watch alarm warns when updates stop.
-- **Multilingual Support**: Supports English and Polish localizations.
+## Funkcje ✨
+- **Integracja z Wear OS**: kafelek zegarka przyjazny ekranom AMOLED pokazuje ostatnią historię glukozy, własne progi i bieżący poziom glukozy. Lokalna historia obejmuje maksymalnie 24 godziny.
+- **Konfigurowalny interfejs telefonu**: do wyboru kilka kolorowych motywów, m.in. Monochromatyczny, AMOLED Black i Teal. Aplikacja na Wear i kafelek miejsc wkłucia mają stały, ciemny wygląd.
+- **Ustawienia na żywo**: progi glukozy, preferencje alarmów i język synchronizują się z telefonu na zegarek. Ustawienia wyglądu dotyczą tylko telefonu.
+- **Alarmy glukozy**: dźwięk alarmu przy glukozie poza progami, zależnie od ustawień powiadomień Androida i trybu Nie przeszkadzać.
+- **Wibracje progowe**: alarmy niskiej i wysokiej glukozy korzystają z progów z ustawień **Glukoza i progi**. Opcjonalna wibracja powrotu sygnalizuje powrót do zakresu; zmiany strzałki trendu nie wywołują wibracji. Dotychczas wybrane wzorce zostają zachowane.
+- **Diagnostyka**: **Ustawienia → Logi i diagnostyka** udostępnia krótki raport do skopiowania oraz pełne logi udostępniane przez Androida. Można filtrować po czasie, kategorii zdarzeń, błędach oraz identyfikatorze cyklu lub testu nocnego. Lokalna diagnostyka przetrwa restart procesu, z limitem 7 dni / 8 MiB.
+- **Eksperymentalny CDM**: na Androidzie 16 MohgWatch może powiązać się z już sparowanym zegarkiem i poprosić o obserwację obecności urządzenia. Funkcja jest opcjonalna, nie wymaga roota ani Shizuku i nie gwarantuje synchronizacji co pięć minut.
+- **Świeżość danych**: limit wieku pomiaru domyślnie wynosi 10 minut i można go ustawić w zakresie od 1 do 60 minut w **Powiadomienia → Brak danych i rozłączenia**. Przeterminowane komplikacje pokazują `- -`; lokalny alarm na zegarku ostrzega, gdy aktualizacje ustają.
+- **Wielojęzyczność**: obsługa języka angielskiego i polskiego.
 
-## Navigation
-The bottom bar has Status, Notifications and Settings. Notifications opens six focused alarm pages; Settings contains glucose thresholds, doses, sync, background operation, phone/widget appearance, Profile, diagnostics and a three-page test menu. Profile exports and imports settings as versioned JSON without credentials. Import validates the file before confirmation and replacing local settings. The login screen displays the app logo. The persistent phone notification distinguishes “Na ręku”, “Zdjęty” and “Brak danych”; missing, invalid or stale wrist observations display “Brak danych”. Reading simulation lets you select glucose and trend, and hide or restore the Demo button. Sound and vibration pages link directly to their tests. App updates preserve existing saved settings.
+## Nawigacja
+Dolny pasek zawiera **Status**, **Powiadomienia** i **Ustawienia**. Powiadomienia otwierają sześć osobnych stron alarmów. Ustawienia obejmują progi glukozy, dawki, synchronizację, pracę w tle, wygląd telefonu i widżetów, Profil, diagnostykę oraz trzystronicowe menu testów. Profil eksportuje i importuje ustawienia jako wersjonowany plik JSON bez danych logowania. Import sprawdza plik przed potwierdzeniem i zastąpieniem lokalnych ustawień. Ekran logowania pokazuje logo aplikacji. Stałe powiadomienie na telefonie rozróżnia stany „Na ręku”, „Zdjęty” i „Brak danych”; brakujące, nieprawidłowe lub nieaktualne odczyty nadgarstka są pokazywane jako „Brak danych”. Symulacja pomiarów pozwala wybrać glukozę i trend oraz ukryć lub przywrócić przycisk Demo. Strony dźwięków i wibracji prowadzą bezpośrednio do odpowiednich testów. Aktualizacje aplikacji zachowują zapisane ustawienia.
 
-Retired alarm/trend settings, unused watch font/arrow options, the inactive preset selector and watch appearance synchronization are no longer used or exported. Existing version-1 settings exports remain importable; retired fields are ignored. System-selected WFF faces remain available.
+Wycofane ustawienia alarmów i trendu, nieużywane opcje czcionki i strzałek zegarka, nieaktywny wybór presetów oraz synchronizacja wyglądu zegarka nie są już używane ani eksportowane. Dotychczasowe eksporty ustawień w wersji 1 nadal można zaimportować; wycofane pola są pomijane. Tarcze WFF wybierane w systemie pozostają dostępne.
 
-## Architecture
-- **Tech Stack**: 100% Kotlin, Jetpack Compose, Wear Compose, Coroutines, Flow.
-- **Connectivity**: Wearable Data Layer API ensures instantaneous state sharing between phone and watch.
-- **API**: Connects directly to LibreLinkUp, handling token renewals and regional domains automatically.
+## Architektura
+- **Technologie**: w 100% Kotlin, Jetpack Compose, Wear Compose, Coroutines, Flow.
+- **Łączność**: Wearable Data Layer API zapewnia natychmiastowe współdzielenie stanu między telefonem a zegarkiem.
+- **API**: bezpośrednie połączenie z LibreLinkUp z automatycznym odnawianiem tokenów i obsługą domen regionalnych.
 
-## How to use
-1. Install the app on both your phone and Wear OS watch.
-2. Enter your LibreLinkUp credentials on the phone.
-3. Customize your thresholds, phone appearance, and alert preferences.
-4. Your data will automatically sync with the watch face tile.
+## Jak używać
+1. Zainstaluj aplikację na telefonie i na zegarku z Wear OS.
+2. Wpisz na telefonie dane logowania do LibreLinkUp.
+3. Dostosuj progi, wygląd telefonu i preferencje alarmów.
+4. Dane będą automatycznie synchronizowane z kafelkiem na zegarku.
 
-## Privacy & Security
-Your LibreLinkUp credentials are encrypted locally with an Android Keystore key and reused for automatic login. Credentials are excluded from backups; reinstalling or changing phones can require one login. We do not transmit your data to any third parties other than the configured LibreLinkUp service and your paired watch.
+## Prywatność i bezpieczeństwo
+Dane logowania do LibreLinkUp są szyfrowane lokalnie kluczem z Android Keystore i używane do automatycznego logowania. Nie trafiają do kopii zapasowych, więc po ponownej instalacji lub zmianie telefonu może być potrzebne jednorazowe zalogowanie. Twoje dane nie są przekazywane nikomu poza skonfigurowaną usługą LibreLinkUp i sparowanym zegarkiem.
 
-## Overnight monitoring
-Android battery optimization must be disabled for MohgWatch to access the network in Doze. Settings → Battery and background shows the battery exemption, exact-alarm and notification status. Persistent wake protection keeps the CPU available but does not grant network access. Manufacturer power restrictions can still require device-specific settings.
+## Monitorowanie w nocy
+Aby MohgWatch miał dostęp do sieci w trybie Doze, trzeba wyłączyć dla niego optymalizację baterii. **Ustawienia → Bateria i praca w tle** pokazują stan wyjątku baterii, dokładnych alarmów i powiadomień. Stałe wybudzenie utrzymuje dostępność procesora, ale nie daje dostępu do sieci. Ograniczenia energii wprowadzane przez producenta telefonu mogą nadal wymagać ustawień specyficznych dla urządzenia.
 
 ## Test CDM na Androidzie 16
 
@@ -70,10 +70,10 @@ Wyłączenie **Żądania obserwacji** zatrzymuje obserwację, ale zachowuje asoc
 
 Ograniczenie to wynika m.in. z mechanizmu wyjątków w [AOSP Android 16](https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-16.0.0_r1/services/companion/java/com/android/server/companion/CompanionExemptionProcessor.java). Nowe API obecności jest opisane w [dokumentacji CompanionDeviceService](https://developer.android.com/reference/android/companion/CompanionDeviceService). Lokalna konfiguracja CDM i sesje pomiarowe nie są dołączane do przenośnego eksportu ustawień ani wysyłane na Wear.
 
-## Known watch-face packaging limitation
-The legacy WFF faces are bundled alongside executable Wear code. Android Lint reports `WatchFaceFormatDeclaresHasNoCode` and `WatchFaceFormatMissingVersion`. Proper WFF delivery needs a separate resource-only package; setting `hasCode=false` on the current Wear application would disable its services. The app, tiles and complication providers retain their current package.
+## Znane ograniczenie pakowania tarcz zegarka
+Starsze tarcze WFF są dołączone do pakietu razem z wykonywalnym kodem Wear. Android Lint zgłasza `WatchFaceFormatDeclaresHasNoCode` i `WatchFaceFormatMissingVersion`. Prawidłowe dostarczanie WFF wymaga osobnego pakietu zawierającego wyłącznie zasoby; ustawienie `hasCode=false` w obecnej aplikacji Wear wyłączyłoby jej usługi. Aplikacja, kafelki i dostawcy komplikacji pozostają w obecnym pakiecie.
 
 ---
-Built with Jetpack Compose.
+Zbudowano w Jetpack Compose.
 
 Wersja aplikacji: v1.7
