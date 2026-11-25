@@ -98,7 +98,8 @@ class SettingsExportTest {
             "trendThresholdFastFalling" to -8, "trendThresholdFalling" to -3,
             "trendThresholdRising" to 3, "trendThresholdFastRising" to 8,
             "trendRisingEnabled" to false, "trendFallingEnabled" to false,
-            "watchGlucoseFont" to "legacy", "watchTrendArrowStyle" to "under_value"
+            "watchGlucoseFont" to "legacy", "watchTrendArrowStyle" to "under_value",
+            "watchLowThreshold" to 60, "watchHighThreshold" to 200, "watchVeryHighThreshold" to 260
         )
         assertEquals(settings, SettingsExport.fromJson(withLegacySettings(settings, retired)))
     }
@@ -113,7 +114,8 @@ class SettingsExportTest {
             "alertHighThreshold" to 0, "alertVeryHighThreshold" to "obsolete",
             "trendThresholdFastFalling" to "obsolete", "trendThresholdFalling" to null,
             "trendThresholdRising" to "obsolete", "trendThresholdFastRising" to "obsolete",
-            "watchGlucoseFont" to null, "watchTrendArrowStyle" to 42
+            "watchGlucoseFont" to null, "watchTrendArrowStyle" to 42,
+            "watchLowThreshold" to 200, "watchHighThreshold" to 100, "watchVeryHighThreshold" to "obsolete"
         )
         assertEquals(settings, SettingsExport.fromJson(withLegacySettings(settings, retired)))
     }
@@ -125,7 +127,8 @@ class SettingsExportTest {
         listOf("preset", "syncThemeWithWatch", "watchAppTheme",
             "alertLowThreshold", "alertHighThreshold", "alertVeryHighThreshold",
             "trendThresholdFastFalling", "trendThresholdFalling", "trendThresholdRising", "trendThresholdFastRising",
-            "trendRisingEnabled", "trendFallingEnabled", "watchGlucoseFont", "watchTrendArrowStyle").forEach {
+            "trendRisingEnabled", "trendFallingEnabled", "watchGlucoseFont", "watchTrendArrowStyle",
+            "watchLowThreshold", "watchHighThreshold", "watchVeryHighThreshold").forEach {
             assertFalse("Retired field must be absent: $it", fields.containsKey(it))
         }
         assertEquals("BLUE", fields["appTheme"])
@@ -158,17 +161,13 @@ class SettingsExportTest {
     }
 
     @Test fun `import rejects unsafe thresholds without changing their values silently`() {
-        listOf("lowThreshold", "highThreshold", "veryHighThreshold",
-            "watchLowThreshold", "watchHighThreshold", "watchVeryHighThreshold").forEach { field ->
+        listOf("lowThreshold", "highThreshold", "veryHighThreshold").forEach { field ->
             listOf("0", "-1", "1e100").forEach { value ->
                 assertRejected(document("""{"$field":$value}"""))
             }
         }
-        listOf("lowThreshold" to "highThreshold",
-            "watchLowThreshold" to "watchHighThreshold").forEach { (low, high) ->
-            assertRejected(document("""{"$low":180,"$high":180}"""))
-            assertRejected(document("""{"$low":200,"$high":180}"""))
-        }
+        assertRejected(document("""{"lowThreshold":180,"highThreshold":180}"""))
+        assertRejected(document("""{"lowThreshold":200,"highThreshold":180}"""))
     }
 
     @Test fun `import rejects unsupported polling and out of bounds notification settings`() {
@@ -178,6 +177,7 @@ class SettingsExportTest {
             "notificationVolume" to listOf("-0.1", "1.1", "1e100"),
             "nightNotificationVolume" to listOf("-0.1", "1.1", "1e100"),
             "notificationSoundDelaySeconds" to listOf("-1", "31"),
+            "alertSnoozeMinutes" to listOf("-1", "31"),
             "nightStartTime" to listOf("\"24:00\"", "\"9:00\"", "\"22:60\""),
             "nightEndTime" to listOf("\"-1:00\"", "\"07:0\"", "\"noon\"")
         ).forEach { (field, values) ->
@@ -194,6 +194,10 @@ class SettingsExportTest {
         }
         val settings = UserSettings(staleDataMinutes = 60, notificationSoundDelaySeconds = 30)
         assertEquals(settings, SettingsExport.fromJson(SettingsExport.toJson(settings, 0L)))
+        listOf(0, 30).forEach { minutes ->
+            val snooze = UserSettings(alertSnoozeMinutes = minutes)
+            assertEquals(snooze, SettingsExport.fromJson(SettingsExport.toJson(snooze, 0L)))
+        }
     }
 
     @Test fun `import rejects oversized streams before reading them in full`() {

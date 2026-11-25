@@ -19,7 +19,6 @@ internal data class DoseInputState(val text: String? = null) {
         if (text == null) copy(text = DoseInputFormatter.editingText(stored)) else this
     fun edit(raw: String): DoseInputState =
         if (text == null) this else copy(text = raw.replace("j", "", ignoreCase = true))
-    val storedValue: String? get() = text?.let(DoseInputFormatter::forStorage)
 }
 
 internal fun UserSettings.withDose(field: DoseField, raw: String): UserSettings {

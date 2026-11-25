@@ -15,7 +15,7 @@ class NightTestReportTest {
     ) = DiagnosticEvent(wall, elapsed, "session", 123, cycle, name, details, "Europe/Warsaw")
 
     private fun report(events: List<DiagnosticEvent>, incomplete: Boolean = false) =
-        NightTestReport.summarize(NightTestSample(wallStart, 10_000L, 110_000L, events, incomplete))
+        NightTestReport.summarize(NightTestSample(10_000L, 110_000L, events, incomplete))
 
     private fun assertMetric(report: String, key: String, expected: Int) {
         assertTrue("Missing $key=$expected in:\n$report", report.lineSequence().any { it.trim() == "$key: $expected" })

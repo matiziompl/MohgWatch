@@ -21,7 +21,6 @@ import com.mohgwatch.phone.data.GlucoseHistoryStore
 import com.mohgwatch.phone.data.WatchState
 import com.mohgwatch.phone.data.Diagnostics
 import com.mohgwatch.phone.data.NetworkObservationPolicy
-import com.mohgwatch.phone.companion.CompanionIntegrationManager
 import android.os.SystemClock
 import com.mohgwatch.phone.service.DataLayerSender
 import com.mohgwatch.phone.util.trStr
@@ -133,6 +132,12 @@ class GlucoseSyncService : Service() {
         fun forceSync(context: Context) {
             start(context)
         }
+
+        /** Fetches now only if sync is already enabled; never turns sync on by itself. */
+        fun refreshNow(context: Context) {
+            androidx.core.content.ContextCompat.startForegroundService(context,
+                Intent(context, GlucoseSyncService::class.java).setAction(ACTION_FORCE_SYNC))
+        }
     }
 
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -194,6 +199,19 @@ class GlucoseSyncService : Service() {
     }
 
     private var networkCallback: android.net.ConnectivityManager.NetworkCallback? = null
+    /** Remembers when internet disappeared so a long overnight loss can be reported the next morning. */
+    private fun markOffline() {
+        val screenOff = getSystemService(android.os.PowerManager::class.java)?.isInteractive == false
+        val started = com.mohgwatch.phone.data.NightReadinessStore.markOffline(this, System.currentTimeMillis(), screenOff)
+        if (started && screenOff) serviceScope.launch {
+            val settings = settingsStore.getSettings()
+            if (settings.nightModeEnabled && !settings.isNightTime()) {
+                com.mohgwatch.phone.data.NightReadinessStore.refineOfflineAsleep(this@GlucoseSyncService, false)
+            }
+        }
+    }
+
+    private fun markOnline() = com.mohgwatch.phone.data.NightReadinessStore.markOnline(this, System.currentTimeMillis())
     private val networkObservations = NetworkObservationPolicy()
 
     override fun onCreate() {
@@ -268,6 +286,7 @@ class GlucoseSyncService : Service() {
                     "network=$network blocked=$blocked", activeCycleId)
                 val pm = getSystemService(android.os.PowerManager::class.java)
                 Log.w(TAG, "Android network blocked=$blocked, idle=${pm.isDeviceIdleMode}, batteryExempt=${pm.isIgnoringBatteryOptimizations(packageName)}")
+                if (blocked) markOffline() else markOnline()
                 if (blocked) {
                     GlucoseSyncState.lastError.value = "Android zgłosił blokadę sieci aplikacji (przyczyna nieznana)"
                 } else if (GlucoseSyncState.isSyncing.value) {
@@ -277,6 +296,7 @@ class GlucoseSyncService : Service() {
 
             override fun onLost(network: android.net.Network) {
                 if (network == blockedNetwork) { networkBlocked = null; blockedNetwork = null }
+                markOffline()
                 networkObservations.lost(network.toString())
                 Diagnostics.record(this@GlucoseSyncService, "NETWORK_LOST", "network=$network", activeCycleId)
             }
@@ -302,6 +322,7 @@ class GlucoseSyncService : Service() {
             override fun onAvailable(network: android.net.Network) {
                 networkBlocked = null
                 blockedNetwork = network
+                markOnline()
                 Diagnostics.record(this@GlucoseSyncService, "NETWORK_AVAILABLE", "network=$network", activeCycleId)
                 serviceScope.launch {
                     val settings = settingsStore.getSettings()
@@ -411,12 +432,6 @@ class GlucoseSyncService : Service() {
                     val reading = com.mohgwatch.core.model.GlucoseReading(
                         value = value,
                         trendArrow = trend,
-                        measurementColor = when {
-                            value < settings.watchLowThreshold -> com.mohgwatch.core.model.MeasurementColor.LOW
-                            value > settings.watchVeryHighThreshold -> com.mohgwatch.core.model.MeasurementColor.VERY_HIGH
-                            value > settings.watchHighThreshold -> com.mohgwatch.core.model.MeasurementColor.HIGH
-                            else -> com.mohgwatch.core.model.MeasurementColor.IN_RANGE
-                        },
                         timestamp = System.currentTimeMillis(),
                         isHigh = value > settings.highThreshold,
                         isLow = value < settings.lowThreshold
@@ -527,7 +542,6 @@ class GlucoseSyncService : Service() {
                 withTimeout(150_000L) {
                     val settings = settingsStore.getSettings()
                     if (!settings.isSyncEnabled || stopping) { outcome = "disabled"; return@withTimeout }
-                    CompanionIntegrationManager.get(this@GlucoseSyncService).refresh()
                     val interval = settings.pollIntervalMinutes.coerceIn(1, 5) * 60_000L
                     nextPoll = started + interval
                     SyncScheduler.schedule(this@GlucoseSyncService, interval)
@@ -734,12 +748,7 @@ class GlucoseSyncService : Service() {
             return@withLock
         }
 
-        val reading = rawReading.copy(measurementColor = when {
-            rawReading.value < settings.watchLowThreshold -> MeasurementColor.LOW
-            rawReading.value > settings.watchVeryHighThreshold -> MeasurementColor.VERY_HIGH
-            rawReading.value > settings.watchHighThreshold -> MeasurementColor.HIGH
-            else -> MeasurementColor.IN_RANGE
-        })
+        val reading = rawReading
         val fresh = reading.isFreshAt(now, settings.staleAfterMillis)
         GlucoseSyncState.latestReading.value = reading
         if (persistReading) {
@@ -765,7 +774,7 @@ class GlucoseSyncService : Service() {
         if (fresh && range != GlucoseRange.NORMAL && settings.notifyOutOfRange) {
             val newHazard = GlucoseAlertPolicy.shouldAlert(glucoseRange, range)
             val muted = PhoneGlucoseAlertPolicy.shouldMute(settings, watchConnected,
-                WatchState.isWornOnWrist.value, WatchState.lastUpdateTimestamp.value, now)
+                WatchState.wristStatus.value == WristStatus.ON_WRIST, WatchState.lastUpdateTimestamp.value, now)
             val context = "${range.name}:${settings.isNightTime()}:$muted"
             if (newHazard || context != phoneAlertContext) {
                 cancelGlucoseAlerts()
@@ -994,7 +1003,7 @@ class GlucoseSyncService : Service() {
                         val connected = withTimeoutOrNull(2_000L) { dataLayerSender.isWatchConnected() } ?: false
                         val now = System.currentTimeMillis()
                         val reading = GlucoseSyncState.latestReading.value
-                        if (!PhoneGlucoseAlertPolicy.shouldPlaySound(settings, reading, expected, connected, WatchState.isWornOnWrist.value,
+                        if (!PhoneGlucoseAlertPolicy.shouldPlaySound(settings, reading, expected, connected, WatchState.wristStatus.value == WristStatus.ON_WRIST,
                                 WatchState.lastUpdateTimestamp.value, now)) {
                             Diagnostics.record(this@GlucoseSyncService, "PHONE_ALERT_SOUND_SKIPPED", "channel=$channelId")
                             return@withLock

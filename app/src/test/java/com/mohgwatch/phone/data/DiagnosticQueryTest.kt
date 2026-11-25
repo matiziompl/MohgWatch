@@ -20,8 +20,7 @@ class DiagnosticQueryTest {
         val examples = mapOf(
             DiagnosticCategory.SYNC to listOf("SYNC_START", "TIMER_PLANNED", "WAKELOCK_ACQUIRED", "WATCHDOG_START"),
             DiagnosticCategory.NETWORK to listOf("NETWORK_AVAILABLE", "NETWORK_LOST", "NETWORK_CAPABILITIES"),
-            DiagnosticCategory.API to listOf("API_REQUEST", "API_NETWORK_ERROR", "HTTP_RESPONSE"),
-            DiagnosticCategory.CDM to listOf("CDM_ASSOCIATED", "CDM_PRESENCE_CHANGED")
+            DiagnosticCategory.API to listOf("API_REQUEST", "API_NETWORK_ERROR", "HTTP_RESPONSE")
         )
         for ((category, names) in examples) {
             for (name in names) {
@@ -59,11 +58,5 @@ class DiagnosticQueryTest {
         assertTrue(filter.matches(event("HTTP_RESULT", "code=401 durationMs=100")))
         assertTrue(filter.matches(event("HTTP_RESULT", "code=503 durationMs=100")))
         assertFalse(filter.matches(event("HTTP_RESULT", "code=200 durationMs=100")))
-    }
-
-    @Test fun associationFailuresAreErrorsButUserCancellationIsNot() {
-        val filter = DiagnosticFilter(category = DiagnosticCategory.CDM, errorsOnly = true)
-        assertTrue(filter.matches(event("CDM_ASSOCIATION_FINISHED", "cancelled=false")))
-        assertFalse(filter.matches(event("CDM_ASSOCIATION_FINISHED", "cancelled=true")))
     }
 }

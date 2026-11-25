@@ -6,7 +6,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class GlucoseReadingFreshnessTest {
-    private val reading = GlucoseReading(120f, TrendArrow.RISING, MeasurementColor.IN_RANGE, 1_000_000L, false, false)
+    private val reading = GlucoseReading(120f, TrendArrow.RISING, 1_000_000L, false, false)
 
     @Test fun expiresExactlyTenMinutesAfterMeasurement() {
         assertTrue(reading.isFreshAt(1_000_000L))

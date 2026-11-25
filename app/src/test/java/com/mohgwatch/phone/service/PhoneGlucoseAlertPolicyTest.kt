@@ -7,7 +7,7 @@ import org.junit.Test
 class PhoneGlucoseAlertPolicyTest {
     private val now = 2_000_000L
     private fun reading(value: Float = 60f, timestamp: Long = now - 1_000L) =
-        GlucoseReading(value, TrendArrow.STABLE, MeasurementColor.IN_RANGE, timestamp, false, false)
+        GlucoseReading(value, TrendArrow.STABLE, timestamp, false, false)
 
     @Test fun `fresh high to low selects a different hazard`() {
         assertEquals(GlucoseRange.HIGH, PhoneGlucoseAlertPolicy.hazard(reading(220f), now, 70f, 180f))

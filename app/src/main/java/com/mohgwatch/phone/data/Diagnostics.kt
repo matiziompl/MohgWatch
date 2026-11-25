@@ -200,7 +200,6 @@ object Diagnostics {
         if (settings == null) appendLine("Ustawienia: nieznane (timeout)") else {
             appendLine("sync=${settings.isSyncEnabled}; intervalMinutes=${settings.pollIntervalMinutes}; persistentWakeLockSetting=${settings.persistentWakeLockEnabled}")
             appendLine("alarmLow=${settings.lowThreshold}; alarmHigh=${settings.highThreshold}; phoneAlarm=${settings.notifyOutOfRange}; watchAlarm=${settings.watchNotifyOutOfRange}; watchStale=${settings.notifyStaleDataWatch}; staleMinutes=${settings.staleDataMinutes}")
-            appendLine("watchColorLow=${settings.watchLowThreshold}; watchColorHigh=${settings.watchHighThreshold}")
             appendLine("hapticLowEnabled=${settings.alertLowHapticEnabled}; hapticHighEnabled=${settings.alertHighHapticEnabled}")
             appendLine("patternLow=${settings.trendFallingPattern}; patternHigh=${settings.trendRisingPattern}; patternReturn=${settings.trendStablePattern}; returnEnabled=${settings.trendStableEnabled}")
         }

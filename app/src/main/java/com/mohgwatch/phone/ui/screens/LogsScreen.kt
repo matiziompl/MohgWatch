@@ -74,8 +74,7 @@ fun LogsScreen(onBack: () -> Unit = {}) {
         DiagnosticCategory.ALL to tr("Wszystkie", "All"),
         DiagnosticCategory.SYNC to tr("Synchronizacja", "Synchronization"),
         DiagnosticCategory.NETWORK to tr("Sieć", "Network"),
-        DiagnosticCategory.API to "API",
-        DiagnosticCategory.CDM to "CDM"
+        DiagnosticCategory.API to "API"
     )
     val invalidRange = tr("Nieprawidłowy zakres dat. Użyj ISO z przesunięciem strefy lub yyyy-MM-dd HH:mm. Początek nie może być późniejszy niż koniec.",
         "Invalid date range. Use ISO with a time zone offset or yyyy-MM-dd HH:mm. The start must not be later than the end.")

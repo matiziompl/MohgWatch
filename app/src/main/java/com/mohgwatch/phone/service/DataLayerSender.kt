@@ -34,7 +34,6 @@ class DataLayerSender(private val context: Context, private val cycleId: () -> S
             val request = PutDataMapRequest.create(DataLayerPaths.GLUCOSE_DATA).apply {
                 dataMap.putFloat(DataLayerPaths.Keys.GLUCOSE_VALUE, reading.value)
                 dataMap.putInt(DataLayerPaths.Keys.TREND_ARROW, reading.trendArrow.apiValue)
-                dataMap.putInt(DataLayerPaths.Keys.MEASUREMENT_COLOR, reading.measurementColor.apiValue)
                 dataMap.putLong(DataLayerPaths.Keys.TIMESTAMP, reading.timestamp)
                 dataMap.putBoolean(DataLayerPaths.Keys.IS_HIGH, reading.isHigh)
                 dataMap.putBoolean(DataLayerPaths.Keys.IS_LOW, reading.isLow)
@@ -64,10 +63,6 @@ class DataLayerSender(private val context: Context, private val cycleId: () -> S
                 dataMap.putIntegerArrayList(
                     DataLayerPaths.Keys.HISTORY_TRENDS,
                     ArrayList(readings.map { it.trendArrow.apiValue })
-                )
-                dataMap.putIntegerArrayList(
-                    DataLayerPaths.Keys.HISTORY_COLORS,
-                    ArrayList(readings.map { it.measurementColor.apiValue })
                 )
                 dataMap.putString(DataLayerPaths.Keys.UPDATE_ID, UUID.randomUUID().toString())
             }.asPutDataRequest().setUrgent()

@@ -78,9 +78,6 @@ data class UserSettings(
     val disconnectSoundUri: String? = null,
     val lowGlucoseSoundUri: String? = null,
     val highGlucoseSoundUri: String? = null,
-    val watchLowThreshold: Float = 70f,
-    val watchHighThreshold: Float = 180f,
-    val watchVeryHighThreshold: Float = 250f,
     val notificationVolume: Float = 1.0f,
     val nightModeEnabled: Boolean = true,
     val nightStartTime: String = "22:00",
@@ -112,7 +109,9 @@ data class UserSettings(
     val trendRisingPattern: TrendVibrationPattern = TrendVibrationPattern.STRONG,
     val trendFallingPattern: TrendVibrationPattern = TrendVibrationPattern.STRONG,
     val trendStablePattern: TrendVibrationPattern = TrendVibrationPattern.STRONG,
-    val staleDataMinutes: Int = 10
+    val staleDataMinutes: Int = 10,
+    /** Length of the Status-screen snooze for low/high alarms; 0 hides the button. */
+    val alertSnoozeMinutes: Int = 15
 ) {
     val staleAfterMillis: Long get() = staleDataMinutes.coerceIn(1, 60) * 60_000L
     

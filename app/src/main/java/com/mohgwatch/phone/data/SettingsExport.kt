@@ -35,15 +35,15 @@ internal object SettingsExport {
         }
         val settings = requireNotNull(settingsAdapter.fromJsonValue(values))
         with(settings) {
-            listOf(lowThreshold, highThreshold, veryHighThreshold,
-                watchLowThreshold, watchHighThreshold, watchVeryHighThreshold).forEach {
+            listOf(lowThreshold, highThreshold, veryHighThreshold).forEach {
                 require(it.isFinite() && it > 0f) { "Invalid glucose threshold" }
             }
-            require(lowThreshold < highThreshold && watchLowThreshold < watchHighThreshold) { "Inverted glucose thresholds" }
+            require(lowThreshold < highThreshold) { "Inverted glucose thresholds" }
             require(pollIntervalMinutes in listOf(1, 2, 3, 5))
             require(staleDataMinutes in 1..60)
             require(notificationVolume in 0f..1f && nightNotificationVolume in 0f..1f)
             require(notificationSoundDelaySeconds in 0..30)
+            require(alertSnoozeMinutes in 0..30)
             val time = Regex("(?:[01][0-9]|2[0-3]):[0-5][0-9]")
             require(time.matches(nightStartTime) && time.matches(nightEndTime))
         }

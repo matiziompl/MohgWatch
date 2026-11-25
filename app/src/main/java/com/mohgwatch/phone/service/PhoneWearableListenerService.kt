@@ -28,16 +28,14 @@ class PhoneWearableListenerService : WearableListenerService() {
                 try {
                     val dataMap = DataMapItem.fromDataItem(event.dataItem).dataMap
                     val status = WristStatus.fromSensorValue(dataMap.getFloat(DataLayerPaths.Keys.SENSOR_VALUE, -1f))
-                    val isWorn = status == WristStatus.ON_WRIST
                     val timestamp = dataMap.getLong(DataLayerPaths.Keys.TIMESTAMP, 0L)
                     if (timestamp <= 0L || timestamp > System.currentTimeMillis() ||
                         timestamp < WatchState.lastUpdateTimestamp.value) continue
 
                     WatchState.wristStatus.value = status
-                    WatchState.isWornOnWrist.value = isWorn
                     WatchState.lastUpdateTimestamp.value = timestamp
 
-                    Log.d(TAG, "Odebrano stan nadgarstka: isWorn=$isWorn")
+                    Log.d(TAG, "Odebrano stan nadgarstka: $status")
                 } catch (e: Exception) {
                     Log.e(TAG, "Błąd przetwarzania stanu nadgarstka", e)
                 }

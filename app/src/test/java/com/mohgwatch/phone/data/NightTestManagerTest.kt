@@ -1,9 +1,6 @@
 package com.mohgwatch.phone.data
 
 import com.mohgwatch.core.model.UserSettings
-import com.mohgwatch.phone.companion.CompanionAssociation
-import com.mohgwatch.phone.companion.CompanionPresence
-import com.mohgwatch.phone.companion.CompanionStatus
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -114,20 +111,14 @@ class NightTestManagerTest {
         assertTrue(manager.state.value.lastReport!!.contains("Kompletność: niepełna"))
     }
 
-    @Test fun changingPresenceAndServiceLifecycleDoesNotChangeTheFingerprint() {
+    @Test fun exemptionStatusIsReportedButDoesNotInterruptTheMeasurement() {
         val settings = UserSettings(isSyncEnabled = true)
-        val base = CompanionStatus(ready = true, supported = true,
-            associations = listOf(CompanionAssociation(2, "Watch"), CompanionAssociation(1, "Other")),
-            selectedAssociationId = 2, observationRequested = true)
-        val changed = base.copy(presence = CompanionPresence.PRESENT, serviceRunning = true,
-            busy = true, error = "ignored", associations = base.associations.reversed())
-        assertEquals(nightTestConfiguration(settings, base).fingerprint, nightTestConfiguration(settings, changed).fingerprint)
-        assertNotEquals(nightTestConfiguration(settings, base).fingerprint,
-            nightTestConfiguration(settings, base.copy(observationRequested = false)).fingerprint)
-        assertEquals(NightTestMode.OBSERVING, nightTestConfiguration(settings, base).mode)
-        assertEquals(NightTestMode.ASSOCIATED, nightTestConfiguration(settings, base.copy(observationRequested = false)).mode)
-        assertEquals(NightTestMode.BASELINE, nightTestConfiguration(settings, base.copy(associations = emptyList(), observationRequested = false)).mode)
-        assertEquals(NightTestMode.UNKNOWN, nightTestConfiguration(settings, base.copy(supported = false)).mode)
+        val exempt = nightTestConfiguration(settings, batteryExempt = true, backgroundDataStatus = "DISABLED")
+        val revoked = nightTestConfiguration(settings, batteryExempt = false, backgroundDataStatus = "ENABLED")
+        assertEquals(exempt.fingerprint, revoked.fingerprint)
+        assertEquals(false, revoked.batteryExempt)
+        assertNotEquals(exempt.fingerprint,
+            nightTestConfiguration(settings.copy(persistentWakeLockEnabled = !settings.persistentWakeLockEnabled), true, "DISABLED").fingerprint)
     }
 
     @Test fun uiCallerCancellationDuringSaveDoesNotAbandonApplicationOwnedStart() = runTest {
@@ -174,7 +165,7 @@ class NightTestManagerTest {
     private class FakeEnvironment : NightTestEnvironment {
         override val configurations = MutableSharedFlow<NightTestConfiguration>(extraBufferCapacity = 4)
         override val batteries = MutableSharedFlow<NightTestBattery>(extraBufferCapacity = 4)
-        var currentConfiguration = NightTestConfiguration(true, "original", NightTestMode.BASELINE, true, "WHITELISTED")
+        var currentConfiguration = NightTestConfiguration(true, "original", true, "WHITELISTED")
         var currentClocks = NightTestClocks(10_000L, 2_000L, 2)
         var currentRunId: String? = null
         var onSetActive: (String?) -> Unit = {}

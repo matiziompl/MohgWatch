@@ -6,8 +6,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.Icon
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.wear.watchface.complications.data.*
@@ -38,7 +36,6 @@ abstract class BaseGlucoseComplicationService : ComplicationDataSourceService() 
     
     abstract val showGlucose: Boolean
     abstract val showTrend: Boolean
-    abstract val isColorCoded: Boolean
     open val trendOnTop: Boolean = true
 
     override fun onDestroy() {
@@ -104,15 +101,6 @@ abstract class BaseGlucoseComplicationService : ComplicationDataSourceService() 
         }
     }
 
-    private fun getGlucoseColor(reading: GlucoseReading): Int {
-        return when (reading.measurementColor) {
-            com.mohgwatch.core.model.MeasurementColor.LOW,
-            com.mohgwatch.core.model.MeasurementColor.VERY_HIGH -> Color.parseColor("#EF4444") // Red
-            com.mohgwatch.core.model.MeasurementColor.HIGH -> Color.parseColor("#F59E0B") // Yellow
-            else -> Color.parseColor("#10B981") // Green
-        }
-    }
-    
     private fun getTrendDrawableRes(trend: TrendArrow): Int = when (trend) {
         TrendArrow.RISING_FAST -> R.drawable.ic_trend_rising_fast
         TrendArrow.RISING -> R.drawable.ic_trend_rising
@@ -122,13 +110,13 @@ abstract class BaseGlucoseComplicationService : ComplicationDataSourceService() 
         TrendArrow.UNKNOWN -> R.drawable.ic_trend_stable
     }
 
-    private fun createCombinedIcon(reading: GlucoseReading, colorCoded: Boolean, isTrendOnTop: Boolean, unit: GlucoseUnit = GlucoseUnit.MG_DL): Icon {
+    private fun createCombinedIcon(reading: GlucoseReading, isTrendOnTop: Boolean, unit: GlucoseUnit = GlucoseUnit.MG_DL): Icon {
         val width = 100
         val height = 100
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         
-        val color = if (colorCoded) getGlucoseColor(reading) else Color.WHITE
+        val color = Color.WHITE
         
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             this.color = color
@@ -193,18 +181,9 @@ abstract class BaseGlucoseComplicationService : ComplicationDataSourceService() 
         )
         val valueText = GlucoseFormatter.format(reading.value, unit)
         val trendSymbol = reading.trendArrow.symbol
-        val textColor = if (isColorCoded) getGlucoseColor(reading) else Color.WHITE
-
-        val glucoseSpan = SpannableString(valueText).apply {
-            if (isColorCoded) setSpan(ForegroundColorSpan(textColor), 0, length, 0)
-        }
-        val trendSpan = SpannableString(trendSymbol).apply {
-            if (isColorCoded) setSpan(ForegroundColorSpan(textColor), 0, length, 0)
-        }
-
-        val glucoseComplicationText = PlainComplicationText.Builder(glucoseSpan).build()
-        val trendComplicationText = PlainComplicationText.Builder(trendSpan).build()
-        val descText = PlainComplicationText.Builder("Glukoza: $valueText ${unit.shortLabel}, Trend: $trendSymbol").build()
+        val glucoseComplicationText = PlainComplicationText.Builder(valueText).build()
+        val trendComplicationText = PlainComplicationText.Builder(trendSymbol).build()
+        val descText = PlainComplicationText.Builder("Glukoza: $valueText ${unit.label}, Trend: $trendSymbol").build()
 
         return when (request.complicationType) {
             ComplicationType.SHORT_TEXT -> {
@@ -225,11 +204,11 @@ abstract class BaseGlucoseComplicationService : ComplicationDataSourceService() 
             }
             ComplicationType.SMALL_IMAGE -> {
                 val icon = if (showGlucose && showTrend) {
-                    createCombinedIcon(reading, isColorCoded, trendOnTop, unit)
+                    createCombinedIcon(reading, trendOnTop, unit)
                 } else if (showTrend) {
-                    createTrendIcon(reading.trendArrow, if (isColorCoded) getGlucoseColor(reading) else Color.WHITE)
+                    createTrendIcon(reading.trendArrow, Color.WHITE)
                 } else {
-                    createTextIcon(valueText, if (isColorCoded) getGlucoseColor(reading) else Color.WHITE)
+                    createTextIcon(valueText, Color.WHITE)
                 }
                 SmallImageComplicationData.Builder(
                     smallImage = SmallImage.Builder(icon, SmallImageType.PHOTO).build(),
@@ -237,19 +216,17 @@ abstract class BaseGlucoseComplicationService : ComplicationDataSourceService() 
                 ).setValidTimeRange(validTimeRange).build()
             }
             ComplicationType.MONOCHROMATIC_IMAGE -> {
-                if (!isColorCoded) {
-                    val icon = if (showGlucose && showTrend) {
-                        createCombinedIcon(reading, false, trendOnTop, unit)
-                    } else if (showTrend) {
-                        createTrendIcon(reading.trendArrow, Color.WHITE)
-                    } else {
-                        createTextIcon(valueText, Color.WHITE)
-                    }
-                    MonochromaticImageComplicationData.Builder(
-                        monochromaticImage = MonochromaticImage.Builder(icon).build(),
-                        contentDescription = descText
-                    ).setValidTimeRange(validTimeRange).build()
-                } else null
+                val icon = if (showGlucose && showTrend) {
+                    createCombinedIcon(reading, trendOnTop, unit)
+                } else if (showTrend) {
+                    createTrendIcon(reading.trendArrow, Color.WHITE)
+                } else {
+                    createTextIcon(valueText, Color.WHITE)
+                }
+                MonochromaticImageComplicationData.Builder(
+                    monochromaticImage = MonochromaticImage.Builder(icon).build(),
+                    contentDescription = descText
+                ).setValidTimeRange(validTimeRange).build()
             }
             else -> null
         }
@@ -259,24 +236,14 @@ abstract class BaseGlucoseComplicationService : ComplicationDataSourceService() 
         val mockReading = GlucoseReading(
             value = 120f,
             trendArrow = TrendArrow.STABLE,
-            measurementColor = com.mohgwatch.core.model.MeasurementColor.IN_RANGE,
             timestamp = System.currentTimeMillis(),
             isHigh = false,
             isLow = false
         )
         val valueText = "120"
         val trendSymbol = "→"
-        val textColor = if (isColorCoded) Color.parseColor("#10B981") else Color.WHITE
-
-        val glucoseSpan = SpannableString(valueText).apply {
-            if (isColorCoded) setSpan(ForegroundColorSpan(textColor), 0, length, 0)
-        }
-        val trendSpan = SpannableString(trendSymbol).apply {
-            if (isColorCoded) setSpan(ForegroundColorSpan(textColor), 0, length, 0)
-        }
-
-        val glucoseComplicationText = PlainComplicationText.Builder(glucoseSpan).build()
-        val trendComplicationText = PlainComplicationText.Builder(trendSpan).build()
+        val glucoseComplicationText = PlainComplicationText.Builder(valueText).build()
+        val trendComplicationText = PlainComplicationText.Builder(trendSymbol).build()
         val descText = PlainComplicationText.Builder("Podgląd").build()
 
         return when (type) {
@@ -295,11 +262,11 @@ abstract class BaseGlucoseComplicationService : ComplicationDataSourceService() 
             }
             ComplicationType.SMALL_IMAGE -> {
                 val icon = if (showGlucose && showTrend) {
-                    createCombinedIcon(mockReading, isColorCoded, trendOnTop)
+                    createCombinedIcon(mockReading, trendOnTop)
                 } else if (showTrend) {
-                    createTrendIcon(mockReading.trendArrow, textColor)
+                    createTrendIcon(mockReading.trendArrow, Color.WHITE)
                 } else {
-                    createTextIcon(valueText, textColor)
+                    createTextIcon(valueText, Color.WHITE)
                 }
                 SmallImageComplicationData.Builder(
                     smallImage = SmallImage.Builder(icon, SmallImageType.PHOTO).build(),
@@ -307,19 +274,17 @@ abstract class BaseGlucoseComplicationService : ComplicationDataSourceService() 
                 ).build()
             }
             ComplicationType.MONOCHROMATIC_IMAGE -> {
-                if (!isColorCoded) {
-                    val icon = if (showGlucose && showTrend) {
-                        createCombinedIcon(mockReading, false, trendOnTop)
-                    } else if (showTrend) {
-                        createTrendIcon(mockReading.trendArrow, Color.WHITE)
-                    } else {
-                        createTextIcon(valueText, Color.WHITE)
-                    }
-                    MonochromaticImageComplicationData.Builder(
-                        monochromaticImage = MonochromaticImage.Builder(icon).build(),
-                        contentDescription = descText
-                    ).build()
-                } else null
+                val icon = if (showGlucose && showTrend) {
+                    createCombinedIcon(mockReading, trendOnTop)
+                } else if (showTrend) {
+                    createTrendIcon(mockReading.trendArrow, Color.WHITE)
+                } else {
+                    createTextIcon(valueText, Color.WHITE)
+                }
+                MonochromaticImageComplicationData.Builder(
+                    monochromaticImage = MonochromaticImage.Builder(icon).build(),
+                    contentDescription = descText
+                ).build()
             }
             else -> null
         }

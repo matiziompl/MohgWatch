@@ -91,9 +91,6 @@ object WidgetThemeHelper {
         }
     }
 
-    fun activeSlot(theme: AppTheme): ColorProvider = primary(theme)
-    fun activeSlot(theme: AppTheme, reading: GlucoseReading?, settings: UserSettings): ColorProvider = primary(theme, reading, settings)
-
     fun inactiveSlot(mode: WidgetBgColor): ColorProvider = when (mode) {
         WidgetBgColor.LIGHT -> ColorProvider(Color(0xFFE5E7EB))
         WidgetBgColor.DARK -> ColorProvider(Color(0xFF2E333D))

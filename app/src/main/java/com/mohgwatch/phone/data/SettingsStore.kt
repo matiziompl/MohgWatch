@@ -36,6 +36,7 @@ class SettingsStore(private val context: Context) {
         val NOTIFY_OUT_OF_RANGE = booleanPreferencesKey("notify_out_of_range")
         val NOTIFY_STALE_DATA_WATCH = booleanPreferencesKey("notify_stale_data_watch")
         val STALE_DATA_MINUTES = intPreferencesKey("stale_data_minutes")
+        val ALERT_SNOOZE_MINUTES = intPreferencesKey("alert_snooze_minutes")
         val ALERT_LOW_HAPTIC_ENABLED = booleanPreferencesKey("alert_low_haptic_enabled")
         val ALERT_HIGH_HAPTIC_ENABLED = booleanPreferencesKey("alert_high_haptic_enabled")
         val TREND_STABLE_ENABLED = booleanPreferencesKey("trend_stable_enabled")
@@ -45,9 +46,6 @@ class SettingsStore(private val context: Context) {
         val DISCONNECT_SOUND_URI = stringPreferencesKey("disconnect_sound_uri")
         val LOW_GLUCOSE_SOUND_URI = stringPreferencesKey("low_glucose_sound_uri")
         val HIGH_GLUCOSE_SOUND_URI = stringPreferencesKey("high_glucose_sound_uri")
-        val WATCH_LOW_THRESHOLD = floatPreferencesKey("watch_low_threshold")
-        val WATCH_HIGH_THRESHOLD = floatPreferencesKey("watch_high_threshold")
-        val WATCH_VERY_HIGH_THRESHOLD = floatPreferencesKey("watch_very_high_threshold")
         val NOTIFICATION_VOLUME = floatPreferencesKey("notification_volume")
         val NIGHT_MODE_ENABLED = booleanPreferencesKey("night_mode_enabled")
         val NIGHT_START_TIME = stringPreferencesKey("night_start_time")
@@ -95,6 +93,7 @@ class SettingsStore(private val context: Context) {
             notifyOutOfRange = prefs[Keys.NOTIFY_OUT_OF_RANGE] ?: true,
             notifyStaleDataWatch = prefs[Keys.NOTIFY_STALE_DATA_WATCH] ?: true,
             staleDataMinutes = (prefs[Keys.STALE_DATA_MINUTES] ?: 10).coerceIn(1, 60),
+            alertSnoozeMinutes = (prefs[Keys.ALERT_SNOOZE_MINUTES] ?: 15).coerceIn(0, 30),
             alertLowHapticEnabled = prefs[Keys.ALERT_LOW_HAPTIC_ENABLED] ?: true,
             alertHighHapticEnabled = prefs[Keys.ALERT_HIGH_HAPTIC_ENABLED] ?: true,
             trendStableEnabled = prefs[Keys.TREND_STABLE_ENABLED] ?: false,
@@ -104,9 +103,6 @@ class SettingsStore(private val context: Context) {
             disconnectSoundUri = prefs[Keys.DISCONNECT_SOUND_URI],
             lowGlucoseSoundUri = prefs[Keys.LOW_GLUCOSE_SOUND_URI],
             highGlucoseSoundUri = prefs[Keys.HIGH_GLUCOSE_SOUND_URI],
-            watchLowThreshold = prefs[Keys.WATCH_LOW_THRESHOLD] ?: 70f,
-            watchHighThreshold = prefs[Keys.WATCH_HIGH_THRESHOLD] ?: 180f,
-            watchVeryHighThreshold = prefs[Keys.WATCH_VERY_HIGH_THRESHOLD] ?: 250f,
             notificationVolume = prefs[Keys.NOTIFICATION_VOLUME] ?: 1.0f,
             nightModeEnabled = prefs[Keys.NIGHT_MODE_ENABLED] ?: true,
             nightStartTime = prefs[Keys.NIGHT_START_TIME] ?: "22:00",
@@ -163,6 +159,7 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.NOTIFY_OUT_OF_RANGE] = settings.notifyOutOfRange
             prefs[Keys.NOTIFY_STALE_DATA_WATCH] = settings.notifyStaleDataWatch
             prefs[Keys.STALE_DATA_MINUTES] = settings.staleDataMinutes.coerceIn(1, 60)
+            prefs[Keys.ALERT_SNOOZE_MINUTES] = settings.alertSnoozeMinutes.coerceIn(0, 30)
             prefs[Keys.ALERT_LOW_HAPTIC_ENABLED] = settings.alertLowHapticEnabled
             prefs[Keys.ALERT_HIGH_HAPTIC_ENABLED] = settings.alertHighHapticEnabled
             prefs[Keys.TREND_STABLE_ENABLED] = settings.trendStableEnabled
@@ -172,9 +169,6 @@ class SettingsStore(private val context: Context) {
             settings.disconnectSoundUri?.let { prefs[Keys.DISCONNECT_SOUND_URI] = it } ?: prefs.remove(Keys.DISCONNECT_SOUND_URI)
             settings.lowGlucoseSoundUri?.let { prefs[Keys.LOW_GLUCOSE_SOUND_URI] = it } ?: prefs.remove(Keys.LOW_GLUCOSE_SOUND_URI)
             settings.highGlucoseSoundUri?.let { prefs[Keys.HIGH_GLUCOSE_SOUND_URI] = it } ?: prefs.remove(Keys.HIGH_GLUCOSE_SOUND_URI)
-            prefs[Keys.WATCH_LOW_THRESHOLD] = settings.watchLowThreshold
-            prefs[Keys.WATCH_HIGH_THRESHOLD] = settings.watchHighThreshold
-            prefs[Keys.WATCH_VERY_HIGH_THRESHOLD] = settings.watchVeryHighThreshold
             prefs[Keys.NOTIFICATION_VOLUME] = settings.notificationVolume
             prefs[Keys.NIGHT_MODE_ENABLED] = settings.nightModeEnabled
             prefs[Keys.NIGHT_START_TIME] = settings.nightStartTime

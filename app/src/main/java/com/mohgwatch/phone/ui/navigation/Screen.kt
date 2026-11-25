@@ -19,13 +19,11 @@ sealed class Screen(val route: String, val tab: NavigationTab? = NavigationTab.S
     data object SettingsDiabetes : Screen("settings/diabetes")
     data object SettingsDoses : Screen("settings/doses")
     data object SettingsSync : Screen("settings/sync")
-    data object SettingsCompanion : Screen("settings/sync/companion")
-    data object SettingsGeneral : Screen("settings/general")
     data object SettingsTheme : Screen("settings/theme")
     data object SettingsWidgets : Screen("settings/widgets")
     data object SettingsAccount : Screen("settings/account")
     data object Logs : Screen("settings/logs")
-    data object SettingsNotificationTests : Screen("settings/notification_tests")
+    data object Diagnostics : Screen("settings/diagnostics")
     data object SettingsTestSounds : Screen("settings/tests/sounds")
     data object SettingsTestWatch : Screen("settings/tests/watch")
     data object SettingsTestSimulation : Screen("settings/tests/simulation")
@@ -33,9 +31,8 @@ sealed class Screen(val route: String, val tab: NavigationTab? = NavigationTab.S
     companion object {
         val notificationPages: List<Screen> get() = listOf(NotificationGlucose, NotificationHaptics,
             NotificationSounds, NotificationNight, NotificationConnection, NotificationWrist)
-        val settingsPages: List<Screen> get() = listOf(SettingsDiabetes, SettingsDoses, SettingsSync, SettingsCompanion,
-            SettingsGeneral, SettingsTheme, SettingsWidgets, SettingsAccount,
-            Logs, SettingsNotificationTests)
+        val settingsPages: List<Screen> get() = listOf(SettingsDiabetes, SettingsDoses, SettingsSync,
+            SettingsTheme, SettingsWidgets, SettingsAccount, Logs, Diagnostics)
         val testPages: List<Screen> get() = listOf(SettingsTestSounds, SettingsTestWatch, SettingsTestSimulation)
         val all: List<Screen> get() = listOf(Login, Status, Settings, SettingsNotifications) +
             notificationPages + settingsPages + testPages

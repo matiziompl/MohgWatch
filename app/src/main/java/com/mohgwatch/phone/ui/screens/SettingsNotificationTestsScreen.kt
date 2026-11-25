@@ -20,6 +20,7 @@ import com.mohgwatch.phone.service.DataLayerSender
 import com.mohgwatch.core.model.TrendDirection
 import com.mohgwatch.core.model.TrendArrow
 import com.mohgwatch.core.model.TrendVibrationPattern
+import com.mohgwatch.core.model.WristStatus
 import kotlinx.coroutines.launch
 
 enum class NotificationTestSection(val title: String) {
@@ -32,7 +33,7 @@ enum class NotificationTestSection(val title: String) {
 @Composable
 fun SettingsNotificationTestsScreen(section: NotificationTestSection, onBack: () -> Unit) {
     val context = LocalContext.current
-    val isWorn by WatchState.isWornOnWrist.collectAsState()
+    val isWorn = WatchState.wristStatus.collectAsState().value == WristStatus.ON_WRIST
     var testGlucoseInput by rememberSaveable { mutableStateOf("55") }
     var testTrend by rememberSaveable { mutableStateOf(TrendArrow.STABLE) }
     var trendMenuExpanded by remember { mutableStateOf(false) }

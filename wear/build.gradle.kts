@@ -49,7 +49,6 @@ dependencies {
 
     // Wear OS Compose
     implementation(libs.wear.compose.material3)
-    implementation(libs.wear.compose.foundation)
 
     // Compose core
     implementation(platform(libs.compose.bom))
@@ -72,9 +71,6 @@ dependencies {
     // Tiles
     implementation(libs.wear.tiles)
     implementation(libs.wear.protolayout)
-    implementation(libs.wear.protolayout.expression)
-    implementation(libs.wear.protolayout.material)
-    implementation(libs.wear.tiles.material)
 
     // Room (local glucose history)
     implementation(libs.room.runtime)

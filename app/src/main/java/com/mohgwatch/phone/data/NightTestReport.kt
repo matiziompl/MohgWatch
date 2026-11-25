@@ -1,7 +1,6 @@
 package com.mohgwatch.phone.data
 
 internal data class NightTestSample(
-    val startedWallMillis: Long,
     val startedElapsedMillis: Long,
     val endedElapsedMillis: Long,
     val events: List<DiagnosticEvent>,

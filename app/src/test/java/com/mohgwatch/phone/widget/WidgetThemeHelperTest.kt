@@ -21,7 +21,6 @@ class WidgetThemeHelperTest {
 
         for (theme in AppTheme.entries) {
             assertNotNull(WidgetThemeHelper.primary(theme))
-            assertNotNull(WidgetThemeHelper.activeSlot(theme))
         }
     }
 
@@ -36,7 +35,6 @@ class WidgetThemeHelperTest {
         val lowReading = GlucoseReading(
             value = 55f,
             trendArrow = TrendArrow.FALLING,
-            measurementColor = com.mohgwatch.core.model.MeasurementColor.LOW,
             timestamp = System.currentTimeMillis(),
             isHigh = false,
             isLow = true
@@ -44,7 +42,6 @@ class WidgetThemeHelperTest {
         val normalReading = GlucoseReading(
             value = 110f,
             trendArrow = TrendArrow.STABLE,
-            measurementColor = com.mohgwatch.core.model.MeasurementColor.IN_RANGE,
             timestamp = System.currentTimeMillis(),
             isHigh = false,
             isLow = false
@@ -52,7 +49,6 @@ class WidgetThemeHelperTest {
         val highReading = GlucoseReading(
             value = 190f,
             trendArrow = TrendArrow.RISING,
-            measurementColor = com.mohgwatch.core.model.MeasurementColor.HIGH,
             timestamp = System.currentTimeMillis(),
             isHigh = true,
             isLow = false
@@ -60,7 +56,6 @@ class WidgetThemeHelperTest {
         val veryHighReading = GlucoseReading(
             value = 280f,
             trendArrow = TrendArrow.RISING_FAST,
-            measurementColor = com.mohgwatch.core.model.MeasurementColor.VERY_HIGH,
             timestamp = System.currentTimeMillis(),
             isHigh = true,
             isLow = false

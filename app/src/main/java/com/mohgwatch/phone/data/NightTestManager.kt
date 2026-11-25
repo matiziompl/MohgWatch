@@ -4,16 +4,16 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.BatteryManager
 import android.os.Build
+import android.os.PowerManager
 import android.os.SystemClock
 import android.provider.Settings
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.mohgwatch.core.model.UserSettings
-import com.mohgwatch.phone.companion.CompanionIntegrationManager
-import com.mohgwatch.phone.companion.CompanionStatus
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CancellationException
@@ -26,10 +26,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -39,10 +37,8 @@ import java.io.File
 import java.time.ZoneId
 import java.util.UUID
 
-enum class NightTestMode { BASELINE, ASSOCIATED, OBSERVING, UNKNOWN }
 data class NightTestRun(
     val id: String,
-    val mode: NightTestMode,
     val startedAtMillis: Long,
     val startedElapsedMillis: Long = 0L,
     val bootCount: Int? = null,
@@ -65,7 +61,7 @@ data class NightTestRun(
 data class NightTestState(val ready: Boolean = false, val activeRun: NightTestRun? = null,
                           val lastReport: String? = null, val error: String? = null)
 
-internal data class NightTestConfiguration(val syncEnabled: Boolean, val fingerprint: String, val mode: NightTestMode,
+internal data class NightTestConfiguration(val syncEnabled: Boolean, val fingerprint: String,
     val batteryExempt: Boolean? = null, val backgroundDataStatus: String? = null)
 internal data class NightTestClocks(val wallMillis: Long, val elapsedMillis: Long, val bootCount: Int?)
 internal data class NightTestBattery(val percent: Int? = null, val plugged: Int? = null)
@@ -153,7 +149,7 @@ class NightTestManager internal constructor(
             return@action
         }
         val battery = environment.battery()
-        val run = NightTestRun(UUID.randomUUID().toString(), configuration.mode, clocks.wallMillis,
+        val run = NightTestRun(UUID.randomUUID().toString(), clocks.wallMillis,
             startedElapsedMillis = clocks.elapsedMillis, bootCount = clocks.bootCount,
             configurationFingerprint = configuration.fingerprint, batteryStart = battery.percent,
             pluggedAtStart = battery.plugged, batteryExemptAtStart = configuration.batteryExempt,
@@ -164,7 +160,7 @@ class NightTestManager internal constructor(
         preferences.save(NightTestStoredState(run, state.value.lastReport))
         mutableState.value = state.value.copy(ready = true, activeRun = run, error = null)
         environment.setActiveRun(run.id)
-        environment.record("NIGHT_TEST_START", "mode=${run.mode} boot=${run.bootCount} config=${run.configurationFingerprint}; " +
+        environment.record("NIGHT_TEST_START", "boot=${run.bootCount} config=${run.configurationFingerprint}; " +
             "batteryPercent=${run.batteryStart} plugged=${run.pluggedAtStart} batteryExempt=${run.batteryExemptAtStart} data=${run.backgroundDataAtStart}")
     }
 
@@ -216,7 +212,7 @@ class NightTestManager internal constructor(
         val report = buildString {
             appendLine("MohgWatch — pomiar nocny")
             appendLine("Id pomiaru: ${run.id}")
-            appendLine("Tryb: ${run.mode}; zakończenie: $reason")
+            appendLine("Zakończenie: $reason")
             appendLine("Początek: ${DiagnosticJournal.formatTime(run.startedAtMillis, run.startedZoneId)}")
             appendLine("Koniec: ${DiagnosticJournal.formatTime(clocks.wallMillis)}")
             appendLine("Uruchomienie telefonu: ${run.bootCount ?: "nieznane"} → ${clocks.bootCount ?: "nieznane"}; wznowiony proces: ${run.resumed}")
@@ -236,7 +232,7 @@ class NightTestManager internal constructor(
                 "błędy zapisu=${run.initialWriteFailures}→${window.writeFailures}")
             appendLine()
             if (comparable) {
-                append(NightTestReport.summarize(NightTestSample(run.startedAtMillis, run.startedElapsedMillis,
+                append(NightTestReport.summarize(NightTestSample(run.startedElapsedMillis,
                     clocks.elapsedMillis, window.events, incomplete)))
             } else {
                 appendLine("Kompletność: niepełna")
@@ -275,18 +271,10 @@ class NightTestManager internal constructor(
     }
 }
 
-internal fun nightTestConfiguration(settings: UserSettings, status: CompanionStatus): NightTestConfiguration {
+internal fun nightTestConfiguration(settings: UserSettings, batteryExempt: Boolean?, backgroundDataStatus: String?): NightTestConfiguration {
     val fingerprint = "sync=${settings.isSyncEnabled}; intervalMinutes=${settings.pollIntervalMinutes}; " +
-        "persistentWakeLock=${settings.persistentWakeLockEnabled}; staleMinutes=${settings.staleDataMinutes}; " +
-        "associations=[${status.associations.map { it.id }.sorted().joinToString(",")}]; " +
-        "selected=${status.selectedAssociationId}; observationRequested=${status.observationRequested}"
-    val mode = when {
-        !status.ready || !status.supported -> NightTestMode.UNKNOWN
-        status.associations.isEmpty() -> NightTestMode.BASELINE
-        status.observationRequested -> NightTestMode.OBSERVING
-        else -> NightTestMode.ASSOCIATED
-    }
-    return NightTestConfiguration(settings.isSyncEnabled, fingerprint, mode, status.batteryExempt, status.backgroundDataStatus)
+        "persistentWakeLock=${settings.persistentWakeLockEnabled}; staleMinutes=${settings.staleDataMinutes}"
+    return NightTestConfiguration(settings.isSyncEnabled, fingerprint, batteryExempt, backgroundDataStatus)
 }
 
 private class NightTestPreferenceStore(context: Context, scope: CoroutineScope) : NightTestPreferences {
@@ -311,12 +299,9 @@ private class NightTestPreferenceStore(context: Context, scope: CoroutineScope) 
 }
 
 private class AndroidNightTestEnvironment(private val context: Context) : NightTestEnvironment {
-    private val companion = CompanionIntegrationManager.get(context)
     private val settings = SettingsStore(context)
 
-    override val configurations = combine(settings.settingsFlow, companion.state) { settings, status -> settings to status }
-        .filter { it.second.ready }.map { (settings, status) -> nightTestConfiguration(settings, status) }
-        .distinctUntilChangedBy { it.fingerprint }
+    override val configurations = settings.settingsFlow.map(::configurationOf).distinctUntilChangedBy { it.fingerprint }
 
     override val batteries = callbackFlow {
         val receiver = object : BroadcastReceiver() {
@@ -331,10 +316,20 @@ private class AndroidNightTestEnvironment(private val context: Context) : NightT
         awaitClose { context.unregisterReceiver(receiver) }
     }.distinctUntilChanged()
 
-    override suspend fun configuration(): NightTestConfiguration {
-        companion.refresh()
-        return nightTestConfiguration(settings.getSettings(), companion.state.value)
-    }
+    override suspend fun configuration(): NightTestConfiguration = configurationOf(settings.getSettings())
+
+    private fun configurationOf(settings: UserSettings) = nightTestConfiguration(settings,
+        batteryExempt = runCatching {
+            context.getSystemService(PowerManager::class.java)?.isIgnoringBatteryOptimizations(context.packageName)
+        }.getOrNull(),
+        backgroundDataStatus = runCatching {
+            when (context.getSystemService(ConnectivityManager::class.java)?.restrictBackgroundStatus) {
+                ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED -> "DISABLED"
+                ConnectivityManager.RESTRICT_BACKGROUND_STATUS_WHITELISTED -> "WHITELISTED"
+                ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED -> "ENABLED"
+                else -> "UNKNOWN"
+            }
+        }.getOrNull())
 
     override fun clocks() = NightTestClocks(System.currentTimeMillis(), SystemClock.elapsedRealtime(), runCatching {
         Settings.Global.getInt(context.contentResolver, Settings.Global.BOOT_COUNT)

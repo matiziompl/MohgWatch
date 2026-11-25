@@ -18,7 +18,7 @@ object GlucoseFormatter {
 
     /** Formatuje wartość z jednostką */
     fun formatWithUnit(value: Float, unit: GlucoseUnit): String =
-        "${format(value, unit)} ${unit.shortLabel}"
+        "${format(value, unit)} ${unit.label}"
 
     /** Formatuje czas od ostatniego odczytu (po polsku) */
     fun formatMinutesAgo(minutes: Long): String = when {

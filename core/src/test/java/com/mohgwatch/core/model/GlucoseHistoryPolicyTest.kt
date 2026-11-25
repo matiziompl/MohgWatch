@@ -6,7 +6,7 @@ import org.junit.Test
 class GlucoseHistoryPolicyTest {
     private val now = 100_000_000L
     private fun reading(timestamp: Long, value: Float = 100f) =
-        GlucoseReading(value, TrendArrow.STABLE, MeasurementColor.IN_RANGE, timestamp, false, false)
+        GlucoseReading(value, TrendArrow.STABLE, timestamp, false, false)
 
     @Test fun deduplicatesTimestampsKeepingTheNewerValueAndSorts() {
         val merged = GlucoseHistoryPolicy.merge(

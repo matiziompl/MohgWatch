@@ -8,7 +8,7 @@ class WatchGlucoseNotificationPolicyTest {
     private val now = 2_000_000L
     private val settings = UserSettings(watchNotifyOutOfRange = true)
     private fun reading(value: Float = 240f, timestamp: Long = now - 1_000L) =
-        GlucoseReading(value, TrendArrow.STABLE, MeasurementColor.IN_RANGE, timestamp, false, false)
+        GlucoseReading(value, TrendArrow.STABLE, timestamp, false, false)
 
     @Test fun cardsRemainEnabledWhenBothDirectionalHapticsAreDisabled() {
         val quiet = settings.copy(alertLowHapticEnabled = false, alertHighHapticEnabled = false)

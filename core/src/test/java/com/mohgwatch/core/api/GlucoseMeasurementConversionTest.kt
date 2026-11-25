@@ -6,7 +6,7 @@ import org.junit.Test
 
 class GlucoseMeasurementConversionTest {
     private fun measurement(timestamp: String? = null, factory: String? = null) =
-        GlucoseMeasurement(100f, 100f, timestamp, factory, 3, 1)
+        GlucoseMeasurement(100f, 100f, timestamp, factory, 3)
 
     @Test fun `missing or invalid measurement time cannot become a fresh reading`() {
         assertNull(measurement().toGlucoseReading())

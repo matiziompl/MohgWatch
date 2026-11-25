@@ -9,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,15 +21,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mohgwatch.core.util.GlucoseFormatter
 import com.mohgwatch.phone.data.CredentialStore
+import com.mohgwatch.phone.data.NightTestManager
+import com.mohgwatch.phone.data.ReadinessIssue
 import com.mohgwatch.phone.data.SettingsStore
 import com.mohgwatch.phone.service.GlucoseSyncService
 import com.mohgwatch.phone.service.GlucoseSyncState
+import com.mohgwatch.phone.ui.components.StatusStrip
+import com.mohgwatch.phone.ui.components.nightTestTime
+import com.mohgwatch.phone.ui.components.rememberNightReadiness
+import com.mohgwatch.phone.ui.navigation.Screen
 import com.mohgwatch.phone.ui.theme.*
 import com.mohgwatch.phone.util.tr
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StatusScreen() {
+fun StatusScreen(onNavigate: (Screen) -> Unit) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val nightTests = remember(context) { NightTestManager.get(context) }
+    val nightTest by nightTests.state.collectAsState()
+    val readiness = rememberNightReadiness()
+    var refreshing by remember { mutableStateOf(false) }
     val settingsStore = remember { SettingsStore(context) }
     val credentialStore = remember { CredentialStore(context) }
     val settings by settingsStore.settingsFlow.collectAsState(initial = com.mohgwatch.core.model.UserSettings())
@@ -44,6 +61,18 @@ fun StatusScreen() {
     LaunchedEffect(Unit) {
         credentialsPresent = credentialStore.hasCredentials()
     }
+    LaunchedEffect(refreshing) {
+        if (!refreshing) return@LaunchedEffect
+        val syncBefore = GlucoseSyncState.lastSyncTimestamp.value
+        val errorBefore = GlucoseSyncState.lastError.value
+        GlucoseSyncService.refreshNow(context)
+        // Stop the indicator on the next result, success or a new error; never spin forever.
+        withTimeoutOrNull(20_000L) {
+            combine(GlucoseSyncState.lastSyncTimestamp, GlucoseSyncState.lastError) { sync, error -> sync to error }
+                .first { (sync, error) -> sync != syncBefore || (error != null && error != errorBefore) }
+        }
+        refreshing = false
+    }
 
     val compact = false
     val screenPaddingHorizontal = if (compact) 16.dp else 24.dp
@@ -51,6 +80,9 @@ fun StatusScreen() {
     val cardPadding = if (compact) 12.dp else 20.dp
     val cardSpacing = if (compact) 8.dp else 16.dp
 
+    // Refresh only fetches; it must never re-enable a sync the user turned off.
+    PullToRefreshBox(isRefreshing = refreshing, modifier = Modifier.fillMaxSize(),
+        onRefresh = { if (settings.isSyncEnabled && credentialsPresent) refreshing = true }) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,6 +97,22 @@ fun StatusScreen() {
                 color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(20.dp))
+        }
+
+        nightTest.activeRun?.let { run ->
+            StatusStrip(
+                tr("Pomiar nocny trwa od ${nightTestTime(run.startedAtMillis)}", "Night measurement since ${nightTestTime(run.startedAtMillis)}"),
+                tr("Zakończ", "Stop"), warning = false
+            ) { scope.launch { nightTests.stop() } }
+            Spacer(modifier = Modifier.height(cardSpacing))
+        }
+        if (readiness.issues.isNotEmpty() && settings.isSyncEnabled && credentialsPresent) {
+            StatusStrip(
+                if (ReadinessIssue.NIGHT_OUTAGE in readiness.issues) tr("W nocy nie było internetu", "No internet last night")
+                else tr("Telefon nie jest gotowy na noc", "Phone is not ready for the night"),
+                tr("Sprawdź", "Check"), warning = true
+            ) { onNavigate(Screen.SettingsSync) }
+            Spacer(modifier = Modifier.height(cardSpacing))
         }
 
         // Glucose display card (Card 1)
@@ -114,7 +162,7 @@ fun StatusScreen() {
                     }
 
                     Text(
-                        settings.unit.shortLabel,
+                        settings.unit.label,
                         style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -132,7 +180,7 @@ fun StatusScreen() {
                         color = MaterialTheme.colorScheme.outline
                     )
                     Text(
-                        settings.unit.shortLabel,
+                        settings.unit.label,
                         style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -263,28 +311,6 @@ fun StatusScreen() {
         }
 
         Spacer(modifier = Modifier.height(if (compact) 12.dp else 24.dp))
-
-        // Control buttons
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Button(
-                onClick = {
-                    GlucoseSyncService.forceSync(context)
-                },
-                modifier = Modifier.weight(1f).height(if (compact) 42.dp else 48.dp),
-                shape = RoundedCornerShape(12.dp),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen, contentColor = androidx.compose.ui.graphics.Color.White)
-            ) {
-                Icon(Icons.Filled.Sync, null, modifier = Modifier.size(18.dp))
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(tr("Synchronizuj", "Sync"), style = MaterialTheme.typography.bodyMedium)
-            }
-        }
-        
-        Spacer(modifier = Modifier.height(if (compact) 8.dp else 12.dp))
         Button(
             onClick = { GlucoseSyncService.clearNotifications(context) },
             modifier = Modifier.fillMaxWidth().height(if (compact) 36.dp else 40.dp),
@@ -295,5 +321,6 @@ fun StatusScreen() {
         ) {
             Text("Przerwij wszystkie alerty", fontSize = if (compact) 14.sp else 16.sp)
         }
+    }
     }
 }

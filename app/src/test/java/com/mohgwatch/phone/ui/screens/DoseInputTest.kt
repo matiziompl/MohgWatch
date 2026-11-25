@@ -5,6 +5,8 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class DoseInputTest {
+    private val DoseInputState.storedValue get() = text?.let(DoseInputFormatter::forStorage)
+
     @Test fun storageKeepsOneUnitAndAcceptsDotCommaAndWhitespace() {
         val cases = listOf(
             "1" to "1j", "11.1" to "11,1j", "1.1" to "1,1j",

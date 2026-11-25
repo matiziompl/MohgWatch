@@ -49,14 +49,12 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons)
     implementation(libs.compose.runtime)
-    debugImplementation(libs.compose.ui.tooling)
 
     // AndroidX
     implementation(libs.activity.compose)
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.core.ktx)
-    implementation(libs.appcompat)
 
     // Wear OS Data Layer
     implementation(libs.play.services.wearable)
@@ -72,7 +70,6 @@ dependencies {
 
     // Widgets (Glance)
     implementation(libs.glance.appwidget)
-    implementation(libs.glance.material3)
 
     // Networking (for API calls from phone)
     implementation(libs.retrofit)

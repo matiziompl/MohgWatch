@@ -6,7 +6,7 @@ import org.junit.Test
 class TrendHapticsTest {
     private val now = 1_000_000L
     private fun reading(trend: TrendArrow, timestamp: Long = now, value: Float = 120f) = GlucoseReading(
-        value = value, trendArrow = trend, measurementColor = MeasurementColor.IN_RANGE,
+        value = value, trendArrow = trend,
         timestamp = timestamp, isHigh = false, isLow = false
     )
 
@@ -55,11 +55,8 @@ class TrendHapticsTest {
         assertTrue(TrendHaptics.isAlertEnabled(settings.copy(trendStableEnabled = true), "STABLE"))
     }
 
-    @Test fun diabetesSettingsThresholdsAreIndependentOfWatchColors() {
-        val settings = UserSettings(
-            lowThreshold = 80f, highThreshold = 160f,
-            watchLowThreshold = 40f, watchHighThreshold = 300f
-        )
+    @Test fun diabetesSettingsThresholdsDriveAlerts() {
+        val settings = UserSettings(lowThreshold = 80f, highThreshold = 160f)
         assertEquals(TrendDirection.FALLING, TrendHaptics.nextDirection(reading(TrendArrow.RISING, value = 79f), null, now, settings))
         assertEquals(TrendDirection.RISING, TrendHaptics.nextDirection(reading(TrendArrow.FALLING, value = 161f), null, now, settings))
         assertNull(TrendHaptics.nextDirection(reading(TrendArrow.FALLING, value = 80f), null, now, settings))

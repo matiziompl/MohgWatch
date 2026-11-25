@@ -85,12 +85,6 @@ fun SettingsThemeScreen(
                                             val newSettings = settings.copy(language = code)
                                             settingsStore.saveSettings(newSettings)
                                             dataLayerSender.sendSettings(newSettings)
-                                            val appLocale = if (code == "system") {
-                                                androidx.core.os.LocaleListCompat.getEmptyLocaleList()
-                                            } else {
-                                                androidx.core.os.LocaleListCompat.forLanguageTags(code)
-                                            }
-                                            androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(appLocale)
                                         }
                                     },
                                     label = { Text(label) },

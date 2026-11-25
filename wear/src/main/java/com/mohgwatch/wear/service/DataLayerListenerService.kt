@@ -63,9 +63,7 @@ class DataLayerListenerService : WearableListenerService() {
                     DataLayerPaths.GLUCOSE_HISTORY -> handleGlucoseHistory(event)
                     DataLayerPaths.SETTINGS -> handleSettings(event)
                     DataLayerPaths.CONNECTION_STATUS -> handleConnectionStatus(event)
-                    DataLayerPaths.STALE_DATA_ALERT -> handleStaleDataAlert()
                     DataLayerPaths.HAPTIC_ALERT -> handleHapticAlert(event)
-                    DataLayerPaths.REQUEST_WRIST_CHECK -> WristDetectionManager.requestStatusUpdate(notify = true)
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Błąd przetwarzania zdarzenia Data Layer: $path", e)
@@ -79,9 +77,6 @@ class DataLayerListenerService : WearableListenerService() {
         val reading = GlucoseReading(
             value = dataMap.getFloat(DataLayerPaths.Keys.GLUCOSE_VALUE),
             trendArrow = TrendArrow.fromApiValue(dataMap.getInt(DataLayerPaths.Keys.TREND_ARROW)),
-            measurementColor = MeasurementColor.fromApiValue(
-                dataMap.getInt(DataLayerPaths.Keys.MEASUREMENT_COLOR)
-            ),
             timestamp = dataMap.getLong(DataLayerPaths.Keys.TIMESTAMP),
             isHigh = dataMap.getBoolean(DataLayerPaths.Keys.IS_HIGH),
             isLow = dataMap.getBoolean(DataLayerPaths.Keys.IS_LOW)
@@ -106,7 +101,6 @@ class DataLayerListenerService : WearableListenerService() {
         val values = dataMap.getFloatArray(DataLayerPaths.Keys.HISTORY_VALUES) ?: return
         val timestamps = dataMap.getLongArray(DataLayerPaths.Keys.HISTORY_TIMESTAMPS) ?: return
         val trends = dataMap.getIntegerArrayList(DataLayerPaths.Keys.HISTORY_TRENDS) ?: return
-        val colors = dataMap.getIntegerArrayList(DataLayerPaths.Keys.HISTORY_COLORS) ?: return
         if (values.size != timestamps.size) {
             Log.w(TAG, "Pomijam historię z różną liczbą wartości i znaczników czasu")
             return
@@ -116,7 +110,6 @@ class DataLayerListenerService : WearableListenerService() {
             GlucoseReading(
                 value = values[i],
                 trendArrow = TrendArrow.fromApiValue(trends.getOrElse(i) { 0 }),
-                measurementColor = MeasurementColor.fromApiValue(colors.getOrElse(i) { 0 }),
                 timestamp = timestamps[i],
                 isHigh = values[i] > 180f,
                 isLow = values[i] < 70f
@@ -202,10 +195,6 @@ class DataLayerListenerService : WearableListenerService() {
         } catch (e: Exception) {
             Log.e(TAG, "Błąd aktualizacji kafelków (Tile)", e)
         }
-    }
-
-    private fun handleStaleDataAlert() {
-        scope.launch { WatchStaleDataMonitor.refresh(this@DataLayerListenerService) }
     }
 
     private fun handleHapticAlert(event: DataEvent) {

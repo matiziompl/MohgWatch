@@ -132,7 +132,7 @@ fun MohgWatchNavigation() {
         NavHost(navController = navController, startDestination = Screen.Status.route,
             modifier = Modifier.padding(padding)) {
             composable(Screen.Login.route) { LoginScreen(onLoginSuccess = { navController.popBackStack() }) }
-            composable(Screen.Status.route) { StatusScreen() }
+            composable(Screen.Status.route) { StatusScreen(onNavigate) }
             composable(Screen.Settings.route) { SettingsScreen(onNavigate) }
             composable(Screen.SettingsNotifications.route) { NotificationsMenuScreen(onNavigate) }
             composable(Screen.Logs.route) { LogsScreen(onBack) }
@@ -145,17 +145,8 @@ fun MohgWatchNavigation() {
             }
             composable(Screen.SettingsTheme.route) { SettingsThemeScreen(AppearanceSettingsSection.PHONE, onBack) }
             composable(Screen.SettingsWidgets.route) { SettingsThemeScreen(AppearanceSettingsSection.WIDGETS, onBack) }
-            composable(Screen.SettingsGeneral.route) { SettingsGeneralScreen(onBack, GeneralSettingsSection.BACKGROUND) }
-            composable(Screen.SettingsSync.route) {
-                SettingsGeneralScreen(onBack, GeneralSettingsSection.SYNC,
-                    onNavigateToCompanion = { onNavigate(Screen.SettingsCompanion) })
-            }
-            composable(Screen.SettingsCompanion.route) {
-                SettingsCompanionScreen(onBack = onBack,
-                    onOpenLogs = { onNavigate(Screen.Logs) },
-                    onOpenBatterySettings = { onNavigate(Screen.SettingsGeneral) })
-            }
-            composable(Screen.SettingsNotificationTests.route) { NotificationTestsMenuScreen(onBack, onNavigate) }
+            composable(Screen.SettingsSync.route) { SettingsSyncScreen(onBack) }
+            composable(Screen.Diagnostics.route) { DiagnosticsMenuScreen(onBack, onNavigate) }
             listOf(
                 Screen.SettingsTestSounds to NotificationTestSection.SOUNDS,
                 Screen.SettingsTestWatch to NotificationTestSection.WATCH,

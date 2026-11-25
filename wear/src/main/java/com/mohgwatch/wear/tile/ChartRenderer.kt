@@ -58,7 +58,6 @@ object ChartRenderer {
 
         // Sztywny zakres (0-300)
         val minVal = 0f
-        val maxVal = 300f
         val valRange = 300f
 
         val safeZoneColor = Color.argb(60, 16, 185, 129) // Green with alpha

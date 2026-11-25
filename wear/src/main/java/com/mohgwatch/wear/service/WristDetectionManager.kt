@@ -122,16 +122,7 @@ object WristDetectionManager {
         scope.launch {
             try {
                 val request = PutDataMapRequest.create(DataLayerPaths.WRIST_STATUS).apply {
-                    dataMap.putBoolean(DataLayerPaths.Keys.IS_WORN, isWorn)
                     dataMap.putFloat(DataLayerPaths.Keys.SENSOR_VALUE, sensorValue)
-                    dataMap.putString(
-                        DataLayerPaths.Keys.SENSOR_STATUS_TEXT,
-                        when {
-                            sensorValue < 0f -> "Brak odczytu czujnika nadgarstka"
-                            isWorn -> "Na ręku (kontakt ze skórą)"
-                            else -> "Zdjęty z ręki (brak kontaktu)"
-                        }
-                    )
                     dataMap.putLong(DataLayerPaths.Keys.TIMESTAMP, System.currentTimeMillis())
                     dataMap.putString(DataLayerPaths.Keys.UPDATE_ID, UUID.randomUUID().toString())
                 }.asPutDataRequest().setUrgent()

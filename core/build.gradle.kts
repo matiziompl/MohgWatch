@@ -33,7 +33,6 @@ android {
 
 dependencies {
     // Kotlin
-    implementation(libs.kotlin.stdlib)
     implementation(libs.kotlin.coroutines.core)
 
     // Networking
@@ -41,7 +40,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
     implementation(libs.moshi)
-    implementation(libs.moshi.kotlin)
     ksp(libs.moshi.codegen)
 
     // Testing

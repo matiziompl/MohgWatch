@@ -4,7 +4,7 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class NightTestPolicyTest {
-    private val configuration = "sync=true; intervalMinutes=5; persistentWakeLock=false; staleMinutes=15; cdm=false"
+    private val configuration = "sync=true; intervalMinutes=5; persistentWakeLock=false; staleMinutes=15"
 
     @Test fun processRestartOnSameBootAndConfigurationContinuesTheTest() {
         assertNull(NightTestPolicy.interruptionReason(12, 12, configuration, configuration))
@@ -13,7 +13,7 @@ class NightTestPolicyTest {
     @Test fun configurationChangeOnSameBootInterruptsTheTest() {
         assertEquals(
             "INTERRUPTED_CONFIGURATION_CHANGE",
-            NightTestPolicy.interruptionReason(12, 12, configuration, "$configuration; cdmAssociation=8")
+            NightTestPolicy.interruptionReason(12, 12, configuration, configuration.replace("intervalMinutes=5", "intervalMinutes=1"))
         )
     }
 

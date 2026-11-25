@@ -4,7 +4,6 @@ import com.mohgwatch.core.model.WristStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 
 object WatchState {
-    val isWornOnWrist = MutableStateFlow(false)
     val lastUpdateTimestamp = MutableStateFlow(0L)
     val wristStatus = MutableStateFlow(WristStatus.UNKNOWN)
 

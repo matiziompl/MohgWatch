@@ -4,7 +4,6 @@ import com.mohgwatch.core.api.dto.*
 import com.mohgwatch.core.model.*
 import com.mohgwatch.core.util.TimestampParser
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.CancellationException
 import okhttp3.Interceptor
@@ -52,7 +51,6 @@ class LibreLinkUpClient(private val diagnostic: (String, String) -> Unit = { _, 
 
     private val moshi: Moshi = Moshi.Builder()
         .add(LoginResponseAdapterFactory)
-        .addLast(KotlinJsonAdapterFactory())
         .build()
 
     /** Interceptor dodający wymagane nagłówki do wszystkich requestów */
@@ -365,8 +363,7 @@ internal fun GlucoseMeasurement.toGlucoseReading(): GlucoseReading? {
 
     return GlucoseReading(
         value = valueInMgPerDl,
-        trendArrow = TrendArrow.fromApiValue(trendArrow),
-        measurementColor = MeasurementColor.fromApiValue(measurementColor),
+        trendArrow = trendArrow?.let(TrendArrow::fromApiValue) ?: TrendArrow.UNKNOWN,
         timestamp = parsedTimestamp,
         isHigh = isHigh,
         isLow = isLow

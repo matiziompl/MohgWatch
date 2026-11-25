@@ -129,7 +129,7 @@ fun WearAppScreen(repository: GlucoseRepository) {
                 }
 
                 Text(
-                    text = if (isFresh) "${settings.unit.shortLabel} • ${GlucoseFormatter.formatMinutesAgo((now - reading.timestamp) / 60_000L)}"
+                    text = if (isFresh) "${settings.unit.label} • ${GlucoseFormatter.formatMinutesAgo((now - reading.timestamp) / 60_000L)}"
                         else "Dane przeterminowane (${settings.staleAfterMillis / 60_000L} min)",
                     fontSize = 11.sp,
                     color = Color(0xFF94A3B8)

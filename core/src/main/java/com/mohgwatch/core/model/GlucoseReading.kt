@@ -5,7 +5,6 @@ package com.mohgwatch.core.model
  *
  * @property value Wartość glukozy w mg/dL
  * @property trendArrow Kierunek trendu (rosnący/malejący/stabilny)
- * @property measurementColor Kolor zakresu (norma/wysoki/niski)
  * @property timestamp Czas odczytu w Unix millis
  * @property isHigh Czy wartość jest powyżej normy
  * @property isLow Czy wartość jest poniżej normy
@@ -13,7 +12,6 @@ package com.mohgwatch.core.model
 data class GlucoseReading(
     val value: Float,
     val trendArrow: TrendArrow,
-    val measurementColor: MeasurementColor,
     val timestamp: Long,
     val isHigh: Boolean,
     val isLow: Boolean

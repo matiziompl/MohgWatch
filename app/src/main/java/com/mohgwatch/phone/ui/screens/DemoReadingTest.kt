@@ -8,7 +8,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.glance.appwidget.updateAll
 import com.mohgwatch.core.model.GlucoseReading
-import com.mohgwatch.core.model.MeasurementColor
 import com.mohgwatch.core.model.TrendArrow
 import com.mohgwatch.core.model.UserSettings
 import com.mohgwatch.phone.data.SettingsStore
@@ -73,12 +72,6 @@ internal fun DemoReadingTest() {
                 val mockReading = GlucoseReading(
                     value = mockValue,
                     trendArrow = TrendArrow.entries.filter { it != TrendArrow.UNKNOWN }.random(),
-                    measurementColor = when {
-                        mockValue < settings.lowThreshold -> MeasurementColor.LOW
-                        mockValue > settings.veryHighThreshold -> MeasurementColor.VERY_HIGH
-                        mockValue > settings.highThreshold -> MeasurementColor.HIGH
-                        else -> MeasurementColor.IN_RANGE
-                    },
                     timestamp = System.currentTimeMillis(),
                     isHigh = mockValue > settings.highThreshold,
                     isLow = mockValue < settings.lowThreshold
@@ -89,7 +82,6 @@ internal fun DemoReadingTest() {
                     GlucoseReading(
                         value = Random.nextInt(80, 170).toFloat(),
                         trendArrow = TrendArrow.STABLE,
-                        measurementColor = MeasurementColor.IN_RANGE,
                         timestamp = System.currentTimeMillis() - index * 15 * 60_000L,
                         isHigh = false,
                         isLow = false

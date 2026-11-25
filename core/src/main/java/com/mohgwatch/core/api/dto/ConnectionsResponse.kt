@@ -12,11 +12,6 @@ data class ConnectionsResponse(
 @JsonClass(generateAdapter = true)
 data class Connection(
     val patientId: String,
-    val firstName: String? = null,
-    val lastName: String? = null,
-    val targetLow: Int? = null,
-    val targetHigh: Int? = null,
-    val uom: Int? = 0,
     val glucoseMeasurement: GlucoseMeasurement? = null
 )
 
@@ -26,9 +21,8 @@ data class GlucoseMeasurement(
     @Json(name = "ValueInMgPerDl") val valueInMgPerDl: Float,
     @Json(name = "Timestamp") val timestamp: String? = null,
     @Json(name = "FactoryTimestamp") val factoryTimestamp: String? = null,
-    @Json(name = "TrendArrow") val trendArrow: Int,
-    @Json(name = "MeasurementColor") val measurementColor: Int,
-    @Json(name = "GlucoseUnits") val glucoseUnits: Int? = null,
+    // Graph points omit TrendArrow; only the current measurement carries it.
+    @Json(name = "TrendArrow") val trendArrow: Int? = null,
     @Json(name = "isHigh") val isHigh: Boolean = false,
     @Json(name = "isLow") val isLow: Boolean = false
 )
