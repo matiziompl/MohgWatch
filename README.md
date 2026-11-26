@@ -9,6 +9,7 @@ MohgWatch to rozbudowana, nowoczesna aplikacja na telefon i zegarek z Wear OS dl
 - **Alarmy glukozy**: dźwięk alarmu przy glukozie poza progami, zależnie od ustawień powiadomień Androida i trybu Nie przeszkadzać.
 - **Wibracje progowe**: alarmy niskiej i wysokiej glukozy korzystają z progów z ustawień **Glukoza i progi**. Opcjonalna wibracja powrotu sygnalizuje powrót do zakresu; zmiany strzałki trendu nie wywołują wibracji. Dotychczas wybrane wzorce zostają zachowane.
 - **Diagnostyka**: **Ustawienia → Logi i diagnostyka** udostępnia krótki raport do skopiowania oraz pełne logi udostępniane przez Androida. Można filtrować po czasie, kategorii zdarzeń, błędach oraz identyfikatorze cyklu lub testu nocnego. Lokalna diagnostyka przetrwa restart procesu, z limitem 7 dni / 8 MiB.
+- **Wyciszanie alarmów**: przycisk nad „Przerwij wszystkie alerty” na ekranie Status wycisza alarmy niskiego i wysokiego cukru na telefonie i zegarku na 1–30 minut. Czas ustawia się suwakiem w **Glukoza i progi**; wartość 0 ukrywa przycisk. Wyciszenie można anulować tym samym przyciskiem. Przycisk „Przerwij wszystkie alerty” można ukryć w **Ustawienia → Wygląd → Status**, gdzie jest też opcja ukrycia nagłówka. Jeśli po jego zakończeniu cukier nadal jest poza zakresem, alarm włącza się przy następnym odczycie. Alarmy rozłączenia i braku danych nie są wyciszane.
 - **Gotowość na noc**: aplikacja sprawdza wyjątek baterii, dokładne wybudzenia i powiadomienia, a na telefonach OnePlus/OPPO/realme prowadzi ręczną listę ustawień producenta. Wykrywa też dłuższy brak internetu w nocy i pokazuje ostrzeżenie na ekranie Status.
 - **Świeżość danych**: limit wieku pomiaru domyślnie wynosi 10 minut i można go ustawić w zakresie od 1 do 60 minut w **Powiadomienia → Brak danych i rozłączenia**. Przeterminowane komplikacje pokazują `- -`; lokalny alarm na zegarku ostrzega, gdy aktualizacje ustają.
 - **Wielojęzyczność**: obsługa języka angielskiego i polskiego.
@@ -60,4 +61,4 @@ Sesje pomiarowe nie są dołączane do przenośnego eksportu ustawień ani wysy�
 ---
 Zbudowano w Jetpack Compose.
 
-Wersja aplikacji: v1.9
+Wersja aplikacji: v1.11

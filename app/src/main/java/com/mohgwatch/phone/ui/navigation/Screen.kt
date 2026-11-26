@@ -21,6 +21,7 @@ sealed class Screen(val route: String, val tab: NavigationTab? = NavigationTab.S
     data object SettingsSync : Screen("settings/sync")
     data object SettingsTheme : Screen("settings/theme")
     data object SettingsWidgets : Screen("settings/widgets")
+    data object SettingsStatus : Screen("settings/status")
     data object SettingsAccount : Screen("settings/account")
     data object Logs : Screen("settings/logs")
     data object Diagnostics : Screen("settings/diagnostics")
@@ -32,7 +33,7 @@ sealed class Screen(val route: String, val tab: NavigationTab? = NavigationTab.S
         val notificationPages: List<Screen> get() = listOf(NotificationGlucose, NotificationHaptics,
             NotificationSounds, NotificationNight, NotificationConnection, NotificationWrist)
         val settingsPages: List<Screen> get() = listOf(SettingsDiabetes, SettingsDoses, SettingsSync,
-            SettingsTheme, SettingsWidgets, SettingsAccount, Logs, Diagnostics)
+            SettingsTheme, SettingsWidgets, SettingsStatus, SettingsAccount, Logs, Diagnostics)
         val testPages: List<Screen> get() = listOf(SettingsTestSounds, SettingsTestWatch, SettingsTestSimulation)
         val all: List<Screen> get() = listOf(Login, Status, Settings, SettingsNotifications) +
             notificationPages + settingsPages + testPages

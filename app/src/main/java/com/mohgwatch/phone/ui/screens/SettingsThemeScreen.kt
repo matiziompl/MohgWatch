@@ -35,7 +35,7 @@ data class ColorOption(
     val color: Color
 )
 
-enum class AppearanceSettingsSection { PHONE, WIDGETS }
+enum class AppearanceSettingsSection { PHONE, WIDGETS, STATUS }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,6 +56,7 @@ fun SettingsThemeScreen(
     val title = when (section) {
         AppearanceSettingsSection.PHONE -> tr("Wygląd telefonu", "Phone appearance")
         AppearanceSettingsSection.WIDGETS -> tr("Widżety", "Widgets")
+        AppearanceSettingsSection.STATUS -> tr("Ekran Status", "Status screen")
     }
 
     SettingsPage(title = title, onBack = onBack) {
@@ -217,32 +218,27 @@ fun SettingsThemeScreen(
                         }
                     }
                 }
+            }
+            AppearanceSettingsSection.STATUS -> {
                 Card(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text("Usuń nagłówek z zakładki status", style = MaterialTheme.typography.titleMedium)
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    "Ukrywa tytuł 'Status Glukozy' i dopasowuje układ, aby wszystko mieściło się na ekranie bez przewijania",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Switch(
-                                checked = settings.hideStatusHeader,
-                                onCheckedChange = { checked ->
-                                    scope.launch {
-                                        val newSettings = settings.copy(hideStatusHeader = checked)
-                                        settingsStore.saveSettings(newSettings)
-                                    }
-                                }
-                            )
-                        }
+                        StatusToggle(
+                            title = tr("Usuń nagłówek z zakładki Status", "Hide Status tab header"),
+                            description = tr("Ukrywa tytuł 'Status Glukozy' i dopasowuje układ, aby wszystko mieściło się na ekranie bez przewijania",
+                                "Hides the 'Glucose Status' title so everything fits on screen without scrolling"),
+                            checked = settings.hideStatusHeader
+                        ) { checked -> scope.launch { settingsStore.saveSettings(settings.copy(hideStatusHeader = checked)) } }
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+                        StatusToggle(
+                            title = tr("Ukryj przycisk „Przerwij wszystkie alerty”", "Hide “Stop all alerts” button"),
+                            description = tr("Przycisk usuwa wszystkie powiadomienia i zatrzymuje dźwięk, także alarmy rozłączenia i braku danych, których wyciszanie nie obejmuje",
+                                "The button clears all notifications and stops sound, including disconnection and missing-data alarms that snoozing does not cover"),
+                            checked = settings.hideClearAlertsButton
+                        ) { checked -> scope.launch { settingsStore.saveSettings(settings.copy(hideClearAlertsButton = checked)) } }
                     }
                 }
             }
@@ -345,6 +341,18 @@ fun SettingsThemeScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun StatusToggle(title: String, description: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
     }
 }
 

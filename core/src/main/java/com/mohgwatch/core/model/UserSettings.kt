@@ -93,6 +93,7 @@ data class UserSettings(
     val widgetGlucoseColor: String = "by_range",
     val colorPickerStyle: String = "list",
     val hideStatusHeader: Boolean = false,
+    val hideClearAlertsButton: Boolean = false,
     val mutePhoneWhenWatchConnected: Boolean = true,
     val isSyncEnabled: Boolean = true,
     val showWristStatusInNotification: Boolean = true,

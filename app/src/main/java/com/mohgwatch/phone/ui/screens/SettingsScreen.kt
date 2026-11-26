@@ -34,8 +34,9 @@ fun SettingsScreen(onNavigate: (Screen) -> Unit) {
         MenuGroup(tr("Działanie w tle", "Background"), listOf(
             MenuDestination(Screen.SettingsSync, tr("Synchronizacja i bateria", "Sync and battery"), tr("Interwał, gotowość na noc i uprawnienia Androida", "Interval, night readiness and Android permissions"), Icons.Filled.Sync))),
         MenuGroup(tr("Wygląd", "Appearance"), listOf(
-            MenuDestination(Screen.SettingsTheme, tr("Telefon", "Phone"), tr("Język, motyw, kolory i ekran Status", "Language, theme, colors and Status screen"), Icons.Filled.Palette),
-            MenuDestination(Screen.SettingsWidgets, tr("Widżety", "Widgets"), tr("Kolory widżetów i wartości glukozy", "Widget and glucose colors"), Icons.Filled.Widgets))),
+            MenuDestination(Screen.SettingsTheme, tr("Telefon", "Phone"), tr("Język, motyw i kolory", "Language, theme and colors"), Icons.Filled.Palette),
+            MenuDestination(Screen.SettingsWidgets, tr("Widżety", "Widgets"), tr("Kolory widżetów i wartości glukozy", "Widget and glucose colors"), Icons.Filled.Widgets),
+            MenuDestination(Screen.SettingsStatus, tr("Status", "Status"), tr("Nagłówek i przyciski ekranu Status", "Status screen header and buttons"), Icons.Filled.Dashboard))),
         MenuGroup(tr("Konto", "Account"), listOf(
             MenuDestination(Screen.SettingsAccount, tr("Profil", "Profile"), tr("Konto LibreLinkUp, eksport i import ustawień", "LibreLinkUp account, settings export and import"), Icons.Filled.Person))),
         MenuGroup(tr("Diagnostyka", "Diagnostics"), listOf(

@@ -60,6 +60,7 @@ class SettingsStore(private val context: Context) {
         val WIDGET_GLUCOSE_COLOR = stringPreferencesKey("widget_glucose_color")
         val COLOR_PICKER_STYLE = stringPreferencesKey("color_picker_style")
         val HIDE_STATUS_HEADER = booleanPreferencesKey("hide_status_header")
+        val HIDE_CLEAR_ALERTS_BUTTON = booleanPreferencesKey("hide_clear_alerts_button")
         val MUTE_PHONE_WHEN_WATCH_CONNECTED = booleanPreferencesKey("mute_phone_when_watch_connected")
         val IS_SYNC_ENABLED = booleanPreferencesKey("is_sync_enabled")
         val SHOW_WRIST_STATUS_IN_NOTIFICATION = booleanPreferencesKey("show_wrist_status_in_notification")
@@ -123,6 +124,7 @@ class SettingsStore(private val context: Context) {
             widgetGlucoseColor = prefs[Keys.WIDGET_GLUCOSE_COLOR] ?: "by_range",
             colorPickerStyle = prefs[Keys.COLOR_PICKER_STYLE] ?: "list",
             hideStatusHeader = prefs[Keys.HIDE_STATUS_HEADER] ?: false,
+            hideClearAlertsButton = prefs[Keys.HIDE_CLEAR_ALERTS_BUTTON] ?: false,
             mutePhoneWhenWatchConnected = prefs[Keys.MUTE_PHONE_WHEN_WATCH_CONNECTED] ?: true,
             isSyncEnabled = prefs[Keys.IS_SYNC_ENABLED] ?: true,
             showWristStatusInNotification = prefs[Keys.SHOW_WRIST_STATUS_IN_NOTIFICATION] ?: true,
@@ -183,6 +185,7 @@ class SettingsStore(private val context: Context) {
             prefs[Keys.WIDGET_GLUCOSE_COLOR] = settings.widgetGlucoseColor
             prefs[Keys.COLOR_PICKER_STYLE] = settings.colorPickerStyle
             prefs[Keys.HIDE_STATUS_HEADER] = settings.hideStatusHeader
+            prefs[Keys.HIDE_CLEAR_ALERTS_BUTTON] = settings.hideClearAlertsButton
             prefs[Keys.MUTE_PHONE_WHEN_WATCH_CONNECTED] = settings.mutePhoneWhenWatchConnected
             prefs[Keys.IS_SYNC_ENABLED] = settings.isSyncEnabled
             prefs[Keys.SHOW_WRIST_STATUS_IN_NOTIFICATION] = settings.showWristStatusInNotification

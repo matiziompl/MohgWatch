@@ -39,6 +39,7 @@ fun SettingsDiabetesScreen(onBack: () -> Unit, section: DiabetesSettingsSection 
     var unit by remember(settings) { mutableStateOf(settings.unit) }
     var lowThreshold by remember(settings) { mutableFloatStateOf(settings.lowThreshold) }
     var highThreshold by remember(settings) { mutableFloatStateOf(settings.highThreshold) }
+    var snoozeMinutes by remember(settings) { mutableFloatStateOf(settings.alertSnoozeMinutes.toFloat()) }
 
     com.mohgwatch.phone.ui.components.SettingsPage(
         title = if (section == DiabetesSettingsSection.GLUCOSE) "Glukoza i progi" else "Dawki i miejsca wkłuć",
@@ -126,6 +127,38 @@ fun SettingsDiabetesScreen(onBack: () -> Unit, section: DiabetesSettingsSection 
                         valueRange = 120f..300f,
                         steps = 35,
                         colors = SliderDefaults.colors(thumbColor = GlucoseHigh, activeTrackColor = GlucoseHigh)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Wyciszanie alarmów", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                        Text(if (snoozeMinutes.roundToInt() == 0) "Wyłączone" else "${snoozeMinutes.roundToInt()} min",
+                            fontWeight = FontWeight.Bold)
+                    }
+                    Text(
+                        "Przycisk na ekranie Status wycisza alarmy niskiego i wysokiego cukru na telefonie i zegarku na wybrany czas. 0 ukrywa przycisk.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Slider(
+                        value = snoozeMinutes,
+                        onValueChange = { snoozeMinutes = it },
+                        onValueChangeFinished = {
+                            scope.launch {
+                                // Fresh settings avoid overwriting a change made on another screen meanwhile.
+                                settingsStore.saveSettings(settingsStore.getSettings().copy(alertSnoozeMinutes = snoozeMinutes.roundToInt()))
+                            }
+                        },
+                        valueRange = 0f..30f,
+                        steps = 29
                     )
                 }
             }

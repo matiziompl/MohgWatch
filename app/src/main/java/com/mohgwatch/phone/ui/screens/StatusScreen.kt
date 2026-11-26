@@ -46,6 +46,17 @@ fun StatusScreen(onNavigate: (Screen) -> Unit) {
     val nightTest by nightTests.state.collectAsState()
     val readiness = rememberNightReadiness()
     var refreshing by remember { mutableStateOf(false) }
+    val snoozeUntil by remember(context) { com.mohgwatch.phone.service.AlertSnooze.until(context) }.collectAsState()
+    var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    LaunchedEffect(snoozeUntil) {
+        // Tick only while a snooze runs, so the button returns on time.
+        while (true) {
+            now = System.currentTimeMillis()
+            if (now >= (snoozeUntil ?: 0L)) break
+            kotlinx.coroutines.delay(15_000L)
+        }
+    }
+    val snoozeActive = com.mohgwatch.phone.service.AlertSnoozePolicy.isActive(snoozeUntil ?: 0L, now)
     val settingsStore = remember { SettingsStore(context) }
     val credentialStore = remember { CredentialStore(context) }
     val settings by settingsStore.settingsFlow.collectAsState(initial = com.mohgwatch.core.model.UserSettings())
@@ -311,7 +322,36 @@ fun StatusScreen(onNavigate: (Screen) -> Unit) {
         }
 
         Spacer(modifier = Modifier.height(if (compact) 12.dp else 24.dp))
-        Button(
+        if (snoozeActive) {
+            FilledTonalButton(
+                onClick = { GlucoseSyncService.cancelSnooze(context) },
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.filledTonalButtonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            ) {
+                Icon(Icons.Filled.NotificationsOff, null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(tr("Wyciszone do ${nightTestTime(snoozeUntil ?: 0L)} · Wyłącz wyciszenie",
+                    "Snoozed until ${nightTestTime(snoozeUntil ?: 0L)} · Cancel snooze"))
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+        } else if (settings.alertSnoozeMinutes > 0) {
+            FilledTonalButton(
+                onClick = { GlucoseSyncService.snoozeAlerts(context, settings.alertSnoozeMinutes) },
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(Icons.Filled.NotificationsPaused, null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(tr("Wycisz powiadomienia na ${settings.alertSnoozeMinutes} min",
+                    "Snooze alerts for ${settings.alertSnoozeMinutes} min"))
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+        if (!settings.hideClearAlertsButton) Button(
             onClick = { GlucoseSyncService.clearNotifications(context) },
             modifier = Modifier.fillMaxWidth().height(if (compact) 36.dp else 40.dp),
             contentPadding = PaddingValues(0.dp),

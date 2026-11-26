@@ -145,6 +145,7 @@ fun MohgWatchNavigation() {
             }
             composable(Screen.SettingsTheme.route) { SettingsThemeScreen(AppearanceSettingsSection.PHONE, onBack) }
             composable(Screen.SettingsWidgets.route) { SettingsThemeScreen(AppearanceSettingsSection.WIDGETS, onBack) }
+            composable(Screen.SettingsStatus.route) { SettingsThemeScreen(AppearanceSettingsSection.STATUS, onBack) }
             composable(Screen.SettingsSync.route) { SettingsSyncScreen(onBack) }
             composable(Screen.Diagnostics.route) { DiagnosticsMenuScreen(onBack, onNavigate) }
             listOf(

@@ -60,6 +60,7 @@ class GlucoseSyncService : Service() {
         const val ACTION_UPDATE_WAKELOCK = "com.mohgwatch.UPDATE_WAKELOCK"
 
         const val ACTION_CLEAR_NOTIFICATIONS = "com.mohgwatch.CLEAR_NOTIFICATIONS"
+        const val ACTION_SNOOZE_ALERTS = "com.mohgwatch.SNOOZE_ALERTS"
         private val controlScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
         private val controlMutex = Mutex()
 
@@ -125,6 +126,19 @@ class GlucoseSyncService : Service() {
         }
 
 
+        /** Silences low/high alarms on the phone and the watch for the given minutes. */
+        fun snoozeAlerts(context: Context, minutes: Int) {
+            val until = AlertSnoozePolicy.until(System.currentTimeMillis(), minutes)
+            AlertSnooze.set(context, until)
+            Diagnostics.record(context, "ALERT_SNOOZE", "minutes=$minutes untilMs=$until")
+            context.startService(Intent(context, GlucoseSyncService::class.java).setAction(ACTION_SNOOZE_ALERTS))
+        }
+
+        fun cancelSnooze(context: Context) {
+            AlertSnooze.set(context, 0L)
+            Diagnostics.record(context, "ALERT_SNOOZE_CANCELLED")
+        }
+
         fun clearNotifications(context: Context) {
             context.startService(Intent(context, GlucoseSyncService::class.java).apply { action = ACTION_CLEAR_NOTIFICATIONS })
         }
@@ -170,6 +184,7 @@ class GlucoseSyncService : Service() {
     @Volatile private var blockedNetwork: android.net.Network? = null
     private val soundMutex = Mutex()
     @Volatile private var soundJob: Job? = null
+    @Volatile private var snoozedHazard: GlucoseRange? = null
     @Volatile private var soundAlertId: Int? = null
     @Volatile private var soundChannel: String? = null
     private val alertIds = java.util.concurrent.ConcurrentHashMap<String, Int>()
@@ -369,6 +384,12 @@ class GlucoseSyncService : Service() {
             ACTION_MUTE_ALERT -> {
                 val alertId = intent.getIntExtra("alert_id", -1)
                 if (alertId == soundAlertId) cancelSound()
+                return START_STICKY
+            }
+            ACTION_SNOOZE_ALERTS -> {
+                cancelGlucoseAlerts()
+                cancelSound()
+                phoneAlertContext = null
                 return START_STICKY
             }
             ACTION_CLEAR_NOTIFICATIONS -> {
@@ -771,7 +792,13 @@ class GlucoseSyncService : Service() {
             cancelGlucoseAlerts()
             phoneAlertContext = null
         }
-        if (fresh && range != GlucoseRange.NORMAL && settings.notifyOutOfRange) {
+        val snoozed = AlertSnooze.isActive(this, now)
+        if (fresh && range != GlucoseRange.NORMAL && settings.notifyOutOfRange && snoozed) {
+            // Keep silent but remember the hazard so the watch hears about it when the snooze ends.
+            cancelGlucoseAlerts()
+            phoneAlertContext = null
+            snoozedHazard = range
+        } else if (fresh && range != GlucoseRange.NORMAL && settings.notifyOutOfRange) {
             val newHazard = GlucoseAlertPolicy.shouldAlert(glucoseRange, range)
             val muted = PhoneGlucoseAlertPolicy.shouldMute(settings, watchConnected,
                 WatchState.wristStatus.value == WristStatus.ON_WRIST, WatchState.lastUpdateTimestamp.value, now)
@@ -788,7 +815,13 @@ class GlucoseSyncService : Service() {
             }
         }
         val transition = TrendHaptics.nextDirection(reading, previousReading, now, settings)
-        if (transition != null && TrendHaptics.shouldSendAlert(settings, transition.hapticType, settings.watchNotifyOutOfRange)) {
+            ?: AlertSnoozePolicy.resumedHazard(snoozedHazard, if (fresh) range else GlucoseRange.NORMAL, snoozed)?.let {
+                if (it == GlucoseRange.LOW) TrendDirection.FALLING else TrendDirection.RISING
+            }
+        if (!snoozed) snoozedHazard = null
+        if (transition != null && snoozed && transition != TrendDirection.STABLE) {
+            Diagnostics.record(this, "WATCH_ALERT_SNOOZED", "type=${transition.hapticType}", activeCycleId)
+        } else if (transition != null && TrendHaptics.shouldSendAlert(settings, transition.hapticType, settings.watchNotifyOutOfRange)) {
             // STABLE also clears a notification when its optional vibration is disabled.
             dataLayerSender.sendHapticAlert(transition.hapticType, reading.value,
                 showNotification = settings.watchNotifyOutOfRange,
@@ -1003,6 +1036,10 @@ class GlucoseSyncService : Service() {
                         val connected = withTimeoutOrNull(2_000L) { dataLayerSender.isWatchConnected() } ?: false
                         val now = System.currentTimeMillis()
                         val reading = GlucoseSyncState.latestReading.value
+                        if (expected != null && AlertSnooze.isActive(this@GlucoseSyncService, now)) {
+                            Diagnostics.record(this@GlucoseSyncService, "PHONE_ALERT_SOUND_SKIPPED", "channel=$channelId snoozed=true")
+                            return@withLock
+                        }
                         if (!PhoneGlucoseAlertPolicy.shouldPlaySound(settings, reading, expected, connected, WatchState.wristStatus.value == WristStatus.ON_WRIST,
                                 WatchState.lastUpdateTimestamp.value, now)) {
                             Diagnostics.record(this@GlucoseSyncService, "PHONE_ALERT_SOUND_SKIPPED", "channel=$channelId")
